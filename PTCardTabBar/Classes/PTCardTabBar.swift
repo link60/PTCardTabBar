@@ -36,6 +36,12 @@ open class PTCardTabBar: UIView {
         indicatorView.tintColor = tintColor
     }
     
+    func setBadge(value: String, at: Int) {
+        if let button = buttons()[safe: at] {
+            button.setTitle("ok", for: .normal)
+        }
+    }
+    
     lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [])
         stackView.axis = .horizontal
@@ -214,5 +220,13 @@ open class PTCardTabBar: UIView {
         super.layoutSubviews()
         stackView.frame = bounds.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 8, right: 0))
         layer.cornerRadius = bounds.height / 2
+    }
+}
+
+extension Collection {
+
+    /// Returns the element at the specified index if it is within bounds, otherwise nil.
+    subscript (safe index: Index) -> Element? {
+        return indices.contains(index) ? self[index] : nil
     }
 }

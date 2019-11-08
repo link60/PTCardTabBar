@@ -60,6 +60,7 @@ open class PTCardTabBarController: UITabBarController {
             self.additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: tabBarHeight + bottomSpacing, right: 0)
         }
         
+        NotificationCenter.default.addObserver(self, selector: #selector(setBadge), name: .PTCardTabBarBadgeNotification, object: nil)
         
         self.tabBar.isHidden = true
 
@@ -105,10 +106,18 @@ open class PTCardTabBarController: UITabBarController {
         
         customTabBar.tintColor = tintColor
     }
+    
+    @objc fileprivate func setBadge(_ notification: Notification) {
+        customTabBar.setBadge(value: "coucou", at: 0)
+    }
 }
 
 extension PTCardTabBarController: CardTabBarDelegate {
     func cardTabBar(_ sender: PTCardTabBar, didSelectItemAt index: Int) {
         self.selectedIndex = index
     }
+}
+
+public extension Notification.Name {
+    static let PTCardTabBarBadgeNotification = Notification.Name("PTCardTabBarBadgeNotification")
 }

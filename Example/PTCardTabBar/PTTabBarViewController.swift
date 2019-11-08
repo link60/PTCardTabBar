@@ -22,6 +22,11 @@ class PTTabBarViewController: PTCardTabBarController {
         
         self.viewControllers = [vc1, vc2, vc3]
         
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            NotificationCenter.default.post(name: .PTCardTabBarBadgeNotification, object: nil, userInfo: ["index": 0])
+        }
+        
+        
         super.viewDidLoad()
     }
 }
