@@ -30,7 +30,7 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/hussc/PTCardTabBar.git', :tag => s.version.to_s }
   s.social_media_url = 'https://www.facebook.com/hussc'
   s.swift_version  = '5.0'
-  s.ios.deployment_target = '9.0'
+  s.ios.deployment_target = '10.0'
 
   s.source_files = 'PTCardTabBar/Classes/**/*'
   
@@ -41,4 +41,5 @@ Pod::Spec.new do |s|
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'UIKit'
   # s.dependency 'AFNetworking', '~> 2.3'
+  s.dependency 'BadgeHub'
 end

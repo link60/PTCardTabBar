@@ -36,9 +36,9 @@ open class PTCardTabBar: UIView {
         indicatorView.tintColor = tintColor
     }
     
-    func setBadge(value: String, at: Int) {
+    func setBadge(value: Int, at: Int) {
         if let button = buttons()[safe: at] {
-            button.setTitle("ok", for: .normal)
+            button.setBadge(value: value)
         }
     }
     

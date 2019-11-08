@@ -7,9 +7,13 @@
 //
 
 import UIKit
-
+import BadgeHub
 
 public class PTBarButton: UIButton {
+    
+    lazy var badge: BadgeHub = {
+        return BadgeHub(view: self)
+    }()
     
     var selectedColor: UIColor! = .black {
         didSet {
@@ -46,5 +50,14 @@ public class PTBarButton: UIButton {
     
     func reloadApperance(){
         self.tintColor = isSelected ? selectedColor : unselectedColor
+    }
+    
+    func setBadge(value: Int) {
+        badge.setCount(value)
+    }
+    
+    override public func layoutSubviews() {
+        super.layoutSubviews()
+        badge.setCircleAtFrame(CGRect(x: (self.bounds.width/2)+15, y: -15, width: 30, height: 30))
     }
 }
