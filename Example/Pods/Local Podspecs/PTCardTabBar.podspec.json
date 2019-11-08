@@ -1,22 +1,35 @@
 {
   "name": "PTCardTabBar",
-  "version": "0.1.0",
-  "summary": "A short description of PTCardTabBar.",
-  "description": "TODO: Add long description of the pod here.",
+  "version": "1.0.1",
+  "summary": "Simple UITabBarController with card-style tabbar",
+  "description": "A Simple Card style tab bar with only displaying icons with small circle under the selected tab bar, try it",
   "homepage": "https://github.com/hussc/PTCardTabBar",
+  "screenshots": [
+    "https://www.dropbox.com/s/1ra32nq4rxurqun/Simulator%20Screen%20Shot%20-%20iPhone%20Xs%20-%202019-09-04%20at%2004.43.09.png",
+    "https://www.dropbox.com/s/zrbah6zbxvkvn36/Simulator%20Screen%20Shot%20-%20iPhone%20Xs%20-%202019-09-04%20at%2004.43.10.png"
+  ],
   "license": {
     "type": "MIT",
     "file": "LICENSE"
   },
   "authors": {
-    "hussc": "hus.sc@aol.com"
+    "Hussein AlRyalat": "hus.sc@aol.com"
   },
   "source": {
     "git": "https://github.com/hussc/PTCardTabBar.git",
-    "tag": "0.1.0"
+    "tag": "1.0.1"
   },
+  "social_media_url": "https://www.facebook.com/hussc",
+  "swift_versions": "5.0",
   "platforms": {
-    "ios": "8.0"
+    "ios": "10.0"
   },
-  "source_files": "PTCardTabBar/Classes/**/*"
+  "source_files": "PTCardTabBar/Classes/**/*",
+  "frameworks": "UIKit",
+  "dependencies": {
+    "BadgeHub": [
+
+    ]
+  },
+  "swift_version": "5.0"
 }

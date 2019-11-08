@@ -1,16 +1,23 @@
 PODS:
-  - PTCardTabBar (0.1.0)
+  - BadgeHub (0.1.1)
+  - PTCardTabBar (1.0.1):
+    - BadgeHub
 
 DEPENDENCIES:
   - PTCardTabBar (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - BadgeHub
 
 EXTERNAL SOURCES:
   PTCardTabBar:
     :path: "../"
 
 SPEC CHECKSUMS:
-  PTCardTabBar: fbe3b27ab72c41849a288df4bc6d07805e35c541
+  BadgeHub: 8632dc9ab9cfb1bee903ebd40f9de77d29323dc7
+  PTCardTabBar: 243180bd75d3f756c72c2370c998ace5cefde2ee
 
 PODFILE CHECKSUM: 17c410a6b090f53ecdacedbd8462ae6c35629332
 
-COCOAPODS: 1.7.4
+COCOAPODS: 1.8.4
