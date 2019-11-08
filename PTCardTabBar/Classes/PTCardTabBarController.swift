@@ -108,7 +108,10 @@ open class PTCardTabBarController: UITabBarController {
     }
     
     @objc fileprivate func setBadge(_ notification: Notification) {
-        customTabBar.setBadge(value: 999, at: 0)
+        if let index = notification.userInfo["index"] as? Int,
+            let value = notification.userInfo["value"] as? Int {
+            customTabBar.setBadge(value: value, at: index)
+        }
     }
 }
 
