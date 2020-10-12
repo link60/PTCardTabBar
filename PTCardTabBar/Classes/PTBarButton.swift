@@ -60,6 +60,6 @@ public class PTBarButton: UIButton {
         super.layoutSubviews()
         badge.setCircleAtFrame(CGRect(x: (self.bounds.width/2)+8, y: -25, width: 30, height: 30))
         badge.scaleCircleSize(by: 0.9)
-        badge.setCountLabel(UIFont.boldSystemFont(ofSize: 15))
+        badge.setCountLabelFont(UIFont.boldSystemFont(ofSize: 15))
     }
 }
