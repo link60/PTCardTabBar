@@ -1,5 +1,5 @@
 PODS:
-  - BadgeHub (0.1.1)
+  - BadgeHub (1.0.0)
   - PTCardTabBar (1.0.1):
     - BadgeHub
 
@@ -15,9 +15,9 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  BadgeHub: 8632dc9ab9cfb1bee903ebd40f9de77d29323dc7
+  BadgeHub: b227771329f78c37a2dae7502607ec6d00a50bd4
   PTCardTabBar: 243180bd75d3f756c72c2370c998ace5cefde2ee
 
 PODFILE CHECKSUM: 17c410a6b090f53ecdacedbd8462ae6c35629332
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.3

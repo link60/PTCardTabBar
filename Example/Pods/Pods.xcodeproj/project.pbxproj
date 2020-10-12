@@ -7,109 +7,111 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		071FA68712E2D2F57EAD65F28D0FCB3E /* PTCardTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A742EB123F6A6E3CF01E91CFAF63C0F8 /* PTCardTabBarController.swift */; };
-		162C17BD62B60C0D64059C8093F7D14E /* PTCardTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06237EB1D486B84C31E995708DCF5BF0 /* PTCardTabBar.swift */; };
-		213C77290B4C521BE4A96039BE47C6A8 /* PTBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF8E847AF96F1A7A9E93C2306ECE1116 /* PTBarButton.swift */; };
-		31224FDE265AACF73B5D604F59A13700 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDADEC4F5AA321B35DF3A0B0B4803FCB /* UIKit.framework */; };
-		3F6EF5A906A3988ED203283EB9FC6DF2 /* UIColor+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104356089DE2C3F322C9C05A816555D4 /* UIColor+Additions.swift */; };
-		4752965534AE4986DB5850695F4CCA3A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA1E08873E93C9F6FBC324F20103E952 /* Foundation.framework */; };
-		522E663BA1B3E1E3D87F01F82B354EFE /* BadgeHub-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AB2665FFA0BAB05964C75F71527090A /* BadgeHub-dummy.m */; };
-		584A94DE2E639C6411F826E3BB19BB2D /* BadgeHub.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D250037D1E28F828D987378AF658715 /* BadgeHub.framework */; };
-		66817E411F436BD1673C779CC4D8B26F /* BadgeHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D9094CAD7AC2A2010AB6C9F5E18B36 /* BadgeHub.swift */; };
-		6B7EF8A26E2F22D6982D533DBD627075 /* BadgeHub-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = E1712E24A6CA7C17AD481CF1C61C09ED /* BadgeHub-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6CAA41712EA3E1A15EA220775A08FD3F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA1E08873E93C9F6FBC324F20103E952 /* Foundation.framework */; };
-		77AE3500348D6E5D9B5EA4A11A8EC8DD /* Pods-PTCardTabBar_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8A54BD3E1EA1DA17F999B7530AD02D /* Pods-PTCardTabBar_Tests-dummy.m */; };
-		784637BDB5248E88C863F1D59204D90A /* Pods-PTCardTabBar_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = F98361D600B1BE67E0B9FF512652C9F1 /* Pods-PTCardTabBar_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		7A31D23805880BDA1383AD6840BD21B0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDADEC4F5AA321B35DF3A0B0B4803FCB /* UIKit.framework */; };
-		84C9D46DFD8863E29B85CE09C5774AA5 /* UIView+AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944EA2A726B6F1FF565DE66BB61CAF60 /* UIView+AutoLayout.swift */; };
-		89D46A03E33C2725A080AD1DEDAFB576 /* Pods-PTCardTabBar_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B0E7E4B9687FF41FC3808969FCEA99FB /* Pods-PTCardTabBar_Example-dummy.m */; };
-		B7AC34BF6A843ED2E572F68B7A429E35 /* CGPoint+Distance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E04928842DA3A7647F24A4231010B2 /* CGPoint+Distance.swift */; };
-		BEF8405ACD23A2323D5CE26700F6AC50 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA1E08873E93C9F6FBC324F20103E952 /* Foundation.framework */; };
-		C1A04484F8B168BDB08C9562F0460F92 /* PTIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1AC94F8F1B740B2F6D995D9ECC6F14 /* PTIndicatorView.swift */; };
-		D70F0D387FA3A0C03323A34DCC865B8C /* PTCardTabBar-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = B04D08C3F7B1398DA365193994501938 /* PTCardTabBar-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D9BCBFBC39DA05DFE3FDE9D443886DF8 /* Pods-PTCardTabBar_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = FC484796E01263A264FA57BE365E9DC9 /* Pods-PTCardTabBar_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DE5291B798D60428D8F4EEFD4654BA94 /* PTCardTabBar-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BCAAADC7F5B5EA06B9C2693079E768F /* PTCardTabBar-dummy.m */; };
-		F2C3F22122CFEF7AAFC06F90CF362199 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 879B71132B713AF30D6C04EA6088FF6E /* QuartzCore.framework */; };
-		F6A64302B2EC3BD2321967705AB35CA8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA1E08873E93C9F6FBC324F20103E952 /* Foundation.framework */; };
+		01020E47159DC182329E9876F9485DD2 /* CGPoint+Distance.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D1AF9A75B52CA898FB5E39842CA2D8 /* CGPoint+Distance.swift */; };
+		0B9FBB7EE64F951D13D59401C632F02E /* PTCardTabBar-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 483DC89A8C8CD2DF59CAA52F4DABFF3F /* PTCardTabBar-dummy.m */; };
+		0FEF0564EE9B102615EA4D623B60EDE1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34892AD0428EB23C484D0CD9430A1B66 /* QuartzCore.framework */; };
+		2816B327CF87ABA61BD0A081A1EAED56 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60B358979DC5FE3BF52EE77010B28E5E /* Foundation.framework */; };
+		327DF57543E4306ACF92EAB0CF7EE32C /* Pods-PTCardTabBar_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = FC484796E01263A264FA57BE365E9DC9 /* Pods-PTCardTabBar_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		36929FFF74335DEAD3E9F3055954B81D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60B358979DC5FE3BF52EE77010B28E5E /* Foundation.framework */; };
+		522E663BA1B3E1E3D87F01F82B354EFE /* BadgeHub-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 958CC77BE0D487A06F279CD7D8BB62F8 /* BadgeHub-dummy.m */; };
+		66817E411F436BD1673C779CC4D8B26F /* BadgeHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFE7B1E2F8A95469CA167732AF02868 /* BadgeHub.swift */; };
+		6B7EF8A26E2F22D6982D533DBD627075 /* BadgeHub-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 2E9DF69A411BF0A9FB3F834B851D2D6A /* BadgeHub-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6EF4684E4EB86AF84C4A3D03FF57A9F6 /* UIView+AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064D2942FC7CB38EF3BEA8B731A2D485 /* UIView+AutoLayout.swift */; };
+		745769432DF2B4FAAE267961EA8B868A /* PTCardTabBar-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 1635A93DD8D0FDC7DEEECAD67E0CA77E /* PTCardTabBar-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7A6878770A9D31535A05AEAC286500B9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12E0E93FC169B9D3CB40881BC88A0CFC /* UIKit.framework */; };
+		7F7D3160AAC0B3E3AFA59434D4404C21 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60B358979DC5FE3BF52EE77010B28E5E /* Foundation.framework */; };
+		A0FDB743505523E62023652361E24564 /* PTCardTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08B901647A67216545E26D437EAF09B /* PTCardTabBar.swift */; };
+		A9A734396503B168D1DAFE37771F4511 /* Pods-PTCardTabBar_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8A54BD3E1EA1DA17F999B7530AD02D /* Pods-PTCardTabBar_Tests-dummy.m */; };
+		B4BC6CED2151BB001318E3691DB83BF2 /* PTBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 263E8525BF94A5BB2B7D1AB0E126E248 /* PTBarButton.swift */; };
+		B530A16A7DBA5F21464CBBC73AA514D7 /* PTCardTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D0BA70FDC16A12003431C69B064969 /* PTCardTabBarController.swift */; };
+		BA583CA00CC0EFD365B6A88AC36CE0AF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60B358979DC5FE3BF52EE77010B28E5E /* Foundation.framework */; };
+		C139D764A1FED69A71D943C4C9E3A3A0 /* BadgeHub.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D250037D1E28F828D987378AF658715 /* BadgeHub.framework */; };
+		E2EA2DFC36997BE5DCC8A152B0940D98 /* UIColor+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E664BC5E6ACD96268645E8EC565F0E2 /* UIColor+Additions.swift */; };
+		EDB6FCA02A641064AEFE3FC5FB187A1F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12E0E93FC169B9D3CB40881BC88A0CFC /* UIKit.framework */; };
+		FA7FBF0545ECA76BF4519B4E90D9016A /* Pods-PTCardTabBar_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = F98361D600B1BE67E0B9FF512652C9F1 /* Pods-PTCardTabBar_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC92C83632FB626BC4BB71F0ADD12220 /* PTIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7836EA774BCB5D66E13918515EEA5A18 /* PTIndicatorView.swift */; };
+		FEFF697DF0BAED4E9E3E7B1BF68EAF80 /* Pods-PTCardTabBar_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B0E7E4B9687FF41FC3808969FCEA99FB /* Pods-PTCardTabBar_Example-dummy.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		1724ED3E7B5DD79DB5B2A69BEBB3F205 /* PBXContainerItemProxy */ = {
+		0BE0678B497FCDD1BFBF4B4918CA0410 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 50EB4B7A37D813AB89E6146719E0D088;
+			remoteInfo = BadgeHub;
+		};
+		544CE48A5BB641363865A2FB8FEB75A2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 91F88D60B0911027E7F5CADA77FC54E0;
 			remoteInfo = "Pods-PTCardTabBar_Example";
 		};
-		6675C5F32B011B9ED9B7624DD179E5E2 /* PBXContainerItemProxy */ = {
+		CC17A8725E6D1F88DD1DDAB19EEAC835 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 50EB4B7A37D813AB89E6146719E0D088;
+			remoteInfo = BadgeHub;
+		};
+		DE37BF6D5B4A71D44C8BF3A2BA1F7D93 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 9B5E34DEC86133C45795287F399C33E3;
 			remoteInfo = PTCardTabBar;
 		};
-		6BA00DE4709D60ACAB41A0CB55BD1D22 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 50EB4B7A37D813AB89E6146719E0D088;
-			remoteInfo = BadgeHub;
-		};
-		EC15AE28B5BC4ECEAA61CAD77D75BAE9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 50EB4B7A37D813AB89E6146719E0D088;
-			remoteInfo = BadgeHub;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		000ED7E331DDAB544576A189428FCF0C /* PTCardTabBar.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = PTCardTabBar.xcconfig; sourceTree = "<group>"; };
-		06237EB1D486B84C31E995708DCF5BF0 /* PTCardTabBar.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PTCardTabBar.swift; path = PTCardTabBar/Classes/PTCardTabBar.swift; sourceTree = "<group>"; };
+		064D2942FC7CB38EF3BEA8B731A2D485 /* UIView+AutoLayout.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "UIView+AutoLayout.swift"; sourceTree = "<group>"; };
 		06FC19B36AEB365FDCC33CC4117342D3 /* Pods-PTCardTabBar_Tests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-PTCardTabBar_Tests-Info.plist"; sourceTree = "<group>"; };
-		07AEAD4EB658649082CF02424D2EB1FB /* BadgeHub-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "BadgeHub-Info.plist"; sourceTree = "<group>"; };
 		0A378A32E27AB64BE20A72D69582A48C /* Pods-PTCardTabBar_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-PTCardTabBar_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
-		104356089DE2C3F322C9C05A816555D4 /* UIColor+Additions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "UIColor+Additions.swift"; sourceTree = "<group>"; };
+		0E7F003B75692AFF0A686484898B7C30 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
 		10B77A4007C54832C0AF3B6DB8ED2BDF /* Pods-PTCardTabBar_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PTCardTabBar_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		12E0E93FC169B9D3CB40881BC88A0CFC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		155580990CC2AC1E3ABEA1CB783384D4 /* PTCardTabBar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = PTCardTabBar.debug.xcconfig; sourceTree = "<group>"; };
+		1635A93DD8D0FDC7DEEECAD67E0CA77E /* PTCardTabBar-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "PTCardTabBar-umbrella.h"; sourceTree = "<group>"; };
 		1894E2F858F85AC90BD6F982DD1407CB /* BadgeHub.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = BadgeHub.framework; path = BadgeHub.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		1BA7E5478F153E1DC8DEAF6DE913CD10 /* BadgeHub.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = BadgeHub.modulemap; sourceTree = "<group>"; };
-		1F1AC94F8F1B740B2F6D995D9ECC6F14 /* PTIndicatorView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PTIndicatorView.swift; path = PTCardTabBar/Classes/PTIndicatorView.swift; sourceTree = "<group>"; };
+		1C97BD86598395E534378893266E1055 /* PTCardTabBar-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "PTCardTabBar-prefix.pch"; sourceTree = "<group>"; };
 		20DF5BB9DD7D165653098394F7226DB5 /* Pods-PTCardTabBar_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-PTCardTabBar_Example-frameworks.sh"; sourceTree = "<group>"; };
+		263E8525BF94A5BB2B7D1AB0E126E248 /* PTBarButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PTBarButton.swift; path = PTCardTabBar/Classes/PTBarButton.swift; sourceTree = "<group>"; };
 		2E9D1C66341ABD5EDAA46F273A722216 /* Pods-PTCardTabBar_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-PTCardTabBar_Example.modulemap"; sourceTree = "<group>"; };
-		318EA15B6472F787F196519D0510466C /* BadgeHub-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "BadgeHub-prefix.pch"; sourceTree = "<group>"; };
-		38D9094CAD7AC2A2010AB6C9F5E18B36 /* BadgeHub.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BadgeHub.swift; path = BadgeHub/Classes/BadgeHub.swift; sourceTree = "<group>"; };
-		45E04928842DA3A7647F24A4231010B2 /* CGPoint+Distance.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "CGPoint+Distance.swift"; sourceTree = "<group>"; };
+		2E9DF69A411BF0A9FB3F834B851D2D6A /* BadgeHub-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "BadgeHub-umbrella.h"; sourceTree = "<group>"; };
+		2FADE5B93C2AB6AAC0D6017E751BAB5E /* PTCardTabBar-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "PTCardTabBar-Info.plist"; sourceTree = "<group>"; };
+		34892AD0428EB23C484D0CD9430A1B66 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
+		414D03B27C385C7F317C226E47BF9E29 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		41A680402BE38C5FC4B24599CE234DA8 /* PTCardTabBar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = PTCardTabBar.release.xcconfig; sourceTree = "<group>"; };
+		483DC89A8C8CD2DF59CAA52F4DABFF3F /* PTCardTabBar-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "PTCardTabBar-dummy.m"; sourceTree = "<group>"; };
 		490F1351FF718C46AC197845B56EB82C /* PTCardTabBar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = PTCardTabBar.framework; path = PTCardTabBar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		4BCAAADC7F5B5EA06B9C2693079E768F /* PTCardTabBar-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "PTCardTabBar-dummy.m"; sourceTree = "<group>"; };
+		49EB67400166F77FD4FA2F5ABF341114 /* BadgeHub.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = BadgeHub.debug.xcconfig; sourceTree = "<group>"; };
 		4C7A69E7FFD260AEDAA59F12E8744492 /* Pods-PTCardTabBar_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-PTCardTabBar_Example-acknowledgements.plist"; sourceTree = "<group>"; };
+		4E8C1A798864FF7C0EA6C560E23CBF69 /* BadgeHub.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = BadgeHub.modulemap; sourceTree = "<group>"; };
 		5D4122F3E9C74634FF175BBECFE747C7 /* Pods-PTCardTabBar_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PTCardTabBar_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		64DA2913134342B35B0B4AA2A1F8A5DB /* PTCardTabBar.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = PTCardTabBar.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		6B2C6F740B15039159EA8F75AFFBE9E7 /* PTCardTabBar.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = PTCardTabBar.modulemap; sourceTree = "<group>"; };
+		5E664BC5E6ACD96268645E8EC565F0E2 /* UIColor+Additions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "UIColor+Additions.swift"; sourceTree = "<group>"; };
+		60B358979DC5FE3BF52EE77010B28E5E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		66D0BA70FDC16A12003431C69B064969 /* PTCardTabBarController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PTCardTabBarController.swift; path = PTCardTabBar/Classes/PTCardTabBarController.swift; sourceTree = "<group>"; };
 		6F00F28515B1AD16BA3F982C5C8B7F3F /* Pods-PTCardTabBar_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-PTCardTabBar_Tests.modulemap"; sourceTree = "<group>"; };
+		7836EA774BCB5D66E13918515EEA5A18 /* PTIndicatorView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PTIndicatorView.swift; path = PTCardTabBar/Classes/PTIndicatorView.swift; sourceTree = "<group>"; };
 		7A8A54BD3E1EA1DA17F999B7530AD02D /* Pods-PTCardTabBar_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-PTCardTabBar_Tests-dummy.m"; sourceTree = "<group>"; };
 		7D250037D1E28F828D987378AF658715 /* BadgeHub.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BadgeHub.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		879B71132B713AF30D6C04EA6088FF6E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
-		944EA2A726B6F1FF565DE66BB61CAF60 /* UIView+AutoLayout.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "UIView+AutoLayout.swift"; sourceTree = "<group>"; };
+		8459CD7AA36916B31FB5005188A89C02 /* BadgeHub-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "BadgeHub-Info.plist"; sourceTree = "<group>"; };
+		958CC77BE0D487A06F279CD7D8BB62F8 /* BadgeHub-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "BadgeHub-dummy.m"; sourceTree = "<group>"; };
 		97827AA345346D98ADC260258DA5FC15 /* Pods-PTCardTabBar_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-PTCardTabBar_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		98209FAA0E0A944990E7476E039DD113 /* Pods_PTCardTabBar_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_PTCardTabBar_Tests.framework; path = "Pods-PTCardTabBar_Tests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9AB2665FFA0BAB05964C75F71527090A /* BadgeHub-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "BadgeHub-dummy.m"; sourceTree = "<group>"; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		A73F2BB34EE754D7051F5B1453A465C7 /* PTCardTabBar-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "PTCardTabBar-prefix.pch"; sourceTree = "<group>"; };
-		A742EB123F6A6E3CF01E91CFAF63C0F8 /* PTCardTabBarController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PTCardTabBarController.swift; path = PTCardTabBar/Classes/PTCardTabBarController.swift; sourceTree = "<group>"; };
 		A95D4BFCF36F17657EBBBCDC46FE8779 /* Pods-PTCardTabBar_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PTCardTabBar_Example.release.xcconfig"; sourceTree = "<group>"; };
-		AA1E08873E93C9F6FBC324F20103E952 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		AC60D3EE0F4800223A0C711326A76F69 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
-		B04D08C3F7B1398DA365193994501938 /* PTCardTabBar-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "PTCardTabBar-umbrella.h"; sourceTree = "<group>"; };
 		B0E7E4B9687FF41FC3808969FCEA99FB /* Pods-PTCardTabBar_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-PTCardTabBar_Example-dummy.m"; sourceTree = "<group>"; };
 		B5DEE87D924F36525E94DB922288B591 /* Pods-PTCardTabBar_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PTCardTabBar_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		BEC13CF644A6B54B7FDF2958BC0AF439 /* PTCardTabBar-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "PTCardTabBar-Info.plist"; sourceTree = "<group>"; };
-		C7D2C1C12DECDCBFAB13C253CE8B5010 /* BadgeHub.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = BadgeHub.xcconfig; sourceTree = "<group>"; };
-		CDADEC4F5AA321B35DF3A0B0B4803FCB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		C0D1AF9A75B52CA898FB5E39842CA2D8 /* CGPoint+Distance.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "CGPoint+Distance.swift"; sourceTree = "<group>"; };
+		C2E4FDB72449B739A63F8C74AA7EFC37 /* BadgeHub-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "BadgeHub-prefix.pch"; sourceTree = "<group>"; };
+		D22B7B853CB93A3A240823E200B4AB4F /* BadgeHub.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = BadgeHub.release.xcconfig; sourceTree = "<group>"; };
+		DBFE7B1E2F8A95469CA167732AF02868 /* BadgeHub.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BadgeHub.swift; path = BadgeHub/Classes/BadgeHub.swift; sourceTree = "<group>"; };
 		DC682BD3A7A5CCF40B01D8DD2BE67C37 /* Pods-PTCardTabBar_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-PTCardTabBar_Example-Info.plist"; sourceTree = "<group>"; };
-		E1712E24A6CA7C17AD481CF1C61C09ED /* BadgeHub-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "BadgeHub-umbrella.h"; sourceTree = "<group>"; };
-		EF8E847AF96F1A7A9E93C2306ECE1116 /* PTBarButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PTBarButton.swift; path = PTCardTabBar/Classes/PTBarButton.swift; sourceTree = "<group>"; };
-		F69B631D85B52665FDAA9A851230FB23 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		DF0FD579ED06F99807DF27FF202F7B10 /* PTCardTabBar.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = PTCardTabBar.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		F08B901647A67216545E26D437EAF09B /* PTCardTabBar.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PTCardTabBar.swift; path = PTCardTabBar/Classes/PTCardTabBar.swift; sourceTree = "<group>"; };
+		F91ABB3C1ADEE5EC480C2CC9686A660F /* PTCardTabBar.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = PTCardTabBar.modulemap; sourceTree = "<group>"; };
 		F98361D600B1BE67E0B9FF512652C9F1 /* Pods-PTCardTabBar_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-PTCardTabBar_Tests-umbrella.h"; sourceTree = "<group>"; };
 		FB430AA8C54A8D3B06C9DF11DFBAB2B3 /* Pods_PTCardTabBar_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_PTCardTabBar_Example.framework; path = "Pods-PTCardTabBar_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC484796E01263A264FA57BE365E9DC9 /* Pods-PTCardTabBar_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-PTCardTabBar_Example-umbrella.h"; sourceTree = "<group>"; };
@@ -117,29 +119,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		0B33517D481779338D8C2E60EB51ECE7 /* Frameworks */ = {
+		1705382278688306DD17E855687851A2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				584A94DE2E639C6411F826E3BB19BB2D /* BadgeHub.framework in Frameworks */,
-				F6A64302B2EC3BD2321967705AB35CA8 /* Foundation.framework in Frameworks */,
-				31224FDE265AACF73B5D604F59A13700 /* UIKit.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		6BC7593AC2155C4ECA61CEE9C71F13AD /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BEF8405ACD23A2323D5CE26700F6AC50 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9040FAD1EBFCEEBABCF2418D726FDEDE /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4752965534AE4986DB5850695F4CCA3A /* Foundation.framework in Frameworks */,
+				C139D764A1FED69A71D943C4C9E3A3A0 /* BadgeHub.framework in Frameworks */,
+				2816B327CF87ABA61BD0A081A1EAED56 /* Foundation.framework in Frameworks */,
+				7A6878770A9D31535A05AEAC286500B9 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,27 +133,60 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6CAA41712EA3E1A15EA220775A08FD3F /* Foundation.framework in Frameworks */,
-				F2C3F22122CFEF7AAFC06F90CF362199 /* QuartzCore.framework in Frameworks */,
-				7A31D23805880BDA1383AD6840BD21B0 /* UIKit.framework in Frameworks */,
+				36929FFF74335DEAD3E9F3055954B81D /* Foundation.framework in Frameworks */,
+				0FEF0564EE9B102615EA4D623B60EDE1 /* QuartzCore.framework in Frameworks */,
+				EDB6FCA02A641064AEFE3FC5FB187A1F /* UIKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D16FE9D699368A8CAB39FFF95997E807 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7F7D3160AAC0B3E3AFA59434D4404C21 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED66109761EA9550703C3F96721E758E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BA583CA00CC0EFD365B6A88AC36CE0AF /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0538483522F281DAD708D99CE59F0EED /* Support Files */ = {
+		05890D8FFAF1943A63264D7F5B63FFB1 /* Pod */ = {
 			isa = PBXGroup;
 			children = (
-				6B2C6F740B15039159EA8F75AFFBE9E7 /* PTCardTabBar.modulemap */,
-				000ED7E331DDAB544576A189428FCF0C /* PTCardTabBar.xcconfig */,
-				4BCAAADC7F5B5EA06B9C2693079E768F /* PTCardTabBar-dummy.m */,
-				BEC13CF644A6B54B7FDF2958BC0AF439 /* PTCardTabBar-Info.plist */,
-				A73F2BB34EE754D7051F5B1453A465C7 /* PTCardTabBar-prefix.pch */,
-				B04D08C3F7B1398DA365193994501938 /* PTCardTabBar-umbrella.h */,
+				414D03B27C385C7F317C226E47BF9E29 /* LICENSE */,
+				DF0FD579ED06F99807DF27FF202F7B10 /* PTCardTabBar.podspec */,
+				0E7F003B75692AFF0A686484898B7C30 /* README.md */,
 			);
-			name = "Support Files";
-			path = "Example/Pods/Target Support Files/PTCardTabBar";
+			name = Pod;
+			sourceTree = "<group>";
+		};
+		3349CEF06723E60C1649D88EFF830ADC /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				60B358979DC5FE3BF52EE77010B28E5E /* Foundation.framework */,
+				34892AD0428EB23C484D0CD9430A1B66 /* QuartzCore.framework */,
+				12E0E93FC169B9D3CB40881BC88A0CFC /* UIKit.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		337AE6736EEBC48FDD1C440F62A7F81C /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C0D1AF9A75B52CA898FB5E39842CA2D8 /* CGPoint+Distance.swift */,
+				5E664BC5E6ACD96268645E8EC565F0E2 /* UIColor+Additions.swift */,
+				064D2942FC7CB38EF3BEA8B731A2D485 /* UIView+AutoLayout.swift */,
+			);
+			name = Extensions;
+			path = PTCardTabBar/Classes/Extensions;
 			sourceTree = "<group>";
 		};
 		4A21891976D76508AAA9BD4CDB117576 /* Pods-PTCardTabBar_Example */ = {
@@ -190,45 +209,69 @@
 		538CD47E0D80F0D5A9DBD19BED4B444E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				BA8BF9BCF26F6B85F4894BB370C0038F /* BadgeHub */,
+				A799A8EAE4299291E0436460A85E03EE /* BadgeHub */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		592C3A5631BC709411433838D50FD244 /* Extensions */ = {
+		5C2AE1F7F044D48D0E32421EC2AC620C /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				45E04928842DA3A7647F24A4231010B2 /* CGPoint+Distance.swift */,
-				104356089DE2C3F322C9C05A816555D4 /* UIColor+Additions.swift */,
-				944EA2A726B6F1FF565DE66BB61CAF60 /* UIView+AutoLayout.swift */,
+				4E8C1A798864FF7C0EA6C560E23CBF69 /* BadgeHub.modulemap */,
+				958CC77BE0D487A06F279CD7D8BB62F8 /* BadgeHub-dummy.m */,
+				8459CD7AA36916B31FB5005188A89C02 /* BadgeHub-Info.plist */,
+				C2E4FDB72449B739A63F8C74AA7EFC37 /* BadgeHub-prefix.pch */,
+				2E9DF69A411BF0A9FB3F834B851D2D6A /* BadgeHub-umbrella.h */,
+				49EB67400166F77FD4FA2F5ABF341114 /* BadgeHub.debug.xcconfig */,
+				D22B7B853CB93A3A240823E200B4AB4F /* BadgeHub.release.xcconfig */,
 			);
-			name = Extensions;
-			path = PTCardTabBar/Classes/Extensions;
+			name = "Support Files";
+			path = "../Target Support Files/BadgeHub";
 			sourceTree = "<group>";
 		};
 		5EDF6F6D233FD03AD32C03CE9A399692 /* Development Pods */ = {
 			isa = PBXGroup;
 			children = (
-				A5792738F2967AE6B8F68B8BE6E5ABA0 /* PTCardTabBar */,
+				6E59CB7CD21812F1703BDE7C64D7DC3A /* PTCardTabBar */,
 			);
 			name = "Development Pods";
 			sourceTree = "<group>";
 		};
-		6C98ED017A034F53CDCAD6A504B47447 /* iOS */ = {
+		618BA51C6FD258891D3B42FC0D15F904 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				AA1E08873E93C9F6FBC324F20103E952 /* Foundation.framework */,
-				879B71132B713AF30D6C04EA6088FF6E /* QuartzCore.framework */,
-				CDADEC4F5AA321B35DF3A0B0B4803FCB /* UIKit.framework */,
+				F91ABB3C1ADEE5EC480C2CC9686A660F /* PTCardTabBar.modulemap */,
+				483DC89A8C8CD2DF59CAA52F4DABFF3F /* PTCardTabBar-dummy.m */,
+				2FADE5B93C2AB6AAC0D6017E751BAB5E /* PTCardTabBar-Info.plist */,
+				1C97BD86598395E534378893266E1055 /* PTCardTabBar-prefix.pch */,
+				1635A93DD8D0FDC7DEEECAD67E0CA77E /* PTCardTabBar-umbrella.h */,
+				155580990CC2AC1E3ABEA1CB783384D4 /* PTCardTabBar.debug.xcconfig */,
+				41A680402BE38C5FC4B24599CE234DA8 /* PTCardTabBar.release.xcconfig */,
 			);
-			name = iOS;
+			name = "Support Files";
+			path = "Example/Pods/Target Support Files/PTCardTabBar";
+			sourceTree = "<group>";
+		};
+		6E59CB7CD21812F1703BDE7C64D7DC3A /* PTCardTabBar */ = {
+			isa = PBXGroup;
+			children = (
+				263E8525BF94A5BB2B7D1AB0E126E248 /* PTBarButton.swift */,
+				F08B901647A67216545E26D437EAF09B /* PTCardTabBar.swift */,
+				66D0BA70FDC16A12003431C69B064969 /* PTCardTabBarController.swift */,
+				7836EA774BCB5D66E13918515EEA5A18 /* PTIndicatorView.swift */,
+				337AE6736EEBC48FDD1C440F62A7F81C /* Extensions */,
+				05890D8FFAF1943A63264D7F5B63FFB1 /* Pod */,
+				618BA51C6FD258891D3B42FC0D15F904 /* Support Files */,
+			);
+			name = PTCardTabBar;
+			path = ../..;
 			sourceTree = "<group>";
 		};
 		74C5B1CFC2C4C009ED3313F75852AE79 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				7D250037D1E28F828D987378AF658715 /* BadgeHub.framework */,
-				6C98ED017A034F53CDCAD6A504B47447 /* iOS */,
+				3349CEF06723E60C1649D88EFF830ADC /* iOS */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -258,53 +301,14 @@
 			path = "Target Support Files/Pods-PTCardTabBar_Tests";
 			sourceTree = "<group>";
 		};
-		9EB2602E7913598B3F1AAD972089C9EC /* Pod */ = {
+		A799A8EAE4299291E0436460A85E03EE /* BadgeHub */ = {
 			isa = PBXGroup;
 			children = (
-				F69B631D85B52665FDAA9A851230FB23 /* LICENSE */,
-				64DA2913134342B35B0B4AA2A1F8A5DB /* PTCardTabBar.podspec */,
-				AC60D3EE0F4800223A0C711326A76F69 /* README.md */,
-			);
-			name = Pod;
-			sourceTree = "<group>";
-		};
-		A5792738F2967AE6B8F68B8BE6E5ABA0 /* PTCardTabBar */ = {
-			isa = PBXGroup;
-			children = (
-				EF8E847AF96F1A7A9E93C2306ECE1116 /* PTBarButton.swift */,
-				06237EB1D486B84C31E995708DCF5BF0 /* PTCardTabBar.swift */,
-				A742EB123F6A6E3CF01E91CFAF63C0F8 /* PTCardTabBarController.swift */,
-				1F1AC94F8F1B740B2F6D995D9ECC6F14 /* PTIndicatorView.swift */,
-				592C3A5631BC709411433838D50FD244 /* Extensions */,
-				9EB2602E7913598B3F1AAD972089C9EC /* Pod */,
-				0538483522F281DAD708D99CE59F0EED /* Support Files */,
-			);
-			name = PTCardTabBar;
-			path = ../..;
-			sourceTree = "<group>";
-		};
-		BA8BF9BCF26F6B85F4894BB370C0038F /* BadgeHub */ = {
-			isa = PBXGroup;
-			children = (
-				38D9094CAD7AC2A2010AB6C9F5E18B36 /* BadgeHub.swift */,
-				BDFE554FCD7537107C51EDB1CE8629D9 /* Support Files */,
+				DBFE7B1E2F8A95469CA167732AF02868 /* BadgeHub.swift */,
+				5C2AE1F7F044D48D0E32421EC2AC620C /* Support Files */,
 			);
 			name = BadgeHub;
 			path = BadgeHub;
-			sourceTree = "<group>";
-		};
-		BDFE554FCD7537107C51EDB1CE8629D9 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				1BA7E5478F153E1DC8DEAF6DE913CD10 /* BadgeHub.modulemap */,
-				C7D2C1C12DECDCBFAB13C253CE8B5010 /* BadgeHub.xcconfig */,
-				9AB2665FFA0BAB05964C75F71527090A /* BadgeHub-dummy.m */,
-				07AEAD4EB658649082CF02424D2EB1FB /* BadgeHub-Info.plist */,
-				318EA15B6472F787F196519D0510466C /* BadgeHub-prefix.pch */,
-				E1712E24A6CA7C17AD481CF1C61C09ED /* BadgeHub-umbrella.h */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/BadgeHub";
 			sourceTree = "<group>";
 		};
 		CF1408CF629C7361332E53B88F7BD30C = {
@@ -333,19 +337,27 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		4F3BB49FC249B23616E55732FB2D6162 /* Headers */ = {
+		615EF77B838AA2EDD70032E428BD9405 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D70F0D387FA3A0C03323A34DCC865B8C /* PTCardTabBar-umbrella.h in Headers */,
+				327DF57543E4306ACF92EAB0CF7EE32C /* Pods-PTCardTabBar_Example-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5A9DD7428534F99D1A61B208C9797743 /* Headers */ = {
+		9A3A3039488F1D39AD216625A6061CA5 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D9BCBFBC39DA05DFE3FDE9D443886DF8 /* Pods-PTCardTabBar_Example-umbrella.h in Headers */,
+				745769432DF2B4FAAE267961EA8B868A /* PTCardTabBar-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AF2AEAF299F6AB2D0C52A1BC9FD6E42F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA7FBF0545ECA76BF4519B4E90D9016A /* Pods-PTCardTabBar_Tests-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -357,30 +369,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E456ACCCB3FA1B2207A92EF6EFF87BD9 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				784637BDB5248E88C863F1D59204D90A /* Pods-PTCardTabBar_Tests-umbrella.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		1995BBA5F421C557A48C80ABE0F6DF8F /* Pods-PTCardTabBar_Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 446C93437553DA8DC64F8E89A6CF0F59 /* Build configuration list for PBXNativeTarget "Pods-PTCardTabBar_Tests" */;
+			buildConfigurationList = 9B3B52240E71363209351429DB31A25A /* Build configuration list for PBXNativeTarget "Pods-PTCardTabBar_Tests" */;
 			buildPhases = (
-				E456ACCCB3FA1B2207A92EF6EFF87BD9 /* Headers */,
-				BDF4E6A8DFA58A435C74C59CF2F732C3 /* Sources */,
-				9040FAD1EBFCEEBABCF2418D726FDEDE /* Frameworks */,
-				551B67980B0A72C65BAFEC543FDB14D0 /* Resources */,
+				AF2AEAF299F6AB2D0C52A1BC9FD6E42F /* Headers */,
+				A241D2B51A96AC1653DAC4603A336FB9 /* Sources */,
+				ED66109761EA9550703C3F96721E758E /* Frameworks */,
+				24F260E409E93A8FC30F243CFA6E93E0 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				E83944BEFE5999583815626C5180CC57 /* PBXTargetDependency */,
+				4D072242B98E54F5913E3C6AC23192AD /* PBXTargetDependency */,
 			);
 			name = "Pods-PTCardTabBar_Tests";
 			productName = "Pods-PTCardTabBar_Tests";
@@ -407,18 +411,18 @@
 		};
 		91F88D60B0911027E7F5CADA77FC54E0 /* Pods-PTCardTabBar_Example */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 11E41AB0D6A4B0AF900B442C589E13BA /* Build configuration list for PBXNativeTarget "Pods-PTCardTabBar_Example" */;
+			buildConfigurationList = 2438E397FA6992345DB79A7605A86AA3 /* Build configuration list for PBXNativeTarget "Pods-PTCardTabBar_Example" */;
 			buildPhases = (
-				5A9DD7428534F99D1A61B208C9797743 /* Headers */,
-				866365AC5D3C112B0710F97FBAEE0012 /* Sources */,
-				6BC7593AC2155C4ECA61CEE9C71F13AD /* Frameworks */,
-				743D4B6CA4A1EE510ADD4A2ADCA6F34D /* Resources */,
+				615EF77B838AA2EDD70032E428BD9405 /* Headers */,
+				A14E6E3B648043A80057115E18005794 /* Sources */,
+				D16FE9D699368A8CAB39FFF95997E807 /* Frameworks */,
+				569FA9CC601BAAD4A0F834CE67C76FBC /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				FE09FAFEA9269CE94C2CF7F2110587A6 /* PBXTargetDependency */,
-				A7D2149BA3002883CD661BDCB081D0CC /* PBXTargetDependency */,
+				92ECBA19C90DDD3B688980C050DA7FC2 /* PBXTargetDependency */,
+				58A4A97E23155A026DF7E780E73A69B2 /* PBXTargetDependency */,
 			);
 			name = "Pods-PTCardTabBar_Example";
 			productName = "Pods-PTCardTabBar_Example";
@@ -427,17 +431,17 @@
 		};
 		9B5E34DEC86133C45795287F399C33E3 /* PTCardTabBar */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8723526363C313A710ACEB09DF94D2D8 /* Build configuration list for PBXNativeTarget "PTCardTabBar" */;
+			buildConfigurationList = C6FF287C892ACD0AA01E69BCCF6F8622 /* Build configuration list for PBXNativeTarget "PTCardTabBar" */;
 			buildPhases = (
-				4F3BB49FC249B23616E55732FB2D6162 /* Headers */,
-				7E9FE5A01F14FCDF482278205DE333DB /* Sources */,
-				0B33517D481779338D8C2E60EB51ECE7 /* Frameworks */,
-				E03867E1B8B9D5DB5836E2A1ADEE0329 /* Resources */,
+				9A3A3039488F1D39AD216625A6061CA5 /* Headers */,
+				F7E325191AF97EC2B8C5326A261DDD58 /* Sources */,
+				1705382278688306DD17E855687851A2 /* Frameworks */,
+				B96336454427B64FF7630F454DB9648E /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				E44C0ABD84606865AAA74F71CAC9CA30 /* PBXTargetDependency */,
+				5A7E73260B8294B4BA408222C1372E24 /* PBXTargetDependency */,
 			);
 			name = PTCardTabBar;
 			productName = PTCardTabBar;
@@ -475,14 +479,14 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		551B67980B0A72C65BAFEC543FDB14D0 /* Resources */ = {
+		24F260E409E93A8FC30F243CFA6E93E0 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		743D4B6CA4A1EE510ADD4A2ADCA6F34D /* Resources */ = {
+		569FA9CC601BAAD4A0F834CE67C76FBC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -496,7 +500,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E03867E1B8B9D5DB5836E2A1ADEE0329 /* Resources */ = {
+		B96336454427B64FF7630F454DB9648E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -515,68 +519,131 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		7E9FE5A01F14FCDF482278205DE333DB /* Sources */ = {
+		A14E6E3B648043A80057115E18005794 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B7AC34BF6A843ED2E572F68B7A429E35 /* CGPoint+Distance.swift in Sources */,
-				213C77290B4C521BE4A96039BE47C6A8 /* PTBarButton.swift in Sources */,
-				DE5291B798D60428D8F4EEFD4654BA94 /* PTCardTabBar-dummy.m in Sources */,
-				162C17BD62B60C0D64059C8093F7D14E /* PTCardTabBar.swift in Sources */,
-				071FA68712E2D2F57EAD65F28D0FCB3E /* PTCardTabBarController.swift in Sources */,
-				C1A04484F8B168BDB08C9562F0460F92 /* PTIndicatorView.swift in Sources */,
-				3F6EF5A906A3988ED203283EB9FC6DF2 /* UIColor+Additions.swift in Sources */,
-				84C9D46DFD8863E29B85CE09C5774AA5 /* UIView+AutoLayout.swift in Sources */,
+				FEFF697DF0BAED4E9E3E7B1BF68EAF80 /* Pods-PTCardTabBar_Example-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		866365AC5D3C112B0710F97FBAEE0012 /* Sources */ = {
+		A241D2B51A96AC1653DAC4603A336FB9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				89D46A03E33C2725A080AD1DEDAFB576 /* Pods-PTCardTabBar_Example-dummy.m in Sources */,
+				A9A734396503B168D1DAFE37771F4511 /* Pods-PTCardTabBar_Tests-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BDF4E6A8DFA58A435C74C59CF2F732C3 /* Sources */ = {
+		F7E325191AF97EC2B8C5326A261DDD58 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				77AE3500348D6E5D9B5EA4A11A8EC8DD /* Pods-PTCardTabBar_Tests-dummy.m in Sources */,
+				01020E47159DC182329E9876F9485DD2 /* CGPoint+Distance.swift in Sources */,
+				B4BC6CED2151BB001318E3691DB83BF2 /* PTBarButton.swift in Sources */,
+				0B9FBB7EE64F951D13D59401C632F02E /* PTCardTabBar-dummy.m in Sources */,
+				A0FDB743505523E62023652361E24564 /* PTCardTabBar.swift in Sources */,
+				B530A16A7DBA5F21464CBBC73AA514D7 /* PTCardTabBarController.swift in Sources */,
+				FC92C83632FB626BC4BB71F0ADD12220 /* PTIndicatorView.swift in Sources */,
+				E2EA2DFC36997BE5DCC8A152B0940D98 /* UIColor+Additions.swift in Sources */,
+				6EF4684E4EB86AF84C4A3D03FF57A9F6 /* UIView+AutoLayout.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		A7D2149BA3002883CD661BDCB081D0CC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = PTCardTabBar;
-			target = 9B5E34DEC86133C45795287F399C33E3 /* PTCardTabBar */;
-			targetProxy = 6675C5F32B011B9ED9B7624DD179E5E2 /* PBXContainerItemProxy */;
-		};
-		E44C0ABD84606865AAA74F71CAC9CA30 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = BadgeHub;
-			target = 50EB4B7A37D813AB89E6146719E0D088 /* BadgeHub */;
-			targetProxy = EC15AE28B5BC4ECEAA61CAD77D75BAE9 /* PBXContainerItemProxy */;
-		};
-		E83944BEFE5999583815626C5180CC57 /* PBXTargetDependency */ = {
+		4D072242B98E54F5913E3C6AC23192AD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Pods-PTCardTabBar_Example";
 			target = 91F88D60B0911027E7F5CADA77FC54E0 /* Pods-PTCardTabBar_Example */;
-			targetProxy = 1724ED3E7B5DD79DB5B2A69BEBB3F205 /* PBXContainerItemProxy */;
+			targetProxy = 544CE48A5BB641363865A2FB8FEB75A2 /* PBXContainerItemProxy */;
 		};
-		FE09FAFEA9269CE94C2CF7F2110587A6 /* PBXTargetDependency */ = {
+		58A4A97E23155A026DF7E780E73A69B2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PTCardTabBar;
+			target = 9B5E34DEC86133C45795287F399C33E3 /* PTCardTabBar */;
+			targetProxy = DE37BF6D5B4A71D44C8BF3A2BA1F7D93 /* PBXContainerItemProxy */;
+		};
+		5A7E73260B8294B4BA408222C1372E24 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = BadgeHub;
 			target = 50EB4B7A37D813AB89E6146719E0D088 /* BadgeHub */;
-			targetProxy = 6BA00DE4709D60ACAB41A0CB55BD1D22 /* PBXContainerItemProxy */;
+			targetProxy = 0BE0678B497FCDD1BFBF4B4918CA0410 /* PBXContainerItemProxy */;
+		};
+		92ECBA19C90DDD3B688980C050DA7FC2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = BadgeHub;
+			target = 50EB4B7A37D813AB89E6146719E0D088 /* BadgeHub */;
+			targetProxy = CC17A8725E6D1F88DD1DDAB19EEAC835 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		196DFA3E4A09A28224918543529A1885 /* Debug */ = {
+		694E1F5977294D9DC697393EA7587ACB /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D22B7B853CB93A3A240823E200B4AB4F /* BadgeHub.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/BadgeHub/BadgeHub-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/BadgeHub/BadgeHub-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/BadgeHub/BadgeHub.modulemap";
+				PRODUCT_MODULE_NAME = BadgeHub;
+				PRODUCT_NAME = BadgeHub;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		92A018308C4627EB4558B736EC55A46A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 155580990CC2AC1E3ABEA1CB783384D4 /* PTCardTabBar.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/PTCardTabBar/PTCardTabBar-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/PTCardTabBar/PTCardTabBar-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/PTCardTabBar/PTCardTabBar.modulemap";
+				PRODUCT_MODULE_NAME = PTCardTabBar;
+				PRODUCT_NAME = PTCardTabBar;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		97C3C8A5E885AE355D9CC0F2A10ED20C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -602,6 +669,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -640,243 +708,7 @@
 			};
 			name = Debug;
 		};
-		278C6D034F191B8848C06AE524948ABE /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = A95D4BFCF36F17657EBBBCDC46FE8779 /* Pods-PTCardTabBar_Example.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-PTCardTabBar_Example/Pods-PTCardTabBar_Example-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-PTCardTabBar_Example/Pods-PTCardTabBar_Example.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		44ADA247938313BE0EA1C14072E0EA1E /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 000ED7E331DDAB544576A189428FCF0C /* PTCardTabBar.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/PTCardTabBar/PTCardTabBar-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/PTCardTabBar/PTCardTabBar-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/PTCardTabBar/PTCardTabBar.modulemap";
-				PRODUCT_MODULE_NAME = PTCardTabBar;
-				PRODUCT_NAME = PTCardTabBar;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		485081EF82EEAD8535B1E284F248D37C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5D4122F3E9C74634FF175BBECFE747C7 /* Pods-PTCardTabBar_Example.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-PTCardTabBar_Example/Pods-PTCardTabBar_Example-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-PTCardTabBar_Example/Pods-PTCardTabBar_Example.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		4C64BD619633A2A62F8F2E6523B64470 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 10B77A4007C54832C0AF3B6DB8ED2BDF /* Pods-PTCardTabBar_Tests.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-PTCardTabBar_Tests/Pods-PTCardTabBar_Tests-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-PTCardTabBar_Tests/Pods-PTCardTabBar_Tests.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		5DB5DDCF7378B09CD143D8E94B312123 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 000ED7E331DDAB544576A189428FCF0C /* PTCardTabBar.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/PTCardTabBar/PTCardTabBar-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/PTCardTabBar/PTCardTabBar-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/PTCardTabBar/PTCardTabBar.modulemap";
-				PRODUCT_MODULE_NAME = PTCardTabBar;
-				PRODUCT_NAME = PTCardTabBar;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		8E3F3DE00697AE1C40CF2720AB083E86 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = B5DEE87D924F36525E94DB922288B591 /* Pods-PTCardTabBar_Tests.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-PTCardTabBar_Tests/Pods-PTCardTabBar_Tests-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-PTCardTabBar_Tests/Pods-PTCardTabBar_Tests.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		AD5AD4BC6352139EE3FE43EEDB0637B9 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = C7D2C1C12DECDCBFAB13C253CE8B5010 /* BadgeHub.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/BadgeHub/BadgeHub-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/BadgeHub/BadgeHub-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/BadgeHub/BadgeHub.modulemap";
-				PRODUCT_MODULE_NAME = BadgeHub;
-				PRODUCT_NAME = BadgeHub;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		B01D14FDC83DCF9D4BE53066BEA96D05 /* Release */ = {
+		9DFA7D08415265C89B4959C7F4554A76 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -902,6 +734,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -936,12 +769,11 @@
 			};
 			name = Release;
 		};
-		DBF50E3A609C3221CD5D4980D9CF731B /* Debug */ = {
+		A1C2CE25677D61852791FC382FC7D924 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C7D2C1C12DECDCBFAB13C253CE8B5010 /* BadgeHub.xcconfig */;
+			baseConfigurationReference = 49EB67400166F77FD4FA2F5ABF341114 /* BadgeHub.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
@@ -968,23 +800,180 @@
 			};
 			name = Debug;
 		};
+		B91318694E3E840B60AB49E199002619 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B5DEE87D924F36525E94DB922288B591 /* Pods-PTCardTabBar_Tests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-PTCardTabBar_Tests/Pods-PTCardTabBar_Tests-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-PTCardTabBar_Tests/Pods-PTCardTabBar_Tests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		D0ABC21B2B9601F161F6D78EF1AC1FD6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A95D4BFCF36F17657EBBBCDC46FE8779 /* Pods-PTCardTabBar_Example.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-PTCardTabBar_Example/Pods-PTCardTabBar_Example-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-PTCardTabBar_Example/Pods-PTCardTabBar_Example.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		D8EFAE8AD22253A250D9B7153D94EA31 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5D4122F3E9C74634FF175BBECFE747C7 /* Pods-PTCardTabBar_Example.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-PTCardTabBar_Example/Pods-PTCardTabBar_Example-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-PTCardTabBar_Example/Pods-PTCardTabBar_Example.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		DDADED8963048058F5FFC673A25BE4CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 10B77A4007C54832C0AF3B6DB8ED2BDF /* Pods-PTCardTabBar_Tests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-PTCardTabBar_Tests/Pods-PTCardTabBar_Tests-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-PTCardTabBar_Tests/Pods-PTCardTabBar_Tests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		EFB356664179E5BB915993323568DABA /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 41A680402BE38C5FC4B24599CE234DA8 /* PTCardTabBar.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/PTCardTabBar/PTCardTabBar-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/PTCardTabBar/PTCardTabBar-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/PTCardTabBar/PTCardTabBar.modulemap";
+				PRODUCT_MODULE_NAME = PTCardTabBar;
+				PRODUCT_NAME = PTCardTabBar;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		11E41AB0D6A4B0AF900B442C589E13BA /* Build configuration list for PBXNativeTarget "Pods-PTCardTabBar_Example" */ = {
+		2438E397FA6992345DB79A7605A86AA3 /* Build configuration list for PBXNativeTarget "Pods-PTCardTabBar_Example" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				485081EF82EEAD8535B1E284F248D37C /* Debug */,
-				278C6D034F191B8848C06AE524948ABE /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		446C93437553DA8DC64F8E89A6CF0F59 /* Build configuration list for PBXNativeTarget "Pods-PTCardTabBar_Tests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				4C64BD619633A2A62F8F2E6523B64470 /* Debug */,
-				8E3F3DE00697AE1C40CF2720AB083E86 /* Release */,
+				D8EFAE8AD22253A250D9B7153D94EA31 /* Debug */,
+				D0ABC21B2B9601F161F6D78EF1AC1FD6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -992,17 +981,8 @@
 		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				196DFA3E4A09A28224918543529A1885 /* Debug */,
-				B01D14FDC83DCF9D4BE53066BEA96D05 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		8723526363C313A710ACEB09DF94D2D8 /* Build configuration list for PBXNativeTarget "PTCardTabBar" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				5DB5DDCF7378B09CD143D8E94B312123 /* Debug */,
-				44ADA247938313BE0EA1C14072E0EA1E /* Release */,
+				97C3C8A5E885AE355D9CC0F2A10ED20C /* Debug */,
+				9DFA7D08415265C89B4959C7F4554A76 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1010,8 +990,26 @@
 		87B2ED2A2DBD20A38D026ECFAFE6DBF9 /* Build configuration list for PBXNativeTarget "BadgeHub" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				DBF50E3A609C3221CD5D4980D9CF731B /* Debug */,
-				AD5AD4BC6352139EE3FE43EEDB0637B9 /* Release */,
+				A1C2CE25677D61852791FC382FC7D924 /* Debug */,
+				694E1F5977294D9DC697393EA7587ACB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9B3B52240E71363209351429DB31A25A /* Build configuration list for PBXNativeTarget "Pods-PTCardTabBar_Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DDADED8963048058F5FFC673A25BE4CD /* Debug */,
+				B91318694E3E840B60AB49E199002619 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C6FF287C892ACD0AA01E69BCCF6F8622 /* Build configuration list for PBXNativeTarget "PTCardTabBar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				92A018308C4627EB4558B736EC55A46A /* Debug */,
+				EFB356664179E5BB915993323568DABA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
