@@ -29,6 +29,14 @@ open class PTCardTabBarController: UITabBarController {
         return PTCardTabBar()
     }()
     
+    open func hideTabBar() {
+        customTabBar.isHidden = true
+    }
+    
+    open func showTabBar() {
+        customTabBar.isHidden = false
+    }
+    
     fileprivate lazy var smallBottomView: UIView = {
         let anotherSmallView = UIView()
         anotherSmallView.backgroundColor = .clear
