@@ -25,16 +25,23 @@ open class PTCardTabBarController: UITabBarController {
         }
     }
     
-    lazy var customTabBar: PTCardTabBar = {
+    open lazy var customTabBar: PTCardTabBar = {
         return PTCardTabBar()
     }()
     
     open func hideTabBar() {
-        customTabBar.isHidden = true
+        UIView.animate(withDuration: 0.3, animations: {
+            self.customTabBar.alpha = 0
+        }, completion:  { _ in
+            self.customTabBar.isHidden = true
+        })
     }
     
     open func showTabBar() {
-        customTabBar.isHidden = false
+        self.customTabBar.isHidden = false
+        UIView.animate(withDuration: 0.3, animations: {
+            self.customTabBar.alpha = 1
+        }, completion: nil)
     }
     
     fileprivate lazy var smallBottomView: UIView = {
