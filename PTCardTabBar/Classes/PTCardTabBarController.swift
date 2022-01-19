@@ -10,7 +10,6 @@ import UIKit
 
 open class PTCardTabBarController: UITabBarController {
     
-    
     @IBInspectable public var tintColor: UIColor? {
         didSet {
             customTabBar.tintColor = tintColor
@@ -36,15 +35,15 @@ open class PTCardTabBarController: UITabBarController {
             self.customTabBar.isHidden = true
         })
     }
-    
+
     open func showTabBar() {
         self.customTabBar.isHidden = false
         UIView.animate(withDuration: 0.3, animations: {
             self.customTabBar.alpha = 1
         }, completion: nil)
     }
-    
-    fileprivate lazy var smallBottomView: UIView = {
+
+    fileprivate(set) lazy var smallBottomView: UIView = {
         let anotherSmallView = UIView()
         anotherSmallView.backgroundColor = .clear
         anotherSmallView.translatesAutoresizingMaskIntoConstraints = false
@@ -65,7 +64,7 @@ open class PTCardTabBarController: UITabBarController {
     }
     
     @IBInspectable public var bottomSpacing: CGFloat = 0
-    
+
     @IBInspectable public var tabBarHeight: CGFloat = 70
     @IBInspectable public var horizontleSpacing: CGFloat = 20
     
@@ -87,6 +86,19 @@ open class PTCardTabBarController: UITabBarController {
         customTabBar.select(at: selectedIndex)
     }
     
+    public func setTabBarHidden(_ isHidden: Bool, animated: Bool){
+        let block = {
+            self.customTabBar.alpha = isHidden ? 0 : 1
+            self.additionalSafeAreaInsets = isHidden ? .zero : UIEdgeInsets(top: 0, left: 0, bottom: self.tabBarHeight + self.bottomSpacing, right: 0)
+        }
+
+        if animated {
+            UIView.animate(withDuration: 0.25, animations: block)
+        } else {
+            block()
+        }
+    }
+
     fileprivate func addAnotherSmallView(){
         self.view.addSubview(smallBottomView)
         
@@ -122,7 +134,7 @@ open class PTCardTabBarController: UITabBarController {
         
         customTabBar.tintColor = tintColor
     }
-    
+
     @objc fileprivate func setBadge(_ notification: Notification) {
         if  let index = notification.userInfo?["index"] as? Int,
             let value = notification.userInfo?["value"] as? Int {
