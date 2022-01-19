@@ -65,7 +65,8 @@ open class PTCardTabBarController: UITabBarController {
     
     @IBInspectable public var bottomSpacing: CGFloat = 20
     @IBInspectable public var tabBarHeight: CGFloat = 70
-    @IBInspectable public var horizontleSpacing: CGFloat = 20
+    @IBInspectable public var leftSpacing: CGFloat = 20
+    @IBInspectable public var rightSpacing: CGFloat = 20
     
     override open func viewDidLoad() {
         super.viewDidLoad()
@@ -124,8 +125,8 @@ open class PTCardTabBarController: UITabBarController {
         self.view.addSubview(customTabBar)
         
         customTabBar.bottomAnchor.constraint(equalTo: smallBottomView.topAnchor, constant: 0).isActive = true
-        customTabBar.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        customTabBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: horizontleSpacing).isActive = true
+        customTabBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: leftSpacing).isActive = true
+        customTabBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -rightSpacing).isActive = true
         customTabBar.heightAnchor.constraint(equalToConstant: tabBarHeight).isActive = true
         
         self.view.bringSubviewToFront(customTabBar)
