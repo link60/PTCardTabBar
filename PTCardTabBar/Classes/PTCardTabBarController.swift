@@ -63,8 +63,7 @@ open class PTCardTabBarController: UITabBarController {
         }
     }
     
-    @IBInspectable public var bottomSpacing: CGFloat = 0
-
+    @IBInspectable public var bottomSpacing: CGFloat = 20
     @IBInspectable public var tabBarHeight: CGFloat = 70
     @IBInspectable public var horizontleSpacing: CGFloat = 20
     
