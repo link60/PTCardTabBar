@@ -68,8 +68,9 @@ open class PTCardTabBarController: UITabBarController {
     @IBInspectable public var leftSpacing: CGFloat = 20
     @IBInspectable public var rightSpacing: CGFloat = 20
     
+    fileprivate var leadingConstraint: NSLayoutConstraint!
     fileprivate var trailingConstraint: NSLayoutConstraint!
-    
+
     override open func viewDidLoad() {
         super.viewDidLoad()
         
@@ -126,10 +127,13 @@ open class PTCardTabBarController: UITabBarController {
         self.view.addSubview(customTabBar)
         
         customTabBar.bottomAnchor.constraint(equalTo: smallBottomView.topAnchor, constant: 0).isActive = true
-        customTabBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: leftSpacing).isActive = true
+        customTabBar.heightAnchor.constraint(equalToConstant: tabBarHeight).isActive = true
+
+        leadingConstraint = customTabBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: leftSpacing)
+        leadingConstraint.isActive = true
+        
         trailingConstraint = customTabBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -rightSpacing)
         trailingConstraint.isActive = true
-        customTabBar.heightAnchor.constraint(equalToConstant: tabBarHeight).isActive = true
         
         self.view.bringSubviewToFront(customTabBar)
         self.view.bringSubviewToFront(smallBottomView)
@@ -139,6 +143,7 @@ open class PTCardTabBarController: UITabBarController {
     
     open func redrawCustomTabBar() {
         UIView.animate(withDuration: 0.25) {
+            self.leadingConstraint.constant = self.leftSpacing
             self.trailingConstraint.constant = -self.rightSpacing
             self.customTabBar.updateConstraints()
             self.customTabBar.updateConstraintsIfNeeded()
