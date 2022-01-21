@@ -141,8 +141,16 @@ open class PTCardTabBarController: UITabBarController {
         customTabBar.tintColor = tintColor
     }
     
-    open func redrawCustomTabBar() {
-        UIView.animate(withDuration: 0.25) {
+    open func redrawCustomTabBar(animated: Bool) {
+        if animated {
+            UIView.animate(withDuration: 0.25) {
+                self.leadingConstraint.constant = self.leftSpacing
+                self.trailingConstraint.constant = -self.rightSpacing
+                self.customTabBar.updateConstraints()
+                self.customTabBar.updateConstraintsIfNeeded()
+                self.view.layoutIfNeeded()
+            }
+        } else {
             self.leadingConstraint.constant = self.leftSpacing
             self.trailingConstraint.constant = -self.rightSpacing
             self.customTabBar.updateConstraints()
