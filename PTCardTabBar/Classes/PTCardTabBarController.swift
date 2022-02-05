@@ -36,7 +36,7 @@ open class PTCardTabBarController: UITabBarController {
         })
     }
 
-    open func showTabBar() {
+    @objc open func showTabBar() {
         self.customTabBar.isHidden = false
         UIView.animate(withDuration: 0.3, animations: {
             self.customTabBar.alpha = 1
@@ -141,7 +141,7 @@ open class PTCardTabBarController: UITabBarController {
         customTabBar.tintColor = tintColor
     }
     
-    open func redrawCustomTabBar(animated: Bool) {
+    @objc open func redrawCustomTabBar(animated: Bool) {
         if animated {
             UIView.animate(withDuration: 0.25) {
                 self.leadingConstraint.constant = self.leftSpacing
