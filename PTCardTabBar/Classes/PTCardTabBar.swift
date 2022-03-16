@@ -126,7 +126,7 @@ open class PTCardTabBar: UIView {
         self.stackView.addArrangedSubview(button)
     }
     
-    func select(at index: Int, notifyDelegate: Bool = true){
+    open func select(at index: Int, notifyDelegate: Bool = true){
         for (bIndex, view) in stackView.arrangedSubviews.enumerated() {
             if let button = view as? UIButton {
                 button.tintColor =  bIndex == index ? tintColor : UIColor(rgb: 0x9b9b9b)
@@ -139,7 +139,7 @@ open class PTCardTabBar: UIView {
     }
     
     
-    func reloadViews(){
+    open func reloadViews(){
         indicatorViewYConstraint?.isActive = false
         indicatorViewYConstraint = indicatorView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: -10.5)
         indicatorViewYConstraint.isActive = true
@@ -168,7 +168,7 @@ open class PTCardTabBar: UIView {
         return stackView.arrangedSubviews.compactMap { $0 as? PTBarButton }
     }
     
-    func select(at index: Int){
+    open func select(at index: Int){
         /* move the indicator view */
         if indicatorViewXConstraint != nil {
             indicatorViewXConstraint.isActive = false
