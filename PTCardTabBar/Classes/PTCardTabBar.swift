@@ -16,7 +16,7 @@ open class PTCardTabBar: UIView {
     
     weak var delegate: CardTabBarDelegate?
     
-    var items: [UITabBarItem] = [] {
+    open var items: [UITabBarItem] = [] {
         didSet {
             reloadViews()
         }
