@@ -168,9 +168,14 @@ open class PTCardTabBarController: UITabBarController {
 }
 
 extension PTCardTabBarController: CardTabBarDelegate {
-    func cardTabBar(_ sender: PTCardTabBar, didSelectItemAt index: Int) {
-        self.selectedIndex = index
-    }
+	func cardTabBar(_ sender: PTCardTabBar, didSelectItemAt index: Int) {
+		if self.selectedIndex == index {
+			if selectedViewController != nil && selectedViewController!.isKind(of: UINavigationController.self) {
+				(selectedViewController as! UINavigationController).popToRootViewController(animated: true)
+			}
+		}
+		self.selectedIndex = index
+	}
 }
 
 public extension Notification.Name {
