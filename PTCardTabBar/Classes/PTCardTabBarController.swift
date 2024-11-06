@@ -35,19 +35,19 @@ open class PTCardTabBarController: UITabBarController {
             self.customTabBar.isHidden = true
         })
     }
-
+    
     @objc open func showTabBar() {
         self.customTabBar.isHidden = false
         UIView.animate(withDuration: 0.3, animations: {
             self.customTabBar.alpha = 1
         }, completion: nil)
     }
-
+    
     fileprivate(set) lazy var smallBottomView: UIView = {
         let anotherSmallView = UIView()
         anotherSmallView.backgroundColor = .clear
         anotherSmallView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         return anotherSmallView
     }()
     
@@ -56,7 +56,7 @@ open class PTCardTabBarController: UITabBarController {
             customTabBar.select(at: selectedIndex, notifyDelegate: false)
         }
     }
-
+    
     override open var selectedViewController: UIViewController? {
         didSet {
             customTabBar.select(at: selectedIndex, notifyDelegate: false)
@@ -70,7 +70,7 @@ open class PTCardTabBarController: UITabBarController {
     
     fileprivate var leadingConstraint: NSLayoutConstraint!
     fileprivate var trailingConstraint: NSLayoutConstraint!
-
+    
     override open func viewDidLoad() {
         super.viewDidLoad()
         
@@ -81,7 +81,7 @@ open class PTCardTabBarController: UITabBarController {
         NotificationCenter.default.addObserver(self, selector: #selector(setBadge), name: .PTCardTabBarBadgeNotification, object: nil)
         
         self.tabBar.isHidden = true
-
+        
         addAnotherSmallView()
         setupTabBar()
         
@@ -89,19 +89,19 @@ open class PTCardTabBarController: UITabBarController {
         customTabBar.select(at: selectedIndex)
     }
     
-    public func setTabBarHidden(_ isHidden: Bool, animated: Bool){
+    public override func setTabBarHidden(_ isHidden: Bool, animated: Bool){
         let block = {
             self.customTabBar.alpha = isHidden ? 0 : 1
             self.additionalSafeAreaInsets = isHidden ? .zero : UIEdgeInsets(top: 0, left: 0, bottom: self.tabBarHeight + self.bottomSpacing, right: 0)
         }
-
+        
         if animated {
             UIView.animate(withDuration: 0.25, animations: block)
         } else {
             block()
         }
     }
-
+    
     fileprivate func addAnotherSmallView(){
         self.view.addSubview(smallBottomView)
         
@@ -128,7 +128,7 @@ open class PTCardTabBarController: UITabBarController {
         
         customTabBar.bottomAnchor.constraint(equalTo: smallBottomView.topAnchor, constant: 0).isActive = true
         customTabBar.heightAnchor.constraint(equalToConstant: tabBarHeight).isActive = true
-
+        
         leadingConstraint = customTabBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: leftSpacing)
         leadingConstraint.isActive = true
         
@@ -168,14 +168,14 @@ open class PTCardTabBarController: UITabBarController {
 }
 
 extension PTCardTabBarController: CardTabBarDelegate {
-	func cardTabBar(_ sender: PTCardTabBar, didSelectItemAt index: Int) {
-		if self.selectedIndex == index {
-			if selectedViewController != nil && selectedViewController!.isKind(of: UINavigationController.self) {
-				(selectedViewController as! UINavigationController).popToRootViewController(animated: true)
-			}
-		}
-		self.selectedIndex = index
-	}
+    public func cardTabBar(_ sender: PTCardTabBar, didSelectItemAt index: Int, button: PTBarButton) {
+        if self.selectedIndex == index {
+            if selectedViewController != nil && selectedViewController!.isKind(of: UINavigationController.self) {
+                (selectedViewController as! UINavigationController).popToRootViewController(animated: true)
+            }
+        }
+        self.selectedIndex = index
+    }
 }
 
 public extension Notification.Name {

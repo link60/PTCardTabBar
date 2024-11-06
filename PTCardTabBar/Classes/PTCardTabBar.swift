@@ -8,13 +8,13 @@
 
 import UIKit
 
-protocol CardTabBarDelegate: class {
-    func cardTabBar(_ sender: PTCardTabBar, didSelectItemAt index: Int)
+public protocol CardTabBarDelegate {
+    func cardTabBar(_ sender: PTCardTabBar, didSelectItemAt index: Int, button: PTBarButton)
 }
 
-open class PTCardTabBar: UIView {
+public class PTCardTabBar: UIView {
     
-    weak var delegate: CardTabBarDelegate?
+    public var delegate: CardTabBarDelegate?
     
     open var items: [UITabBarItem] = [] {
         didSet {
@@ -62,6 +62,13 @@ open class PTCardTabBar: UIView {
         return view
     }()
     
+    public var indicatorIsHidden = false {
+        didSet {
+            indicatorView.isHidden = indicatorIsHidden
+            reloadViews()
+        }
+    }
+    
     
     private var indicatorViewYConstraint: NSLayoutConstraint!
     private var indicatorViewXConstraint: NSLayoutConstraint!
@@ -97,16 +104,12 @@ open class PTCardTabBar: UIView {
         self.layer.shadowRadius = 6
         self.layer.shadowOpacity = 0.15
         
-        indicatorViewYConstraint?.isActive = false
-        indicatorViewYConstraint = indicatorView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: -10.5)
-        indicatorViewYConstraint.isActive = true
-        
         tintColorDidChange()
     }
     
     func add(item: UITabBarItem){
         self.items.append(item)
-        self.addButton(with: item.image!)
+        self.addButton(with: item.image!, tag: item.tag)
     }
     
     func remove(item: UITabBarItem){
@@ -117,24 +120,31 @@ open class PTCardTabBar: UIView {
         }
     }
     
-    private func addButton(with image: UIImage){
+    private func addButton(with image: UIImage, tag: Int = 0){
         let button = PTBarButton(image: image)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.tag = tag
         button.selectedColor = tintColor
-        
+        if indicatorIsHidden {
+            button.unselectedColor = tintColor
+        }
         button.addTarget(self, action: #selector(buttonTapped(sender:)), for: .touchUpInside)
         self.stackView.addArrangedSubview(button)
     }
     
     open func select(at index: Int, notifyDelegate: Bool = true){
+        var btn: PTBarButton!
         for (bIndex, view) in stackView.arrangedSubviews.enumerated() {
-            if let button = view as? UIButton {
-                button.tintColor =  bIndex == index ? tintColor : UIColor(rgb: 0x9b9b9b)
+            if let button = view as? PTBarButton {
+                button.tintColor = bIndex == index ? tintColor : UIColor(rgb: 0x9b9b9b)
+                if bIndex == index {
+                    btn = button
+                }
             }
         }
         
         if notifyDelegate {
-            self.delegate?.cardTabBar(self, didSelectItemAt: index)
+            self.delegate?.cardTabBar(self, didSelectItemAt: index, button: btn)
         }
     }
     
@@ -144,7 +154,6 @@ open class PTCardTabBar: UIView {
         indicatorViewYConstraint = indicatorView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: -10.5)
         indicatorViewYConstraint.isActive = true
         
-        
         for button in (stackView.arrangedSubviews.compactMap { $0 as? PTBarButton }) {
             stackView.removeArrangedSubview(button)
             button.removeFromSuperview()
@@ -153,13 +162,14 @@ open class PTCardTabBar: UIView {
         
         for item in items {
             if let image = item.image {
-                addButton(with: image)
+                addButton(with: image, tag: item.tag)
             } else {
-                addButton(with: UIImage())
+                addButton(with: UIImage(), tag: item.tag)
             }
         }
-        
-        select(at: 0)
+        if !indicatorIsHidden {
+            select(at: 0)
+        }
     }
     
     
@@ -175,11 +185,13 @@ open class PTCardTabBar: UIView {
             indicatorViewXConstraint = nil
         }
         
+        var btn: PTBarButton!
         for (bIndex, button) in buttons().enumerated() {
             button.selectedColor = tintColor
             button.isSelected = bIndex == index
             
             if bIndex == index {
+                btn = button
                 indicatorViewXConstraint = indicatorView.centerXAnchor.constraint(equalTo: button.centerXAnchor)
                 indicatorViewXConstraint.isActive = true
             }
@@ -189,8 +201,7 @@ open class PTCardTabBar: UIView {
             self.layoutIfNeeded()
         }
         
-        
-        self.delegate?.cardTabBar(self, didSelectItemAt: index)
+        self.delegate?.cardTabBar(self, didSelectItemAt: index, button: btn)
     }
     
     
@@ -218,13 +229,13 @@ open class PTCardTabBar: UIView {
     
     override open func layoutSubviews() {
         super.layoutSubviews()
-        stackView.frame = bounds.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 8, right: 0))
+        stackView.frame = bounds.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: indicatorIsHidden ? 0 : 8, right: 0))
         layer.cornerRadius = bounds.height / 2
     }
 }
 
 extension Collection {
-
+    
     /// Returns the element at the specified index if it is within bounds, otherwise nil.
     subscript (safe index: Index) -> Element? {
         return indices.contains(index) ? self[index] : nil
