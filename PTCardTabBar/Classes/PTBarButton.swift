@@ -30,11 +30,17 @@ public class PTBarButton: UIButton {
     init(forItem item: UITabBarItem) {
         super.init(frame: .zero)
         setImage(item.image, for: .normal)
+        if #available(iOS 14.0, *) {
+            showsMenuAsPrimaryAction = true
+        }
     }
     
     init(image: UIImage){
         super.init(frame: .zero)
         setImage(image, for: .normal)
+        if #available(iOS 14.0, *) {
+            showsMenuAsPrimaryAction = true
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
