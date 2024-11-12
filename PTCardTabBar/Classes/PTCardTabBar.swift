@@ -36,7 +36,7 @@ public class PTCardTabBar: UIView {
         indicatorView.tintColor = tintColor
     }
     
-    func setBadge(value: Int, at: Int) {
+    open func setBadge(value: Int, at: Int) {
         if let button = buttons()[safe: at] {
             button.setBadge(value: value)
         }
@@ -176,6 +176,10 @@ public class PTCardTabBar: UIView {
     
     private func buttons() -> [PTBarButton] {
         return stackView.arrangedSubviews.compactMap { $0 as? PTBarButton }
+    }
+    
+    open func button(at index: Int) -> PTBarButton? {
+        buttons()[safe: index]
     }
     
     open func select(at index: Int){
