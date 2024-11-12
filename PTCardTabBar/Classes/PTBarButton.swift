@@ -11,9 +11,15 @@ import BadgeHub
 
 public class PTBarButton: UIButton {
     
-    lazy var badge: BadgeHub = {
+    open lazy var badge: BadgeHub = {
         return BadgeHub(view: self)
     }()
+    
+    open var badgeLayout: (PTBarButton) -> Void = { button in
+        button.badge.setCircleAtFrame(CGRect(x: (button.bounds.width/2)+8, y: -25, width: 30, height: 30))
+        button.badge.scaleCircleSize(by: 0.9)
+        button.badge.setCountLabelFont(UIFont.boldSystemFont(ofSize: 15))
+    }
     
     var selectedColor: UIColor! = .black {
         didSet {
@@ -64,8 +70,6 @@ public class PTBarButton: UIButton {
     
     override public func layoutSubviews() {
         super.layoutSubviews()
-        badge.setCircleAtFrame(CGRect(x: (self.bounds.width/2)+8, y: -25, width: 30, height: 30))
-        badge.scaleCircleSize(by: 0.9)
-        badge.setCountLabelFont(UIFont.boldSystemFont(ofSize: 15))
+        badgeLayout(self)
     }
 }
