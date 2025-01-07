@@ -78,6 +78,10 @@ open class PTCardTabBarController: UITabBarController {
             self.additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: tabBarHeight + bottomSpacing, right: 0)
         }
         
+        if #available(iOS 18.0, *), UIDevice.current.userInterfaceIdiom == .pad {
+            traitOverrides.horizontalSizeClass = .compact
+        }
+        
         NotificationCenter.default.addObserver(self, selector: #selector(setBadge), name: .PTCardTabBarBadgeNotification, object: nil)
         
         self.tabBar.isHidden = true
