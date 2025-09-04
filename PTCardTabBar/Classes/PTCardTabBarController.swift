@@ -133,10 +133,10 @@ open class PTCardTabBarController: UITabBarController {
         customTabBar.bottomAnchor.constraint(equalTo: smallBottomView.topAnchor, constant: 0).isActive = true
         customTabBar.heightAnchor.constraint(equalToConstant: tabBarHeight).isActive = true
         
-        leadingConstraint = customTabBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: leftSpacing)
+        leadingConstraint = customTabBar.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: leftSpacing)
         leadingConstraint.isActive = true
         
-        trailingConstraint = customTabBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -rightSpacing)
+        trailingConstraint = customTabBar.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -rightSpacing)
         trailingConstraint.isActive = true
         
         self.view.bringSubviewToFront(customTabBar)
