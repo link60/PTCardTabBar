@@ -16,6 +16,9 @@ public class PTCardTabBar: UIView {
     
     public var delegate: CardTabBarDelegate?
     
+    let effectView = UIVisualEffectView()
+    var glassEffect: NSObject? = nil
+    
     open var items: [UITabBarItem] = [] {
         didSet {
             reloadViews()
@@ -94,10 +97,20 @@ public class PTCardTabBar: UIView {
     private func setup(){
         translatesAutoresizingMaskIntoConstraints = false
         
+        
+        if #available(iOS 26.0, *) {
+            effectView.frame = bounds
+            effectView.layer.cornerRadius = bounds.size.width / 2
+            addSubview(effectView)
+            let glassEffect = UIGlassEffect(style: .regular)
+            self.glassEffect = glassEffect
+            self.effectView.effect = glassEffect
+        }
+        
         addSubview(stackView)
         addSubview(indicatorView)
         
-        self.backgroundColor = .white
+        self.backgroundColor = .clear
         
         self.layer.shadowColor = UIColor.black.cgColor
         self.layer.shadowOffset = CGSize(width: 3, height: 3)
@@ -234,7 +247,9 @@ public class PTCardTabBar: UIView {
     override open func layoutSubviews() {
         super.layoutSubviews()
         stackView.frame = bounds.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: indicatorIsHidden ? 0 : 8, right: 0))
+        effectView.frame = bounds
         layer.cornerRadius = bounds.height / 2
+        effectView.layer.cornerRadius = layer.cornerRadius
     }
 }
 
