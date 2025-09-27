@@ -25,7 +25,7 @@ open class PTCardTabBarController: UITabBarController {
     }
     
     open lazy var customTabBar: PTCardTabBar = {
-        return PTCardTabBar()
+        return PTCardTabBar(glassMode: self.glassMode)
     }()
     
     open func hideTabBar() {
@@ -67,6 +67,7 @@ open class PTCardTabBarController: UITabBarController {
     @IBInspectable public var tabBarHeight: CGFloat = 70
     @IBInspectable public var leftSpacing: CGFloat = 20
     @IBInspectable public var rightSpacing: CGFloat = 20
+    @IBInspectable public var glassMode: Int = 0
     
     fileprivate var leadingConstraint: NSLayoutConstraint!
     fileprivate var trailingConstraint: NSLayoutConstraint!
@@ -142,6 +143,7 @@ open class PTCardTabBarController: UITabBarController {
         self.view.bringSubviewToFront(customTabBar)
         self.view.bringSubviewToFront(smallBottomView)
         
+        customTabBar.glassMode = glassMode
         customTabBar.tintColor = tintColor
     }
     

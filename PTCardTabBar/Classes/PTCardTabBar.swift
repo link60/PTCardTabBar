@@ -12,11 +12,20 @@ public protocol CardTabBarDelegate {
     func cardTabBar(_ sender: PTCardTabBar, didSelectItemAt index: Int, button: PTBarButton)
 }
 
+public class PTClearCardTabBar: PTCardTabBar {
+    override var glassMode: Int {
+        get { 1 }
+        set { super.glassMode = 1 }
+    }
+}
+
 public class PTCardTabBar: UIView {
     
     public var delegate: CardTabBarDelegate?
     
     var effectView: UIVisualEffectView? = nil
+    
+    var glassMode: Int = 0
     
     open var items: [UITabBarItem] = [] {
         didSet {
@@ -85,6 +94,12 @@ public class PTCardTabBar: UIView {
         setup()
     }
     
+    public init(glassMode: Int) {
+        super.init(frame: .zero)
+        self.glassMode = glassMode
+        setup()
+    }
+    
     deinit {
         stackView.arrangedSubviews.forEach {
             if let button = $0 as? UIControl {
@@ -98,7 +113,7 @@ public class PTCardTabBar: UIView {
         
         if #available(iOS 26.0, *) {
             self.backgroundColor = .clear
-            let effectView = UIVisualEffectView(effect: UIGlassEffect(style: .clear))
+            let effectView = UIVisualEffectView(effect: UIGlassEffect(style: UIGlassEffect.Style(rawValue: self.glassMode) ?? .regular))
             effectView.frame = bounds
             effectView.layer.cornerRadius = bounds.size.width / 2
             addSubview(effectView)
@@ -259,3 +274,4 @@ extension Collection {
         return indices.contains(index) ? self[index] : nil
     }
 }
+
