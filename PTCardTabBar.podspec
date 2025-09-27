@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'PTCardTabBar'
-  s.version          = '1.0.2'
+  s.version          = '1.0.3'
   s.summary          = 'Simple UITabBarController with card-style tabbar'
 
 # This description is used to generate tags and improve search results.
@@ -30,7 +30,7 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/hussc/PTCardTabBar.git', :tag => s.version.to_s }
   s.social_media_url = 'https://www.facebook.com/hussc'
   s.swift_version  = '5.0'
-  s.ios.deployment_target = '11.0'
+  s.ios.deployment_target = '15.0'
 
   s.source_files = 'PTCardTabBar/Classes/**/*'
   
