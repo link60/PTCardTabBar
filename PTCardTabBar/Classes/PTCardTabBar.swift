@@ -25,7 +25,28 @@ public class PTCardTabBar: UIView {
     
     var effectView: UIVisualEffectView? = nil
     
-    var glassMode: Int = 0
+    var glassMode: Int = 0 {
+        didSet {
+            if #available(iOS 26.0, *) {
+                self.effectView?.effect = UIGlassEffect(style: UIGlassEffect.Style(rawValue: self.glassMode) ?? .regular)
+            }
+        }
+    }
+    
+    var mainColor: UIColor = .tertiarySystemBackground {
+        didSet {
+            if #available(iOS 26.0, *) {} else {
+                self.backgroundColor = self.mainColor
+            }
+        }
+    }
+    
+    var border: (UIColor, Int) = (.clear, 0) {
+        didSet {
+            self.layer.borderColor = self.border.0.cgColor
+            self.layer.borderWidth = CGFloat(self.border.1)
+        }
+    }
     
     open var items: [UITabBarItem] = [] {
         didSet {
@@ -38,7 +59,7 @@ public class PTCardTabBar: UIView {
         reloadApperance()
     }
     
-    func reloadApperance(){
+    func reloadApperance() {
         
         buttons().forEach { button in
             button.selectedColor = tintColor
@@ -120,7 +141,7 @@ public class PTCardTabBar: UIView {
             self.effectView = effectView
             
         } else {
-            self.backgroundColor = .tertiarySystemBackground
+            self.backgroundColor = self.mainColor
         }
         
         addSubview(stackView)

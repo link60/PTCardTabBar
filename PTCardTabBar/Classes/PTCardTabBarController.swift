@@ -67,7 +67,22 @@ open class PTCardTabBarController: UITabBarController {
     @IBInspectable public var tabBarHeight: CGFloat = 70
     @IBInspectable public var leftSpacing: CGFloat = 20
     @IBInspectable public var rightSpacing: CGFloat = 20
-    @IBInspectable public var glassMode: Int = 0
+    @IBInspectable public var glassMode: Int = 0 {
+        didSet {
+            customTabBar.glassMode = glassMode
+        }
+    }
+    @IBInspectable public var mainColor: UIColor = .tertiarySystemBackground  {
+        didSet {
+            customTabBar.mainColor = mainColor
+        }
+    }
+    
+    public var border: (UIColor, Int) = (.clear, 0) {
+        didSet {
+            customTabBar.border = border
+        }
+    }
     
     fileprivate var leadingConstraint: NSLayoutConstraint!
     fileprivate var trailingConstraint: NSLayoutConstraint!
