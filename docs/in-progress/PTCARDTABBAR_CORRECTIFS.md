@@ -10,7 +10,8 @@
 > `F*` utilisés ici y renvoient et sont stables. Ne pas réécrire l'audit au fil des corrections :
 > c'est **cette carte** qui porte l'avancement.
 >
-> **Taille :** `L` — sept lots indépendants. **Lots 0, 1 et 2 livrés ; Lots 3 et 4 en recette.**
+> **Taille :** `L` — sept lots indépendants. **Lots 0, 1, 2 et 4 livrés ; Lot 3 en recette
+> visuelle.**
 
 ---
 
@@ -102,7 +103,7 @@ seule base du commit : la vérification sur le banc **et** le `pod update` côt�
 | 1 | Correctifs sûrs, sans rupture d'API | M | ✅ Livré — 2026-09-18 |
 | 2 | Cycle de rétention du `delegate` | S | ✅ Livré — 2026-09-18 |
 | 3 | Unification de la sélection | M/L | 🟡 En recette — 2026-09-18 |
-| 4 | Nettoyage et surface d'API | M | 🟡 En recette — 2026-09-18 |
+| 4 | Nettoyage et surface d'API | M | ✅ Livré — 2026-09-18 |
 | 5 | Accessibilité et Dynamic Type | L | ⬜ À faire |
 | 6 | Mesure iPad — forçage de la classe de taille | S | ⬜ À faire |
 
@@ -402,8 +403,10 @@ Critères de sortie :
       l'apparence et le contraste, pas l'orientation. Ce n'est pas une install cassée sur ce poste,
       c'est l'outil qui n'existe plus. Il faut donc un UITest `XCUIDevice.shared.orientation` ou
       un appareil ;
-- [ ] **re-recette après le correctif de régression ci-dessous** — un nouveau `pod update` est
-      nécessaire, la recette précédente portait sur `9462516`.
+- [~] **re-recette après le correctif de régression ci-dessous** — le `pod update` est fait
+      (`48ab610`) et l'app **compile**. Reste la vérification **visuelle** : permuter les onglets
+      par le réglage « Recettes » en étant sur Réglages, la barre doit rester sur l'onglet courant
+      au lieu de sauter sur le premier.
 
 **Correctif de régression du 2026-09-18** *(défaut introduit par ce lot, remonté par la session de
 recette app)*
@@ -501,8 +504,9 @@ Critères de sortie :
 - [x] la fiche produit peut fixer l'apparence de ses deux barres sur iOS 26+ (`glassMode`,
       `mainColor` et `border` sont désormais `public` sur `PTCardTabBar`) ;
 - [x] une couleur de bordure dynamique suit la bascule clair/sombre ;
-- [ ] **DateLimite compile après `pod update`** — vérification de bout en bout à refaire, la
-      précédente portait sur `9462516`.
+- [x] **DateLimite compile après `pod update`** — vérifié le 2026-09-18 sur `48ab610` :
+      `BUILD SUCCEEDED`, 0 erreur, 0 avertissement dans le pod. Ce build couvre aussi le correctif
+      de régression du Lot 3 (`c7e90d7`), que la recette app n'avait pas vu.
 
 **Implémentation du 2026-09-18 :**
 
@@ -615,7 +619,7 @@ Critères de sortie :
 |---|---|:---:|
 | **J1 — le pod redevient testable** | Lot 0 | ✅ 2026-09-18 |
 | **J2 — plus de défaut fonctionnel connu** | Lots 1, 2, 3 | ⬜ |
-| **J3 — API saine** | Lot 4 | ⬜ |
+| **J3 — API saine** | Lot 4 | ✅ 2026-09-18 |
 | **J4 — accessible** | Lot 5 | ⬜ |
 | **J5 — dernière zone d'ombre levée** | Lot 6 | ⬜ |
 
