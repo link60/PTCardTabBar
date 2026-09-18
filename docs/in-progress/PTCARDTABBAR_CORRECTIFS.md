@@ -10,8 +10,8 @@
 > `F*` utilisés ici y renvoient et sont stables. Ne pas réécrire l'audit au fil des corrections :
 > c'est **cette carte** qui porte l'avancement.
 >
-> **Taille :** `L` — sept lots indépendants. **Lots 0, 1, 2 et 4 livrés ; Lot 3 en recette
-> visuelle.**
+> **Taille :** `L` — sept lots indépendants. **Lots 0, 1, 2 et 4 livrés ; Lots 3 et 5 en
+> recette côté app. Reste le Lot 6.**
 
 ---
 
@@ -104,7 +104,7 @@ seule base du commit : la vérification sur le banc **et** le `pod update` côt�
 | 2 | Cycle de rétention du `delegate` | S | ✅ Livré — 2026-09-18 |
 | 3 | Unification de la sélection | M/L | 🟡 En recette — 2026-09-18 |
 | 4 | Nettoyage et surface d'API | M | ✅ Livré — 2026-09-18 |
-| 5 | Accessibilité et Dynamic Type | L | ⬜ À faire |
+| 5 | Accessibilité et Dynamic Type | L | 🟡 En recette — 2026-09-18 |
 | 6 | Mesure iPad — forçage de la classe de taille | S | ⬜ À faire |
 
 ### Couverture des constats de l'audit
@@ -582,13 +582,74 @@ l'action des boutons.
 > de manière fiable depuis XCUI » et contournent par un launch argument `-SnapshotInitialTab`. Ce lot
 > devrait permettre de le retirer — XCUI et VoiceOver lisent le même arbre.
 
+**Le défaut principal n'était pas celui annoncé.** L'audit pointait des boutons sans nom. La mesure
+a montré pire : **VoiceOver ne pouvait pas activer un onglet du tout**.
+
+```
+AVANT  b0 isAccessibilityElement=false  label=nil  traits=0
+       accessibilityActivate() sur le bouton 2 → rend false, selectedIndex reste 0
+```
+
+Les boutons n'étaient même pas des éléments d'accessibilité, et `accessibilityActivate()` — le point
+d'entrée exact par lequel VoiceOver active un élément — échouait. La cause : `showsMenuAsPrimaryAction`
+était posé **inconditionnellement** à la construction alors qu'aucun menu n'est jamais assigné. Avec
+`menu == nil`, UIKit considère que l'action principale est « présenter un menu » qui n'existe pas et
+refuse l'activation. Une barre d'onglets entièrement inutilisable au lecteur d'écran, pas seulement
+mal nommée.
+
 Critères de sortie :
 
-- [ ] VoiceOver annonce chaque onglet par son nom et son état sélectionné ;
-- [ ] la barre est annoncée comme barre d'onglets, pas comme une pile de boutons anonymes ;
-- [ ] à la plus grande taille de texte, la barre reste lisible et les badges ne débordent pas ;
-- [ ] en RTL, le badge est du bon côté ;
-- [ ] un test XCUI tape un onglet **sans** `-SnapshotInitialTab` (validation faite côté DateLimite).
+- [x] VoiceOver annonce chaque onglet par son nom et son état sélectionné ;
+- [x] **VoiceOver peut activer un onglet** — le vrai défaut, découvert à la mesure ;
+- [x] la barre est annoncée comme barre d'onglets, pas comme une pile de boutons anonymes ;
+- [x] à la plus grande taille de texte, la barre reste lisible et les badges ne débordent pas ;
+- [x] la zone tactile atteint 44 pt sans changer le rendu ;
+- [ ] **en RTL, le badge est du bon côté** — implémenté, non vérifié : la disposition RTL demande un
+      lancement dédié et l'exemple n'est pas localisé ;
+- [ ] **un test XCUI tape un onglet sans `-SnapshotInitialTab`** — validation côté DateLimite.
+
+**Implémentation du 2026-09-18 :**
+
+- **activation** — `showsMenuAsPrimaryAction` n'est plus posé qu'au moment où un `menu` est
+  effectivement assigné (override de `menu` avec `didSet`), et `accessibilityActivate()` est
+  surchargé pour déclencher l'action directement. Ceinture et bretelles : l'onglet est atteignable
+  quel que soit l'état du menu ;
+- **identité** — `addButton` reçoit l'`UITabBarItem` entier au lieu de `image` + `tag`, et reprend
+  `accessibilityLabel`, à défaut `title`, plus `accessibilityIdentifier`. Un nom vide laisse `nil`
+  pour ne pas couper le repli d'UIKit sur le nom de l'image — vérifié : l'onglet sans label est
+  annoncé « more », d'après son asset ;
+- **traits** — `.button`, plus `.selected` quand l'onglet est courant et `.notEnabled` quand il est
+  désactivé. Le conteneur porte `.tabBar` et `shouldGroupAccessibilityChildren` ;
+- **badge** — exposé en `accessibilityValue` ;
+- **cible tactile** — `point(inside:with:)` et `accessibilityFrame` étendent verticalement la zone
+  sensible à 44 pt. Les icônes mesurent **121 × 24 pt** (relevé du Lot 1), soit la moitié de la
+  recommandation ; le rendu ne bouge pas, seule la zone sensible grandit ;
+- **Dynamic Type** — la police du badge suit les réglages de taille de texte, plafonnée à 22 pt pour
+  ne pas dévorer l'icône ;
+- **RTL** — le décalage du badge est miroité selon `effectiveUserInterfaceLayoutDirection` ;
+- **`tabBarHeight` devient vivant** — il n'était lu qu'une fois, à `viewDidLoad` : le modifier
+  ensuite n'avait aucun effet. Il met désormais à jour la contrainte de hauteur, l'ancrage du bas et
+  `additionalSafeAreaInsets`.
+
+> **La hauteur de barre n'est volontairement pas mise à l'échelle par le pod.** Elle pilote
+> `additionalSafeAreaInsets`, donc le cadrage de **tous** les écrans enfants : c'est un choix de mise
+> en page qui appartient à l'application. Ce qui manquait, c'est la possibilité de l'exprimer — le
+> réglage était figé après `viewDidLoad`. Il ne l'est plus, et DateLimite peut désormais poser
+> `tabBarHeight = UIFontMetrics.default.scaledValue(for: 70)` si le sujet se pose.
+
+**Recette du 2026-09-18**, iPhone 17 / iOS 27 :
+
+```
+APRES  barre : element=false traits=32768 (.tabBar) groupe=true
+       b0    : element=true  label=Accueil  traits=9 (.button + .selected)
+       b2    : label=more (repli UIKit sur l'asset)  id=onglet-plus  traits=1 (.button)
+       accessibilityActivate() sur le bouton 2 → rend true, selectedIndex=2, traits b2=9
+       cible tactile : bounds 120,7 × 24 — point(10, -8) est DEDANS
+       badge 4 → accessibilityValue = "4"
+```
+
+Rendu inchangé en taille de texte normale. En `AccessibilityXXXL`, le badge grossit sans déborder de
+sa pastille et la barre garde ses proportions.
 
 ---
 
@@ -629,6 +690,22 @@ Critères de sortie :
 
 > Une entrée par session de travail : ce qui a été fait, ce qui a surpris, ce qui reste ouvert.
 > Les entrées les plus récentes en haut.
+
+### 2026-09-18 — Lot 5 en recette
+
+Le lot devait corriger des boutons mal nommés. Il a corrigé une barre d'onglets **inutilisable au
+lecteur d'écran** : `accessibilityActivate()` rendait `false` et l'onglet ne changeait pas. Sans la
+mesure, j'aurais posé des labels sur des boutons que VoiceOver n'aurait toujours pas pu activer, et
+la case aurait été cochée à tort.
+
+La cause tenait à une ligne qui n'avait rien à voir avec l'accessibilité : `showsMenuAsPrimaryAction`
+posé inconditionnellement à la construction, alors qu'aucun menu n'est jamais assigné — ni dans le
+pod, ni dans l'exemple, ni dans DateLimite. Avec `menu == nil`, UIKit refuse l'activation.
+
+Deux points restent ouverts et demandent l'app : la vérification RTL, et le test XCUI qui devrait
+désormais pouvoir taper un onglet sans le contournement `-SnapshotInitialTab`.
+
+**Prochain : Lot 6**, la mesure iPad — dernier point de l'audit resté au stade de l'hypothèse.
 
 ### 2026-09-18 — Lot 4 en recette
 

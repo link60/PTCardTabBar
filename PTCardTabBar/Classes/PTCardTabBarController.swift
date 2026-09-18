@@ -61,7 +61,26 @@ open class PTCardTabBarController: UITabBarController, CardTabBarDelegate {
     }
     
     @IBInspectable public var bottomSpacing: CGFloat = 20
-    @IBInspectable public var tabBarHeight: CGFloat = 70
+    /// Hauteur de la barre.
+    ///
+    /// Elle n'était lue qu'une fois, à `viewDidLoad` : la modifier ensuite n'avait aucun effet, ce
+    /// qui interdisait notamment de la faire suivre les réglages de taille de texte. Elle met
+    /// désormais à jour la contrainte, l'ancrage du bas et `additionalSafeAreaInsets`.
+    ///
+    /// Le pod ne l'adapte **pas** de lui-même au Dynamic Type : la hauteur de cette barre flottante
+    /// pilote `additionalSafeAreaInsets`, donc le cadrage de tous les écrans enfants. C'est un choix
+    /// de mise en page qui appartient à l'application — qui peut désormais l'exprimer, par exemple
+    /// avec `UIFontMetrics.default.scaledValue(for:)`.
+    @IBInspectable public var tabBarHeight: CGFloat = 70 {
+        didSet {
+            guard isViewLoaded, tabBarHeight != oldValue else { return }
+            heightConstraint?.constant = tabBarHeight
+            smallBottomViewTopConstraint?.constant = tabBarHeight
+            additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0,
+                                                   bottom: tabBarHeight + bottomSpacing, right: 0)
+            view.setNeedsLayout()
+        }
+    }
     @IBInspectable public var leftSpacing: CGFloat = 20
     @IBInspectable public var rightSpacing: CGFloat = 20
     @IBInspectable public var glassMode: Int = 0 {
@@ -83,6 +102,8 @@ open class PTCardTabBarController: UITabBarController, CardTabBarDelegate {
     
     fileprivate var leadingConstraint: NSLayoutConstraint!
     fileprivate var trailingConstraint: NSLayoutConstraint!
+    fileprivate var heightConstraint: NSLayoutConstraint?
+    fileprivate var smallBottomViewTopConstraint: NSLayoutConstraint?
     
     override open func viewDidLoad() {
         super.viewDidLoad()
@@ -146,6 +167,7 @@ open class PTCardTabBarController: UITabBarController, CardTabBarDelegate {
         
         cr.priority = .defaultHigh
         cr.isActive = true
+        smallBottomViewTopConstraint = cr
         
         smallBottomView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         smallBottomView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -156,7 +178,8 @@ open class PTCardTabBarController: UITabBarController, CardTabBarDelegate {
         self.view.addSubview(customTabBar)
         
         customTabBar.bottomAnchor.constraint(equalTo: smallBottomView.topAnchor, constant: 0).isActive = true
-        customTabBar.heightAnchor.constraint(equalToConstant: tabBarHeight).isActive = true
+        heightConstraint = customTabBar.heightAnchor.constraint(equalToConstant: tabBarHeight)
+        heightConstraint?.isActive = true
         
         // On ancre sur la barre, pas sur SON safeAreaLayoutGuide : celui-ci se déduit de la
         // position de la barre, qui dépend de cette contrainte — une dépendance circulaire que le

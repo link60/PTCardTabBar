@@ -206,6 +206,12 @@ public class PTCardTabBar: UIView {
         addSubview(stackView)
         addSubview(indicatorView)
         
+        // La barre n'est pas un élément à elle seule : elle contient les onglets. Le trait la fait
+        // annoncer comme barre d'onglets, ce qui donne le contexte à chaque bouton exploré.
+        isAccessibilityElement = false
+        accessibilityTraits = .tabBar
+        shouldGroupAccessibilityChildren = true
+        
         self.layer.shadowColor = UIColor.black.cgColor
         self.layer.shadowOffset = CGSize(width: 3, height: 3)
         self.layer.shadowRadius = 6
@@ -220,12 +226,13 @@ public class PTCardTabBar: UIView {
         tintColorDidChange()
     }
     
-    private func addButton(with image: UIImage, tag: Int = 0){
-        let button = PTBarButton(image: image)
+    private func addButton(for item: UITabBarItem) {
+        let button = PTBarButton(image: item.image ?? UIImage())
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.tag = tag
+        button.tag = item.tag
         button.selectedColor = tintColor
         button.unselectedColor = unselectedTint
+        button.applyAccessibility(from: item)
         button.addTarget(self, action: #selector(buttonTapped(sender:)), for: .touchUpInside)
         self.stackView.addArrangedSubview(button)
     }
@@ -248,11 +255,7 @@ public class PTCardTabBar: UIView {
         }
         
         for item in items {
-            if let image = item.image {
-                addButton(with: image, tag: item.tag)
-            } else {
-                addButton(with: UIImage(), tag: item.tag)
-            }
+            addButton(for: item)
         }
         // On restaure la sélection courante plutôt que de la forcer à 0 : une mutation d'`items`
         // — permuter deux onglets, par exemple — ne doit pas déplacer le surlignage sous
