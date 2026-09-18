@@ -1,16 +1,16 @@
 # Correctifs du pod `PTCardTabBar` — chantier lotti
 
-> **Carte ouverte le 2026-09-18 — backlog / `high`.** Remise en état du fork `link60` / branche
-> `badge` à partir du diagnostic de l'audit du même jour. Urgence `high` parce que quatre constats
-> (**E1** à **E4**) sont des défauts fonctionnels **reproduits sur simulateur**, dont deux
-> atteignent DateLimite en production.
+> **Carte ouverte le 2026-09-18 — `in-progress`, démarrée le 2026-09-18** (ex-`backlog/high`).
+> Remise en état du fork `link60` à partir du diagnostic de l'audit du même jour. L'urgence `high`
+> tenait à quatre constats (**E1** à **E4**) : des défauts fonctionnels **reproduits sur
+> simulateur**, dont deux atteignent DateLimite en production.
 >
-> **Diagnostic :** [`PTCARDTABBAR_AUDIT.md`](../../reference/PTCARDTABBAR_AUDIT.md) — document de
+> **Diagnostic :** [`PTCARDTABBAR_AUDIT.md`](../reference/PTCARDTABBAR_AUDIT.md) — document de
 > référence **figé**, décrivant l'état du code avant tout correctif. Les identifiants `E*` / `M*` /
 > `F*` utilisés ici y renvoient et sont stables. Ne pas réécrire l'audit au fil des corrections :
 > c'est **cette carte** qui porte l'avancement.
 >
-> **Taille :** `L` — sept lots indépendants. **Rien n'est démarré à ce jour.**
+> **Taille :** `L` — sept lots indépendants. **Lot 0 en cours.**
 
 ---
 
@@ -36,8 +36,8 @@ publique côté app restent ce qu'ils sont ; on corrige ce qui est faux et on ne
 
 ## 3. Périmètre
 
-**Ce qui bouge :** [`PTCardTabBar/Classes/**`](../../../PTCardTabBar/Classes),
-[`PTCardTabBar.podspec`](../../../PTCardTabBar.podspec), et le projet d'exemple
+**Ce qui bouge :** [`PTCardTabBar/Classes/**`](../../PTCardTabBar/Classes),
+[`PTCardTabBar.podspec`](../../PTCardTabBar.podspec), et le projet d'exemple
 (`Example/`) pour le seul Lot 0.
 
 **Ce qui ne bouge pas :**
@@ -86,7 +86,8 @@ jamais par modification du pod pour les besoins du test.
 
 ### Convention de suivi
 
-- `⬜ À faire` : lot non démarré ou en cours ;
+- `⬜ À faire` : lot non démarré ;
+- `🚧 En cours` : implémentation commencée ;
 - `🟡 En recette` : implémentation terminée, mais un ou plusieurs critères restent à vérifier ;
 - `✅ Livré` : lot terminé, vérifié et répondant à tous ses critères de sortie.
 
@@ -97,7 +98,7 @@ seule base du commit : la vérification sur le banc **et** le `pod update` côt�
 
 | Lot | Objet | Taille | Statut |
 |---:|---|:---:|:---:|
-| 0 | Remise en route du banc de validation | S | ⬜ À faire |
+| 0 | Remise en route du banc de validation | S | 🚧 En cours |
 | 1 | Correctifs sûrs, sans rupture d'API | M | ⬜ À faire |
 | 2 | Cycle de rétention du `delegate` | S | ⬜ À faire |
 | 3 | Unification de la sélection | M/L | ⬜ À faire |
@@ -345,7 +346,7 @@ Critères de sortie :
 
 | Jalon | Contenu | Statut |
 |---|---|:---:|
-| **J1 — le pod redevient testable** | Lot 0 | ⬜ |
+| **J1 — le pod redevient testable** | Lot 0 | 🚧 |
 | **J2 — plus de défaut fonctionnel connu** | Lots 1, 2, 3 | ⬜ |
 | **J3 — API saine** | Lot 4 | ⬜ |
 | **J4 — accessible** | Lot 5 | ⬜ |
@@ -362,7 +363,7 @@ Critères de sortie :
 
 Audit global du pod mené sur `HEAD = de21149`, avec vérification sur pièces (simulateur iPhone 17 /
 iOS 27, sonde `@available` au compilateur, en-têtes du SDK iOS 27). Quatre défauts mesurés, sept
-points moyens, quinze points d'hygiène — cf. [`PTCARDTABBAR_AUDIT.md`](../../reference/PTCARDTABBAR_AUDIT.md).
+points moyens, quinze points d'hygiène — cf. [`PTCARDTABBAR_AUDIT.md`](../reference/PTCARDTABBAR_AUDIT.md).
 
 Deux correctifs ont été **écrits et éprouvés pendant l'audit puis défaits** avec la restauration de
 l'arbre de travail : la remise en route du banc (Lot 0) et le `if finished` de **E4** (Lot 1). Ils

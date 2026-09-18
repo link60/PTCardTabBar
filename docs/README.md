@@ -31,16 +31,16 @@ départ.
 
 ### `backlog/` — à démarrer
 
-- [`PTCARDTABBAR_CORRECTIFS.md`](backlog/high/PTCARDTABBAR_CORRECTIFS.md) — `high` / `L`,
-  **ouverte le 2026-09-18**, chantier **lotti en 7 lots**, rien de démarré. Remise en état du pod à
-  partir de l'audit du même jour : quatre défauts mesurés sur simulateur iOS 27 (cycle de rétention,
-  bouton désactivé actionnable, surlignage d'onglet désynchronisé, course `hide`/`show`), puis
-  nettoyage d'API et accessibilité. Le **Lot 0** remet en route le banc de validation, sans lequel
-  tout se testerait dans DateLimite.
+*(vide)*
 
 ### `in-progress/` — en cours
 
-*(vide)*
+- [`PTCARDTABBAR_CORRECTIFS.md`](in-progress/PTCARDTABBAR_CORRECTIFS.md) — `L`, **démarré le
+  2026-09-18** (ex-`backlog/high`), chantier **lotti en 7 lots**. Remise en état du pod à partir de
+  l'audit du même jour : quatre défauts mesurés sur simulateur iOS 27 (cycle de rétention, bouton
+  désactivé actionnable, surlignage d'onglet désynchronisé, course `hide`/`show`), puis nettoyage
+  d'API et accessibilité. **Lot 0 en cours** — remise en route du banc de validation, sans lequel
+  tout se testerait dans DateLimite. Travaux sur la branche `correctifs-audit`.
 
 ### `done/` — livré
 

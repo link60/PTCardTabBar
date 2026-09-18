@@ -4,8 +4,8 @@
 > `HEAD = de21149`, conservé tel quel : il décrit l'état du code **avant tout correctif**. Ne pas le
 > réécrire au fil des corrections — c'est la carte de chantier qui porte l'avancement.
 >
-> **Chantier associé :** [`PTCARDTABBAR_CORRECTIFS.md`](../backlog/high/PTCARDTABBAR_CORRECTIFS.md)
-> (`backlog/high`) — c'est là que se suit le dev, lot par lot. Chaque lot y renvoie aux constats
+> **Chantier associé :** [`PTCARDTABBAR_CORRECTIFS.md`](../in-progress/PTCARDTABBAR_CORRECTIFS.md)
+> (`in-progress`) — c'est là que se suit le dev, lot par lot. Chaque lot y renvoie aux constats
 > `E*` / `M*` / `F*` numérotés ci-dessous, qui servent d'identifiants stables.
 >
 > **Périmètre :** [`PTCardTabBar/Classes/**`](../../PTCardTabBar/Classes).
@@ -433,7 +433,7 @@ eux-mêmes.
 ## Ordre de livraison
 
 Le découpage en lots, les critères de sortie et l'avancement vivent dans la carte de chantier :
-[`PTCARDTABBAR_CORRECTIFS.md`](../backlog/high/PTCARDTABBAR_CORRECTIFS.md).
+[`PTCARDTABBAR_CORRECTIFS.md`](../in-progress/PTCARDTABBAR_CORRECTIFS.md).
 
 ## Rappel de déploiement
 
