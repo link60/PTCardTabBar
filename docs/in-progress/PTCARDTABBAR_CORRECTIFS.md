@@ -431,6 +431,16 @@ T3 apres reduction a 2 items    | selectedIndex=2 | barre 1:sel=true   ← borna
 > usage réel les deux suivent, et UIKit borne `selectedIndex` de son côté. Le bornage de la barre
 > est le seul comportement sain quand l'index visé n'existe plus.
 
+> **Limite de couverture, relevée par la recette app le 2026-09-19.** Le cas vraiment discriminant
+> pour `selectedButtonIndex` — un onglet qui **survit** à la reconstruction mais **change d'index**
+> — n'est **pas atteignable depuis l'UI de DateLimite** : `showRecipesController()` et
+> `showSettingsController()` retirent précisément l'onglet sur lequel on peut se trouver, et le seul
+> onglet qui change d'index (Stats, 1↔2) n'offre aucun accès au réglage sans le quitter. Une recette
+> d'app ne peut donc pas verrouiller ce comportement ; s'il doit l'être, c'est par un test côté pod.
+> Ce qui **a** été recetté le 2026-09-19 sur `36ac7c7`, dans les deux sens : permutation depuis
+> l'onglet Réglages (repli sur l'onglet 0, **et le contenu affiché correspond** — aucun désaccord
+> barre/contenu) et désactivation depuis l'onglet Liste. La régression ne se reproduit pas.
+
 **Implémentation du 2026-09-18 :**
 
 - **E3** — les deux `select(at:)` fusionnent en une seule méthode, qui pose `isSelected`, déplace
@@ -498,9 +508,10 @@ l'onglet 0. Il reste maintenant sur l'onglet 2.
 Critères de sortie :
 
 - [x] aucun symbole mort restant ;
-- [x] relevé d'appelants côté app repassé sur les onze symboles supprimés ou renommés : **zéro
-      usage**, et aucune sous-classe de `PTCardTabBarController` — les ruptures d'API ne mordent
-      donc nulle part ;
+- [~] ~~relevé d'appelants côté app : **zéro usage**~~ — **ce relevé était faux**, cf. l'incident
+      ci-dessous. Refait le 2026-09-19 en incluant les storyboards : **`PTClearCardTabBar` était
+      utilisée** par `Products.storyboard`. Les dix autres symboles sont bien sans usage, y compris
+      dans les fichiers IB ;
 - [x] la fiche produit peut fixer l'apparence de ses deux barres sur iOS 26+ (`glassMode`,
       `mainColor` et `border` sont désormais `public` sur `PTCardTabBar`) ;
 - [x] une couleur de bordure dynamique suit la bascule clair/sombre ;
@@ -541,6 +552,36 @@ d'`UIView+AutoLayout` sans appelant, `PTBarButton.init(forItem:)`, le `deinit` d
   Sans lui, Core Animation redessine l'ombre hors écran à chaque changement de taille ;
 - **F12** : `homepage` et `source` du podspec pointent sur le fork `link60`, avec une note disant
   que la consommation se fait par branche et que c'est le SHA du `Podfile.lock` qui fait foi.
+
+> ### ⚠️ Incident du 2026-09-19 — un symbole « mort » qui ne l'était pas
+>
+> **`48ab610` a cassé DateLimite** : l'ouverture d'une fiche produit partait en `EXC_BAD_ACCESS`.
+> Trouvé par la session de recette app, avant tout upload TestFlight.
+>
+> **Enchaînement.** `Products.storyboard` référence `PTClearCardTabBar` en `customClass` sur deux
+> vues (lignes 1148 et 1169). La classe supprimée, UIKit ne la résout plus, retombe sur `UIView`,
+> l'`@IBOutlet` typé `PTCardTabBar!` reçoit un `UIView`, et le premier accès dans
+> `ProductTabBarManager.configure()` — `leftCardTabBar.delegate = self` — part en vol.
+>
+> **Pourquoi mon relevé ne l'a pas vu.** Il grepait `*.swift`, `*.m` et `*.h`. **Un storyboard
+> référence une classe par son nom, résolu à l'exécution** : ni un grep sur les sources, ni un
+> `BUILD SUCCEEDED` ne le voient. Les deux avaient dit vert.
+>
+> **Correctif (`Loïc a tranché : côté pod, pas côté app`).** `PTClearCardTabBar` est restaurée et
+> marquée dépréciée, donc **aucune migration de storyboard n'est nécessaire**. Et `glassMode` devient
+> `@IBInspectable` — donc `@objc` — ce qui rend la sous-classe réellement redondante : les deux vues
+> portaient **déjà** `glassMode = 1` en attribut runtime IB, attribut qui **n'avait jamais pu
+> s'appliquer** puisque KVC passe par le runtime Objective-C et qu'une propriété `public` Swift ne
+> lui est pas visible. Les `customClass` peuvent migrer vers `PTCardTabBar` quand ça arrange, et la
+> sous-classe partira alors pour de bon.
+>
+> **Vérifié le 2026-09-19** sur iPhone 17 / iOS 27, correctif injecté dans le pod installé sans
+> toucher au `Podfile` ni au code de l'app : la fiche produit s'ouvre, plus aucune `Unknown class`
+> ni échec KVC dans les logs, et les deux barres d'actions gardent leurs icônes pleinement teintées.
+>
+> **Règle pour la suite du nettoyage d'API** : un relevé d'appelants doit inclure les `.storyboard`
+> et `.xib` — les `customClass=` **et** les `keyPath=` des `userDefinedRuntimeAttributes`, qui
+> passent par KVC et exigent donc `@objc` côté pod.
 
 > **M5 — réutilisation des boutons : écartée, avec preuve.** Reportée du Lot 3, elle demande une
 > identité d'item stable pour savoir quel bouton réutiliser. Le seul candidat est `tag`, qui vaut

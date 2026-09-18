@@ -15,13 +15,38 @@ public protocol CardTabBarDelegate: AnyObject {
     func cardTabBar(_ sender: PTCardTabBar, didSelectItemAt index: Int, button: PTBarButton)
 }
 
+/// Barre en verre « clair », équivalente à `PTCardTabBar` avec `glassMode = 1`.
+///
+/// ⚠️ **Supprimée à tort au Lot 4 du chantier de correctifs**, sur un relevé d'appelants qui ne
+/// couvrait que les sources Swift et Objective-C : elle est référencée par `customClass` dans
+/// `Products.storyboard` de DateLimite, où le nom de classe n'est résolu qu'à l'exécution. Le
+/// storyboard retombait alors sur `UIView`, l'`@IBOutlet` typé `PTCardTabBar!` recevait un `UIView`,
+/// et l'ouverture d'une fiche produit partait en `EXC_BAD_ACCESS`.
+///
+/// Devenue redondante depuis que `glassMode` est `@IBInspectable` : un storyboard peut désormais
+/// poser la valeur sur une `PTCardTabBar` ordinaire. Conservée le temps que les `customClass`
+/// migrent.
+@available(*, deprecated, message: "Utiliser PTCardTabBar avec glassMode = 1 — réglable depuis Interface Builder.")
+public class PTClearCardTabBar: PTCardTabBar {
+    public override var glassMode: Int {
+        get { 1 }
+        set { super.glassMode = 1 }
+    }
+}
+
 public class PTCardTabBar: UIView {
     
     public weak var delegate: CardTabBarDelegate?
     
     var effectView: UIVisualEffectView? = nil
     
-    public var glassMode: Int = 0 {
+    /// Style de l'effet de verre sur iOS 26+.
+    ///
+    /// `@IBInspectable` — donc `@objc` — pour qu'un attribut runtime défini dans un storyboard
+    /// puisse réellement la poser : KVC passe par le runtime Objective-C, une propriété `public`
+    /// Swift ne lui est pas visible. Sans ça, IB échouait en silence avec
+    /// « this class is not key value coding-compliant for the key glassMode ».
+    @IBInspectable public var glassMode: Int = 0 {
         didSet {
             if #available(iOS 26.0, *) {
                 self.effectView?.effect = UIGlassEffect(style: UIGlassEffect.Style(rawValue: self.glassMode) ?? .regular)
