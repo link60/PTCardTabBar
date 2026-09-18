@@ -274,9 +274,12 @@ son en-tête. Le correctif rend ce contournement inutile, sans l'obliger à chan
 Critères de sortie :
 
 - [x] sur le banc : `deinit` du contrôleur observé après `dismiss` ;
-- [ ] **DateLimite compile après `pod update`**, sans adaptation de `ProductTabBarManager` ;
+- [x] **DateLimite compile après `pod update`**, sans adaptation de `ProductTabBarManager` —
+      vérifié le 2026-09-18 : `Podfile.lock` épinglé sur `103cf163…`, `** BUILD SUCCEEDED **`,
+      0 erreur, 0 avertissement dans le pod, et aucun avertissement dans `DetailProductHelper.swift`
+      où vit le conformeur. Les 239 avertissements de l'app sont préexistants et hors périmètre ;
 - [ ] **sur iPad**, ouvrir puis fermer une seconde fenêtre principale ne laisse pas de
-      `PTCardTabBarController` vivant (graphe de rétention Xcode).
+      `PTCardTabBarController` vivant (graphe de rétention Xcode). ← *seul critère restant*
 
 **Implémentation du 2026-09-18 :**
 
