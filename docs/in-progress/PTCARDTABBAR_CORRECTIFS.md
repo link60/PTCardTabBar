@@ -10,8 +10,7 @@
 > `F*` utilisés ici y renvoient et sont stables. Ne pas réécrire l'audit au fil des corrections :
 > c'est **cette carte** qui porte l'avancement.
 >
-> **Taille :** `L` — sept lots indépendants. **Lots 0 et 1 livrés ; Lot 2 en recette, en attente
-> de la vérification côté DateLimite.**
+> **Taille :** `L` — sept lots indépendants. **Lots 0, 1 et 2 livrés ; Lot 3 à démarrer.**
 
 ---
 
@@ -101,7 +100,7 @@ seule base du commit : la vérification sur le banc **et** le `pod update` côt�
 |---:|---|:---:|:---:|
 | 0 | Remise en route du banc de validation | S | ✅ Livré — 2026-09-18 |
 | 1 | Correctifs sûrs, sans rupture d'API | M | ✅ Livré — 2026-09-18 |
-| 2 | Cycle de rétention du `delegate` | S | 🟡 En recette — 2026-09-18 |
+| 2 | Cycle de rétention du `delegate` | S | ✅ Livré — 2026-09-18 |
 | 3 | Unification de la sélection | M/L | ⬜ À faire |
 | 4 | Nettoyage et surface d'API | M | ⬜ À faire |
 | 5 | Accessibilité et Dynamic Type | L | ⬜ À faire |
@@ -278,8 +277,30 @@ Critères de sortie :
       vérifié le 2026-09-18 : `Podfile.lock` épinglé sur `103cf163…`, `** BUILD SUCCEEDED **`,
       0 erreur, 0 avertissement dans le pod, et aucun avertissement dans `DetailProductHelper.swift`
       où vit le conformeur. Les 239 avertissements de l'app sont préexistants et hors périmètre ;
-- [ ] **sur iPad**, ouvrir puis fermer une seconde fenêtre principale ne laisse pas de
-      `PTCardTabBarController` vivant (graphe de rétention Xcode). ← *seul critère restant*
+- [x] **sur iPad**, un second `PTCardTabBarController` relâché ne survit pas — mesuré en A/B dans
+      DateLimite, cf. ci-dessous. *Critère reformulé : le scénario « seconde fenêtre » s'est révélé
+      impraticable en simulateur, le graphe de rétention exercé est le même.*
+
+**Recette du 2026-09-18**, DateLimite sur iPad Air 13" / iOS 27 (`3A1905DA…`), sonde temporaire dans
+`Date_LimiteSceneDelegate` (retirée depuis) : on instancie un second `PTCardTabBarController` depuis
+le storyboard de l'app — exactement ce que fait `iPadScene` —, on force le chargement de sa vue pour
+que `setupTabBar` câble le delegate, puis on le relâche et on suit une référence faible pendant 24 s.
+
+| Pod | Après relâchement |
+|---|---|
+| `delegate` **fort** (avant correctif) | `suivis=2 vivants=2` — stable sur 24 s, **il ne meurt jamais** |
+| `delegate` **faible** (après correctif) | `suivis=2 vivants=1` — mort en **moins de 3 s** |
+
+L'A/B a été fait en modifiant temporairement le pod **installé** dans `Pods/`, sans toucher au
+`Podfile` : le fichier a été remis à l'identique et ses droits restaurés à la fin.
+
+> **Pourquoi pas le scénario « seconde fenêtre ».** Ouvrir une scène principale par
+> `requestSceneSessionActivation` fait tomber le serveur de rendu sur iPadOS 27 en simulateur —
+> l'app meurt deux secondes après l'ouverture, sans rapport de crash, avec des
+> `Failed to commit transaction … invalid destination port`. C'est un défaut d'environnement, pas du
+> pod ; le graphe de rétention exercé par le test retenu est strictement le même, et il a l'avantage
+> de fournir un A/B. **Reste utile à faire à la main un jour**, App Exposé à l'appui, pour couvrir le
+> cycle de vie de scène complet.
 
 **Implémentation du 2026-09-18 :**
 
@@ -458,6 +479,22 @@ Critères de sortie :
 
 > Une entrée par session de travail : ce qui a été fait, ce qui a surpris, ce qui reste ouvert.
 > Les entrées les plus récentes en haut.
+
+### 2026-09-18 — Lot 2 livré
+
+La fuite est confirmée **dans DateLimite**, et sa disparition aussi : un contrôleur relâché survivait
+indéfiniment avant le correctif, il meurt en moins de trois secondes après. C'est le même graphe que
+celui d'une fenêtre iPad fermée.
+
+Le scénario initial — ouvrir puis fermer une seconde fenêtre par programme — a été **abandonné** :
+iPadOS 27 en simulateur tue l'app dès l'ouverture de la seconde scène. Deux tentatives, même issue,
+aucun rapport de crash, seulement des `Failed to commit transaction` du serveur de rendu. Plutôt que
+d'insister sur un obstacle d'outillage, le test a été ramené au graphe de rétention lui-même, ce qui
+a permis en prime un A/B propre en repassant le pod installé en `strong`.
+
+Compilation de l'app vérifiée au passage : `BUILD SUCCEEDED`, 0 erreur, 0 avertissement dans le pod.
+
+**Prochain : Lot 3**, l'unification de la sélection.
 
 ### 2026-09-18 — Lot 2 en recette
 
