@@ -22,8 +22,12 @@ class PTTabBarViewController: PTCardTabBarController {
         
         self.viewControllers = [vc1, vc2, vc3]
         
+        // Le userInfo doit porter les DEUX clés : sans "value", PTCardTabBarController.setBadge
+        // sort sans rien faire et le badge de démo ne s'affiche jamais.
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            NotificationCenter.default.post(name: .PTCardTabBarBadgeNotification, object: nil, userInfo: ["index": 0])
+            NotificationCenter.default.post(name: .PTCardTabBarBadgeNotification,
+                                            object: nil,
+                                            userInfo: ["index": 0, "value": 3])
         }
         
         

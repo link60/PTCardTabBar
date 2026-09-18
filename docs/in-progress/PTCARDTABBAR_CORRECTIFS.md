@@ -10,7 +10,7 @@
 > `F*` utilisés ici y renvoient et sont stables. Ne pas réécrire l'audit au fil des corrections :
 > c'est **cette carte** qui porte l'avancement.
 >
-> **Taille :** `L` — sept lots indépendants. **Lot 0 en cours.**
+> **Taille :** `L` — sept lots indépendants. **Lot 0 livré, Lot 1 à démarrer.**
 
 ---
 
@@ -98,7 +98,7 @@ seule base du commit : la vérification sur le banc **et** le `pod update` côt�
 
 | Lot | Objet | Taille | Statut |
 |---:|---|:---:|:---:|
-| 0 | Remise en route du banc de validation | S | 🚧 En cours |
+| 0 | Remise en route du banc de validation | S | ✅ Livré — 2026-09-18 |
 | 1 | Correctifs sûrs, sans rupture d'API | M | ⬜ À faire |
 | 2 | Cycle de rétention du `delegate` | S | ⬜ À faire |
 | 3 | Unification de la sélection | M/L | ⬜ À faire |
@@ -140,18 +140,40 @@ ligne du pod.
 - corriger la démo de badge : `PTTabBarViewController` poste `["index": 0]` **sans la clé `"value"`**,
   que `setBadge` exige — le badge de démo ne s'est donc jamais affiché.
 
-> Le correctif de ce lot a déjà été écrit et éprouvé pendant l'audit (build + lancement OK sur
-> iPhone 17 / iOS 27), mais **il n'a pas été conservé** : l'arbre de travail a été restauré à la fin
-> de l'audit. Il est à réécrire, ce qui reste une dizaine de lignes.
-
 Critères de sortie :
 
-- [ ] `xcodebuild -workspace Example/PTCardTabBar.xcworkspace -scheme PTCardTabBar-Example` passe
+- [x] `xcodebuild -workspace Example/PTCardTabBar.xcworkspace -scheme PTCardTabBar-Example` passe
       **sans override** de `IPHONEOS_DEPLOYMENT_TARGET` en ligne de commande ;
-- [ ] l'exemple démarre sur iPhone 17 / iOS 27 et les trois onglets répondent ;
-- [ ] le badge de démo s'affiche après les 5 s de la temporisation ;
-- [ ] le contrat du `userInfo` de `PTCardTabBarBadgeNotification` (`index`, `value`) est écrit dans
+- [x] l'exemple démarre sur iPhone 17 / iOS 27 et les trois onglets répondent ;
+- [x] le badge de démo s'affiche après les 5 s de la temporisation ;
+- [x] le contrat du `userInfo` de `PTCardTabBarBadgeNotification` (`index`, `value`) est écrit dans
       le README du pod.
+
+**Implémentation du 2026-09-18 :**
+
+- `Example/Podfile` — `post_install` qui supprime `IPHONEOS_DEPLOYMENT_TARGET` des cibles Pods, puis
+  `pod install` ; `BadgeHub` hérite désormais du `platform :ios, '15.0'` du Podfile ;
+- `Example/PTCardTabBar/SceneDelegate.swift` — nouveau fichier, ajouté au projet Xcode (les quatre
+  entrées `PBXBuildFile` / `PBXFileReference` / enfant de groupe / phase `Sources`, `plutil -lint`
+  OK) ; `Info.plist` reçoit le manifeste `UIApplicationSceneManifest` ;
+- `AppDelegate` — la fenêtre et les callbacks actif/arrière-plan partent dans le `SceneDelegate`.
+  Sous le cycle de vie UIScene, `AppDelegate.window` n'est plus utilisée et
+  `applicationDidBecomeActive` & consorts ne sont plus appelés : les laisser aurait induit en erreur
+  quiconque copie l'exemple ;
+- `Info.plist` — `UIRequiredDeviceCapabilities = armv7` supprimé (reliquat 32 bits) ;
+- `PTTabBarViewController` — la démo de badge postait `["index": 0]` sans la clé `"value"` exigée
+  par `setBadge` : **elle n'avait jamais rien affiché**. Corrigée en `["index": 0, "value": 3]` ;
+- `README.md` — section **Badges** ajoutée : les deux clés obligatoires, le fait qu'un `userInfo`
+  incomplet est ignoré en silence, et le moment où l'observateur est posé.
+
+**Recette du 2026-09-18**, iPhone 17 / iOS 27 (`CB5E2618…`), build sans aucun override :
+
+- `** BUILD SUCCEEDED **`, zéro erreur, zéro avertissement de deployment target ;
+- l'app démarre — plus de `EXC_BREAKPOINT` au lancement ;
+- chemin **« From Code »** : les trois onglets répondent, l'indicateur suit, et le badge `3`
+  apparaît sur le premier onglet après la temporisation — **une première** ;
+- chemin **« From Storyboard »** : la barre se construit, la teinte rose de l'`@IBInspectable` est
+  appliquée, les onglets répondent. C'est le chemin qu'emprunte DateLimite.
 
 ---
 
@@ -346,7 +368,7 @@ Critères de sortie :
 
 | Jalon | Contenu | Statut |
 |---|---|:---:|
-| **J1 — le pod redevient testable** | Lot 0 | 🚧 |
+| **J1 — le pod redevient testable** | Lot 0 | ✅ 2026-09-18 |
 | **J2 — plus de défaut fonctionnel connu** | Lots 1, 2, 3 | ⬜ |
 | **J3 — API saine** | Lot 4 | ⬜ |
 | **J4 — accessible** | Lot 5 | ⬜ |
@@ -358,6 +380,25 @@ Critères de sortie :
 
 > Une entrée par session de travail : ce qui a été fait, ce qui a surpris, ce qui reste ouvert.
 > Les entrées les plus récentes en haut.
+
+### 2026-09-18 — Lot 0 livré
+
+Le banc est de nouveau opérationnel : l'exemple compile sans bricolage de ligne de commande et
+tourne sous iOS 27. Les lots suivants peuvent se valider ici plutôt que dans DateLimite.
+
+Deux surprises en chemin, aucune bloquante :
+
+- la démo de badge de l'exemple **n'avait jamais fonctionné** — `userInfo` incomplet depuis
+  l'origine. Ce n'était pas dans le périmètre annoncé du lot, mais un banc dont une démo ment est
+  pire qu'un banc absent ;
+- `AppDelegate` gardait sa `window` et les callbacks de cycle de vie du template 2019, morts sous
+  UIScene. Nettoyés, sinon l'exemple enseigne le contraire de ce qu'il montre.
+
+Le `SceneDelegate` a demandé une édition à la main du `project.pbxproj` (projet de 2019, pas de
+groupe synchronisé sur le système de fichiers). Quatre entrées ajoutées, fichier relu par
+`plutil -lint` et validé par le build.
+
+**Prochain : Lot 1**, correctifs sûrs sans rupture d'API.
 
 ### 2026-09-18 — ouverture de la carte
 

@@ -9,3 +9,15 @@ target 'PTCardTabBar_Example' do
 
   end
 end
+
+# BadgeHub (1.0.0, non maintenu) déclare IPHONEOS_DEPLOYMENT_TARGET = 10.0, refusé par les Xcode
+# récents — le build de l'exemple échouait avant même de compiler une ligne. On supprime la clé des
+# cibles Pods pour qu'elles héritent du `platform` ci-dessus. DateLimite fait déjà exactement ça
+# dans son propre Podfile, ce qui explique que seul l'exemple était cassé.
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET'
+    end
+  end
+end

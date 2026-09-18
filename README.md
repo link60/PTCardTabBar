@@ -16,6 +16,28 @@
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
+## Badges
+
+A badge is set either directly, or through a notification — useful when the code that knows the
+count has no reference to the tab bar controller.
+
+```swift
+// Direct
+cardTabBarController.customTabBar.setBadge(value: 3, at: 0)
+
+// Par notification : les DEUX clés sont obligatoires, un userInfo incomplet est ignoré
+// silencieusement. `index` est la position de l'onglet, `value` le compte affiché (0 efface).
+NotificationCenter.default.post(
+    name: .PTCardTabBarBadgeNotification,
+    object: nil,
+    userInfo: ["index": 0, "value": 3]
+)
+```
+
+Les deux valeurs doivent être des `Int`. L'observateur est posé par
+`PTCardTabBarController.viewDidLoad`, donc la notification n'a d'effet qu'une fois la vue du
+contrôleur chargée.
+
 ## Requirements
 
 ## Installation
