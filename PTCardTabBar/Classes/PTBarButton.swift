@@ -20,10 +20,14 @@ public class PTBarButton: UIButton {
     }()
 
     open var badgeLayout: (PTBarButton) -> Void = { button in
-        // Miroité en RTL : sans ça le badge se retrouve du côté intérieur de l'icône.
+        let taille: CGFloat = 30
+        let x = (button.bounds.width / 2) + 8
+        // Miroité en RTL par symétrie autour de l'axe vertical du bouton : `bounds.width - x - taille`.
+        // Une simple négation (`-x`) plaçait le badge à gauche de l'ORIGINE du bouton, donc hors de
+        // la barre et rogné par le bord de l'écran.
         let rtl = button.effectiveUserInterfaceLayoutDirection == .rightToLeft
-        let dx = (button.bounds.width / 2) + 8
-        button.badge.setCircleAtFrame(CGRect(x: rtl ? -dx : dx, y: -25, width: 30, height: 30))
+        let origine = rtl ? (button.bounds.width - x - taille) : x
+        button.badge.setCircleAtFrame(CGRect(x: origine, y: -25, width: taille, height: taille))
         button.badge.scaleCircleSize(by: 0.9)
         // Suit les réglages de taille de texte, plafonné pour que le badge ne dévore pas l'icône.
         let metrics = UIFontMetrics(forTextStyle: .caption1)

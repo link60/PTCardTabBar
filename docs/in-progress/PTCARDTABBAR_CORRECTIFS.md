@@ -10,8 +10,8 @@
 > `F*` utilisés ici y renvoient et sont stables. Ne pas réécrire l'audit au fil des corrections :
 > c'est **cette carte** qui porte l'avancement.
 >
-> **Taille :** `L` — sept lots indépendants. **Lots 0, 1, 2, 4 et 6 livrés ; Lots 3 et 5 en
-> recette côté app. Tous les lots sont traités.**
+> **Taille :** `L` — sept lots indépendants. **Les sept lots sont livrés.** Reste le bump de build
+> et l'upload TestFlight, en attente du go de Loïc.
 
 ---
 
@@ -102,9 +102,9 @@ seule base du commit : la vérification sur le banc **et** le `pod update` côt�
 | 0 | Remise en route du banc de validation | S | ✅ Livré — 2026-09-18 |
 | 1 | Correctifs sûrs, sans rupture d'API | M | ✅ Livré — 2026-09-18 |
 | 2 | Cycle de rétention du `delegate` | S | ✅ Livré — 2026-09-18 |
-| 3 | Unification de la sélection | M/L | 🟡 En recette — 2026-09-18 |
+| 3 | Unification de la sélection | M/L | ✅ Livré — 2026-09-19 |
 | 4 | Nettoyage et surface d'API | M | ✅ Livré — 2026-09-18 |
-| 5 | Accessibilité et Dynamic Type | L | 🟡 En recette — 2026-09-18 |
+| 5 | Accessibilité et Dynamic Type | L | ✅ Livré — 2026-09-19 |
 | 6 | Mesure iPad — forçage de la classe de taille | S | ✅ Livré — 2026-09-18 |
 
 ### Couverture des constats de l'audit
@@ -645,9 +645,44 @@ Critères de sortie :
 - [x] la barre est annoncée comme barre d'onglets, pas comme une pile de boutons anonymes ;
 - [x] à la plus grande taille de texte, la barre reste lisible et les badges ne débordent pas ;
 - [x] la zone tactile atteint 44 pt sans changer le rendu ;
-- [ ] **en RTL, le badge est du bon côté** — implémenté, non vérifié : la disposition RTL demande un
-      lancement dédié et l'exemple n'est pas localisé ;
-- [ ] **un test XCUI tape un onglet sans `-SnapshotInitialTab`** — validation côté DateLimite.
+- [x] **en RTL, le badge est du bon côté** — **le premier jet était faux**, cf. ci-dessous ;
+- [x] **un test XCUI tape un onglet sans `-SnapshotInitialTab`** — validé côté DateLimite le
+      2026-09-19 : `visé.isHittable = true`, et après le tap `b3.selected=false b5.selected=true`.
+      **Le contournement peut être retiré du test de captures.**
+
+**Correctif RTL du 2026-09-19** *(défaut introduit par ce lot, trouvé par la recette app)*
+
+Le miroitage du badge était une simple négation, `x = -(W/2 + 8)`. Ça ne place pas le badge de
+l'autre côté du bouton : ça le place à gauche de son **origine**, donc hors de la barre et rogné par
+le bord de l'écran. Le miroir correct est une symétrie autour de l'axe vertical du bouton,
+`bounds.width - x - taille`.
+
+```
+bouton 120,67 × 24, badge 27 × 27
+  LTR                x = 69,83
+  RTL avant          x = -68,5    ← hors du bouton
+  RTL après (mesuré) x = 23,83    ← 120,67 - 69,83 - 27, miroir exact
+```
+
+Vérifié sur le banc, iPhone 17 / iOS 27, relancé avec `-AppleTextDirection YES
+-NSForceRightToLeftWritingDirection YES` : la barre se miroite et le badge reste collé au coin de
+son icône, dans la capsule.
+
+> **Portée du défaut d'origine** : DateLimite ne livre que `de`, `en`, `es` et `fr` — aucune langue
+> RTL. Il n'était donc pas atteignable par un utilisateur, et n'a pu être vu qu'en forçant la
+> direction d'écriture.
+
+> ### Trois constats côté **app**, relevés par la recette du 2026-09-19 — hors périmètre de ce chantier
+>
+> 1. **Les onglets s'annoncent par la description automatique de leur SF Symbol** : « Graphique à
+>    barres avec un axe X », « Forme de roue dentée, icône pleine ». Le pod fait ce qu'il annonce —
+>    il reprend le label de l'`UITabBarItem` — mais les items du storyboard de l'app n'ont ni titre
+>    ni `accessibilityLabel`, et UIKit retombe sur l'image. **La correction est côté app** : nommer
+>    les items.
+> 2. **L'onglet 0 s'annonce « My Products »**, en anglais, dans une app en français. Même cause.
+> 3. **`app.tabBars.count = 0`** côté XCUI : le trait `.tabBar` ne donne pas à la barre le *type*
+>    `tabBar` d'XCUITest, elle reste un `Other`. Sans conséquence — les boutons sont atteignables
+>    directement — mais un test qui passerait par `app.tabBars` ne trouverait rien.
 
 **Implémentation du 2026-09-18 :**
 
@@ -711,7 +746,10 @@ au Lot 4.
 Critères de sortie :
 
 - [x] verdict écrit dans cette carte, captures à l'appui ;
-- [x] décision prise : **forçage remplacé** par `isTabBarHidden = true`.
+- [x] décision prise : **forçage remplacé** par `isTabBarHidden = true` ;
+- [x] **confirmé dans DateLimite** le 2026-09-19, iPad Air 13" / iOS 27 : la barre de navigation ne
+      contient que le titre, le bouton « ⋯ » et la recherche, puis les chips de catégories de l'app.
+      **Aucune pilule d'onglets native**, et la barre « carte » flottante est bien en bas.
 
 **Mesure du 2026-09-18**, DateLimite sur iPad Air 13" / iOS 27 (`3A1905DA…`), trois variantes
 obtenues en modifiant le pod **installé** dans `Pods/` — sans toucher au `Podfile` ni au code de
@@ -752,7 +790,7 @@ mensonge posé par la barre d'onglets, sans rapport avec son propre besoin.
 | **J1 — le pod redevient testable** | Lot 0 | ✅ 2026-09-18 |
 | **J2 — plus de défaut fonctionnel connu** | Lots 1, 2, 3 | ⬜ |
 | **J3 — API saine** | Lot 4 | ✅ 2026-09-18 |
-| **J4 — accessible** | Lot 5 | ⬜ |
+| **J4 — accessible** | Lot 5 | ✅ 2026-09-19 |
 | **J5 — dernière zone d'ombre levée** | Lot 6 | ✅ 2026-09-18 |
 
 ---
@@ -761,6 +799,25 @@ mensonge posé par la barre d'onglets, sans rapport avec son propre besoin.
 
 > Une entrée par session de travail : ce qui a été fait, ce qui a surpris, ce qui reste ouvert.
 > Les entrées les plus récentes en haut.
+
+### 2026-09-19 — Les sept lots sont livrés
+
+La recette app a validé `76b36bb` : la régression du Lot 4 est refermée, et les Lots 3, 5 (volet
+XCUI) et 6 sont confirmés dans l'application.
+
+**Le gain attendu du Lot 5 est mesuré** : un tap XCUI direct sur un onglet fonctionne, sans le
+contournement `-SnapshotInitialTab`, et l'état de sélection est correctement exposé. C'est ce que le
+lot promettait.
+
+**Un défaut de plus dans mon code, trouvé par la même recette** : le miroitage RTL du badge était une
+négation au lieu d'une symétrie, ce qui envoyait le badge hors de la barre. Corrigé et vérifié. Il
+n'était pas atteignable en production — l'app ne livre aucune langue RTL — mais c'est la deuxième
+fois de ce chantier qu'un correctif que je croyais trivial était faux, et les deux fois c'est une
+recette indépendante qui l'a vu.
+
+Trois constats sont sortis du périmètre du pod et sont consignés au Lot 5 : deux d'accessibilité
+côté app — les onglets s'annoncent par la description de leur icône, et l'onglet 0 est en anglais —
+et une limite d'XCUITest sur le type de la barre.
 
 ### 2026-09-18 — Lot 6 livré, chantier complet
 
