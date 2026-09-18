@@ -10,7 +10,8 @@
 > `F*` utilisés ici y renvoient et sont stables. Ne pas réécrire l'audit au fil des corrections :
 > c'est **cette carte** qui porte l'avancement.
 >
-> **Taille :** `L` — sept lots indépendants. **Lot 0 livré, Lot 1 à démarrer.**
+> **Taille :** `L` — sept lots indépendants. **Lot 0 livré ; Lot 1 en recette, en attente de la
+> vérification côté DateLimite.**
 
 ---
 
@@ -99,7 +100,7 @@ seule base du commit : la vérification sur le banc **et** le `pod update` côt�
 | Lot | Objet | Taille | Statut |
 |---:|---|:---:|:---:|
 | 0 | Remise en route du banc de validation | S | ✅ Livré — 2026-09-18 |
-| 1 | Correctifs sûrs, sans rupture d'API | M | ⬜ À faire |
+| 1 | Correctifs sûrs, sans rupture d'API | M | 🟡 En recette — 2026-09-18 |
 | 2 | Cycle de rétention du `delegate` | S | ⬜ À faire |
 | 3 | Unification de la sélection | M/L | ⬜ À faire |
 | 4 | Nettoyage et surface d'API | M | ⬜ À faire |
@@ -113,6 +114,7 @@ Aucun constat ne doit disparaître en silence.
 | Constat | Lot | Constat | Lot | Constat | Lot |
 |---|:---:|---|:---:|---|:---:|
 | E1 | 2 | M3 | 6 | F5 | 0 + 4 |
+| **E5** | **1** | | | | |
 | E2 | 1 | M4 | 1 | F6 | 4 |
 | E3 | 3 | M5 | 3 | F7 | 5 |
 | E4 | 1 | M6 | 1 | F8 | 5 |
@@ -203,12 +205,55 @@ fort rendement.
 
 Critères de sortie :
 
-- [ ] sur le banc : `hideTabBar()` puis `showTabBar()` à 100 ms laisse `isHidden = false` ;
-- [ ] sur le banc : un tap sur un bouton `isEnabled = false` ne change pas d'onglet et ne notifie pas
+- [x] sur le banc : `hideTabBar()` puis `showTabBar()` à 100 ms laisse `isHidden = false` ;
+- [x] sur le banc : un tap sur un bouton `isEnabled = false` ne change pas d'onglet et ne notifie pas
       le delegate ;
-- [ ] `redrawCustomTabBar` ne plante pas s'il est appelé avant chargement de la vue ;
-- [ ] DateLimite après `pod update` : barre de `ProductsController` correcte en rotation et au
-      retour de recherche ; cloche grisée de la fiche produit **non actionnable**.
+- [x] `redrawCustomTabBar` ne plante pas s'il est appelé avant chargement de la vue ;
+- [ ] **DateLimite après `pod update`** : barre de `ProductsController` correcte en rotation et au
+      retour de recherche ; cloche grisée de la fiche produit **non actionnable**. ← *reste à faire,
+      c'est ce qui bloque le passage en ✅*
+
+**Implémentation du 2026-09-18 :**
+
+- **E4** — `hideTabBar` teste `finished` avant de masquer. Un `showTabBar()` arrivé pendant les
+  0,3 s interrompt l'animation d'alpha, sa completion reçoit alors `finished == false` et ne masque
+  plus rien ;
+- **E2** — repris plus largement que prévu. Le simple filtre `isEnabled` **ne suffisait pas** : il
+  excluait bien le bouton désactivé, mais reportait alors le geste sur le **voisin le plus proche**,
+  donc déclenchait une action fausse — pire que le défaut d'origine. `touchesEnded` distingue
+  maintenant deux cas : un tap qui tombe **sur** un bouton désactivé ne fait rien, un tap ailleurs
+  dans la capsule active le bouton **actif** le plus proche. Au passage, les cadres sont ramenés
+  dans le repère de la barre par `convert(_:from:)` : l'ancien calcul comparait des `center` exprimés
+  dans la stack view à une position exprimée dans la barre, et ne marchait que parce que l'origine
+  de la stack view est (0, 0) ;
+- **E2 (rendu)** — `PTBarButton` gagne `disabledColor` et observe `isEnabled` ; un bouton désactivé
+  gardait jusqu'ici l'apparence d'un bouton actif, voire sélectionné ;
+- **E5** *(nouveau, cf. addendum de l'audit)* — `tabBar.items ?? []` au lieu du forçage, plus une
+  garde dans `select(at:)` qui ne notifie pas le delegate quand aucun bouton ne correspond ;
+- **M6** — les quatre lignes `updateConstraints()` / `updateConstraintsIfNeeded()` supprimées ; le
+  layout en attente est soldé **hors** du bloc d'animation ; garde `isViewLoaded` + contraintes non
+  nulles en tête de méthode ;
+- **M4** — contraintes ancrées sur `customTabBar.leadingAnchor` / `.trailingAnchor` au lieu du
+  `safeAreaLayoutGuide` de la barre elle-même.
+
+**Recette du 2026-09-18**, iPhone 17 / iOS 27, instrumentation temporaire du banc :
+
+```
+AUDIT >>> hideTabBar()
+AUDIT >>> showTabBar() a +100 ms
+AUDIT >>> E4 : isHidden=false alpha=1.00        ← avant correctif : isHidden=true alpha=1.00
+AUDIT >>> M6 : redraw avant viewDidLoad survecu
+```
+
+- tap **sur** le bouton désactivé (`position={181, 31}`, dans son cadre `{{120.7, 18.7}, {120.7, 25}}`)
+  → **aucune** écriture de `selectedIndex`, l'onglet ne bouge pas ;
+- tap dans la marge basse de la capsule (`position={180, 56}`, sous les icônes) → le bouton actif le
+  plus proche est activé, comportement voulu.
+
+> **Relevé à verser au Lot 5.** Le diagnostic a mesuré la taille réelle des boutons : environ
+> **121 × 24 pt**, soit une hauteur bien en deçà des 44 pt recommandés. C'est la règle du « bouton le
+> plus proche » qui rend la barre utilisable ; une fois l'activation portée par les boutons
+> eux-mêmes, il faudra leur donner une zone tactile conforme.
 
 ---
 
@@ -380,6 +425,29 @@ Critères de sortie :
 
 > Une entrée par session de travail : ce qui a été fait, ce qui a surpris, ce qui reste ouvert.
 > Les entrées les plus récentes en haut.
+
+### 2026-09-18 — Lot 1 en recette
+
+Cinq correctifs posés, tous vérifiés sur le banc ; reste la passe DateLimite, qui demande un
+`pod update` et une main sur l'app.
+
+Deux choses ne se sont pas passées comme prévu, et toutes deux ont amélioré le correctif :
+
+- **le filtre `isEnabled` seul était un mauvais correctif.** Il rendait le bouton désactivé inerte,
+  mais reportait le geste sur son voisin : l'utilisateur tapait la cloche grisée et déclenchait
+  « ajouter à la liste de courses ». Il fallait distinguer le tap *sur* un bouton désactivé du tap
+  dans la marge ;
+- **un défaut non répertorié est tombé pendant la recette** : `UITabBarController` charge sa vue dès
+  l'init, donc `viewDidLoad` s'exécute avant que l'appelant ait pu poser `viewControllers`, et le
+  `tabBar.items!` de la ligne 108 trappe. Tout `PTCardTabBarController()` construit par code
+  plantait. Consigné en **E5** dans l'audit — en addendum daté, le corps du document restant figé —
+  et corrigé ici, puisque c'est un crash et que le correctif est de deux lignes.
+
+L'audit avait classé ce forçage en simple risque au conditionnel. Il était atteignable dès l'init :
+seul l'ordre des lignes de l'exemple, et l'instanciation par storyboard côté DateLimite, le
+masquaient.
+
+**Prochain : Lot 2**, le cycle de rétention.
 
 ### 2026-09-18 — Lot 0 livré
 

@@ -31,7 +31,11 @@ open class PTCardTabBarController: UITabBarController {
     open func hideTabBar() {
         UIView.animate(withDuration: 0.3, animations: {
             self.customTabBar.alpha = 0
-        }, completion:  { _ in
+        }, completion: { finished in
+            // Un showTabBar() arrivé pendant les 0,3 s interrompt cette animation, et sa completion
+            // est alors appelée avec finished == false. Sans ce test, elle masquait une barre qu'on
+            // venait de réafficher : alpha à 1 mais isHidden, donc invisible et non interactive.
+            guard finished else { return }
             self.customTabBar.isHidden = true
         })
     }
@@ -105,7 +109,10 @@ open class PTCardTabBarController: UITabBarController {
         addAnotherSmallView()
         setupTabBar()
         
-        customTabBar.items = tabBar.items!
+        // UITabBarController charge sa vue dès l'init, donc ce viewDidLoad s'exécute avant que
+        // l'appelant ait pu poser `viewControllers` : `tabBar.items` est alors nil, et le forçage
+        // faisait planter tout PTCardTabBarController() construit par code.
+        customTabBar.items = tabBar.items ?? []
         customTabBar.select(at: selectedIndex)
     }
     
@@ -149,10 +156,14 @@ open class PTCardTabBarController: UITabBarController {
         customTabBar.bottomAnchor.constraint(equalTo: smallBottomView.topAnchor, constant: 0).isActive = true
         customTabBar.heightAnchor.constraint(equalToConstant: tabBarHeight).isActive = true
         
-        leadingConstraint = customTabBar.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: leftSpacing)
+        // On ancre sur la barre, pas sur SON safeAreaLayoutGuide : celui-ci se déduit de la
+        // position de la barre, qui dépend de cette contrainte — une dépendance circulaire que le
+        // moteur ne résout qu'en multipliant les passes de layout. La barre ne touchant aucun bord
+        // d'écran, ses insets sont nuls et le résultat géométrique est identique.
+        leadingConstraint = customTabBar.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: leftSpacing)
         leadingConstraint.isActive = true
         
-        trailingConstraint = customTabBar.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -rightSpacing)
+        trailingConstraint = customTabBar.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -rightSpacing)
         trailingConstraint.isActive = true
         
         self.view.bringSubviewToFront(customTabBar)
@@ -163,19 +174,25 @@ open class PTCardTabBarController: UITabBarController {
     }
     
     @objc open func redrawCustomTabBar(animated: Bool) {
-        if animated {
-            UIView.animate(withDuration: 0.25) {
-                self.leadingConstraint.constant = self.leftSpacing
-                self.trailingConstraint.constant = -self.rightSpacing
-                self.customTabBar.updateConstraints()
-                self.customTabBar.updateConstraintsIfNeeded()
-                self.view.layoutIfNeeded()
-            }
-        } else {
-            self.leadingConstraint.constant = self.leftSpacing
-            self.trailingConstraint.constant = -self.rightSpacing
-            self.customTabBar.updateConstraints()
-            self.customTabBar.updateConstraintsIfNeeded()
+        // Les contraintes sont posées par setupTabBar(), donc depuis viewDidLoad : appelé avant
+        // chargement de la vue, ce qui suit déréférencerait deux optionnels nuls.
+        guard isViewLoaded, leadingConstraint != nil, trailingConstraint != nil else { return }
+        
+        // On solde le layout en attente HORS du bloc : sinon l'animation embarque tout ce qui
+        // traînait d'invalidé dans la hiérarchie, contrôleurs enfants compris, au lieu du seul
+        // déplacement de la barre. Le layoutIfNeeded du bloc doit rester sur self.view : c'est
+        // l'ancêtre commun sur lequel les deux contraintes sont installées.
+        view.layoutIfNeeded()
+        
+        leadingConstraint.constant = leftSpacing
+        trailingConstraint.constant = -rightSpacing
+        
+        guard animated else {
+            view.layoutIfNeeded()
+            return
+        }
+        
+        UIView.animate(withDuration: 0.25) {
             self.view.layoutIfNeeded()
         }
     }

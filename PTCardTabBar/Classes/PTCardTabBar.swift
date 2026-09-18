@@ -253,6 +253,9 @@ public class PTCardTabBar: UIView {
             self.layoutIfNeeded()
         }
         
+        // Aucun bouton à cet index — barre encore vide, ou index hors bornes. Notifier ferait
+        // passer un PTBarButton! nul à un paramètre non optionnel, donc trap à l'appel.
+        guard let btn = btn else { return }
         self.delegate?.cardTabBar(self, didSelectItemAt: index, button: btn)
     }
     
@@ -269,13 +272,31 @@ public class PTCardTabBar: UIView {
             return
         }
         
-        let buttons = self.stackView.arrangedSubviews.compactMap { $0 as? PTBarButton }.filter { !$0.isHidden }
-        let distances = buttons.map { $0.center.distance(to: position) }
+        // Les boutons vivent dans la stack view : on ramène leurs cadres dans le repère de la
+        // barre avant toute comparaison avec `position`.
+        let frames = self.stackView.arrangedSubviews
+            .compactMap { $0 as? PTBarButton }
+            .filter { !$0.isHidden }
+            .map { (button: $0, frame: self.convert($0.bounds, from: $0)) }
         
-        let buttonsDistances = zip(buttons, distances)
+        // Un bouton désactivé ne consomme pas le touch, qui remonte donc jusqu'ici. Un tap qui
+        // tombe SUR lui ne doit rien déclencher — surtout pas l'action du voisin le plus proche.
+        if let touched = frames.first(where: { $0.frame.contains(position) }), !touched.button.isEnabled {
+            super.touchesEnded(touches, with: event)
+            return
+        }
         
-        if let closestButton = buttonsDistances.min(by: { $0.1 < $1.1 }) {
-            buttonTapped(sender: closestButton.0)
+        // Ailleurs dans la barre — marges, interstices — on active le bouton actif le plus proche,
+        // ce qui élargit la zone tactile à toute la capsule.
+        let closest = frames.filter { $0.button.isEnabled }.min {
+            CGPoint(x: $0.frame.midX, y: $0.frame.midY).distance(to: position) <
+            CGPoint(x: $1.frame.midX, y: $1.frame.midY).distance(to: position)
+        }
+        
+        if let closest = closest {
+            buttonTapped(sender: closest.button)
+        } else {
+            super.touchesEnded(touches, with: event)
         }
     }
     

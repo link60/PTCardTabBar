@@ -33,6 +33,20 @@ public class PTBarButton: UIButton {
         }
     }
     
+    /// Teinte d'un bouton désactivé. Sans elle, un bouton `isEnabled = false` gardait l'apparence
+    /// d'un bouton actif — voire celle d'un bouton sélectionné.
+    var disabledColor: UIColor! = UIColor(rgb: 0xc7c7c7) {
+        didSet {
+            reloadApperance()
+        }
+    }
+    
+    override public var isEnabled: Bool {
+        didSet {
+            reloadApperance()
+        }
+    }
+    
     init(forItem item: UITabBarItem) {
         super.init(frame: .zero)
         setImage(item.image, for: .normal)
@@ -61,6 +75,10 @@ public class PTBarButton: UIButton {
     }
     
     func reloadApperance(){
+        guard isEnabled else {
+            self.tintColor = disabledColor
+            return
+        }
         self.tintColor = isSelected ? selectedColor : unselectedColor
     }
     

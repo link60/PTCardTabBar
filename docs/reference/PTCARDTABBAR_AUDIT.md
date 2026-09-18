@@ -36,6 +36,33 @@ eux-mêmes un constat, cf. **F13**.
 
 ## Gravité élevée
 
+### E5 — `PTCardTabBarController()` par code plante — *ajouté le 2026-09-18 (Lot 1)*
+
+**Où :** [PTCardTabBarController.swift:108](../../PTCardTabBar/Classes/PTCardTabBarController.swift#L108)
+— `customTabBar.items = tabBar.items!`.
+
+Ce forçage était signalé dans l'audit initial comme un **risque** au conditionnel. Il est en fait
+**atteint dès l'init** : `UITabBarController.init(nibName:bundle:)` charge sa vue immédiatement,
+donc `viewDidLoad` s'exécute **avant** que l'appelant ait pu poser `viewControllers`. `tabBar.items`
+est alors `nil` et le forçage trappe.
+
+**Mesuré**, découvert en recettant le Lot 1 — un simple `PTCardTabBarController()` suffit :
+
+```
+EXC_BREAKPOINT (SIGTRAP)
+  libswiftCore  _assertionFailure(_:_:file:line:flags:)
+  PTCardTabBar  PTCardTabBarController.viewDidLoad()
+  UIKitCore     -[UITabBarController initWithNibName:bundle:]
+```
+
+Seules les sous-classes qui posent `viewControllers` **avant** d'appeler `super.viewDidLoad()` y
+échappent — c'est exactement ce que fait `PTTabBarViewController` dans l'exemple, ce qui masquait le
+défaut. DateLimite y échappe aussi : il instancie depuis un storyboard, où les segues de relation
+peuplent `viewControllers` au décodage.
+
+**Corrigé au Lot 1** : `tabBar.items ?? []`, plus une garde dans `select(at:)` qui ne notifie pas le
+delegate quand aucun bouton ne correspond — sans quoi la correction déplaçait simplement le trap.
+
 ### E1 — `delegate` fort + protocole non class-bound : cycle de rétention
 
 **Où :** [PTCardTabBar.swift:11](../../PTCardTabBar/Classes/PTCardTabBar.swift#L11) (`public protocol CardTabBarDelegate {`),
