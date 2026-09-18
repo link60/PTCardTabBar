@@ -1,0 +1,363 @@
+# Correctifs du pod `PTCardTabBar` — chantier lotti
+
+> **Carte ouverte le 2026-09-18 — backlog / `high`.** Remise en état du fork `link60` / branche
+> `badge` à partir du diagnostic de l'audit du même jour. Urgence `high` parce que quatre constats
+> (**E1** à **E4**) sont des défauts fonctionnels **reproduits sur simulateur**, dont deux
+> atteignent DateLimite en production.
+>
+> **Diagnostic :** [`PTCARDTABBAR_AUDIT.md`](../../reference/PTCARDTABBAR_AUDIT.md) — document de
+> référence **figé**, décrivant l'état du code avant tout correctif. Les identifiants `E*` / `M*` /
+> `F*` utilisés ici y renvoient et sont stables. Ne pas réécrire l'audit au fil des corrections :
+> c'est **cette carte** qui porte l'avancement.
+>
+> **Taille :** `L` — sept lots indépendants. **Rien n'est démarré à ce jour.**
+
+---
+
+## 1. Objectif
+
+Remettre le pod en état d'être maintenu : supprimer les quatre défauts fonctionnels mesurés, rendre
+la surface d'API cohérente, et rattraper la dette d'accessibilité — sans régression visible dans
+DateLimite, seul consommateur.
+
+Le chantier **n'est pas une réécriture**. La barre « carte », son rendu verre iOS 26+ et son API
+publique côté app restent ce qu'ils sont ; on corrige ce qui est faux et on nettoie ce qui est mort.
+
+## 2. Déclencheurs
+
+- **E1** aggravé par le multi-fenêtres : DateLimite déclare `UIApplicationSupportsMultipleScenes = true`
+  et instancie un `PTCardTabBarController` **par scène** ; chaque fenêtre iPad fermée fuit l'arbre
+  complet.
+- **E2** est un défaut visible par l'utilisateur : la cloche de notification grisée ouvre quand même
+  le flux.
+- **F13** — l'exemple du pod ne démarre plus sous iOS 27, donc plus aucun banc de validation : tout
+  correctif devrait aujourd'hui se tester dans DateLimite, ce qui est lent et risqué. C'est le vrai
+  bloquant du chantier, d'où un **Lot 0**.
+
+## 3. Périmètre
+
+**Ce qui bouge :** [`PTCardTabBar/Classes/**`](../../../PTCardTabBar/Classes),
+[`PTCardTabBar.podspec`](../../../PTCardTabBar.podspec), et le projet d'exemple
+(`Example/`) pour le seul Lot 0.
+
+**Ce qui ne bouge pas :**
+
+| Sujet | Décision |
+|---|---|
+| Rendu verre iOS 26+ (`UIGlassEffect`) | **Conservé.** Vérifié sur iOS 27 : capsule, rayon d'angle et effet corrects. |
+| `F10` — mélange `stackView.frame` posé à la main / Auto Layout sur `indicatorView` | **Hors périmètre.** Fonctionne ; le corriger demanderait de refondre le layout interne de la barre. Dette **assumée**, pas planifiée. |
+| Nom du pod, dépendance `BadgeHub` | Inchangés. `BadgeHub` reste non maintenu, mais le remplacer est un chantier distinct. |
+
+## 4. Contrainte de livraison
+
+`Pods/` est gitignoré côté DateLimite. Un lot n'existe pour l'app qu'une fois **poussé sur la
+branche `badge`** puis récupéré par `pod update PTCardTabBar`. Le `Podfile.lock` épingle un SHA
+(`de21149…` à l'ouverture de cette carte) et `s.version` du podspec ne bouge jamais : **c'est le SHA
+qui fait foi**, pas le numéro de version.
+
+Conséquence pratique : chaque lot se termine par un `pod update` côté app et une vérification que
+DateLimite **compile et se comporte** comme avant. Un lot n'est pas livré tant que ce dernier point
+n'est pas fait.
+
+## 5. Banc de validation
+
+Le banc est l'app d'exemple du pod, remise en route au Lot 0.
+
+| Support | Rôle |
+|---|---|
+| iPhone 17 / iOS 27 — `CB5E2618-2AA4-4A50-BDF7-56B64E04ED60` | banc principal, c'est là qu'ont été mesurés E1 à E4 |
+| iPad Air 13" / iOS 27 — `3A1905DA-0621-441C-9852-4E7E92E0C6F1` | vérification iPad, notamment le Lot 6 |
+| iPad Air 13" / iOS 26.5 — `0D6B9095-F6D0-4FA3-9D65-5987F28CDCAA` | témoin sain pour comparaison |
+
+Les mesures se font par instrumentation temporaire de l'exemple (`NSLog` + `log stream` filtré),
+jamais par modification du pod pour les besoins du test.
+
+---
+
+## 6. Découpage et suivi
+
+### Convention de suivi
+
+- `⬜ À faire` : lot non démarré ou en cours ;
+- `🟡 En recette` : implémentation terminée, mais un ou plusieurs critères restent à vérifier ;
+- `✅ Livré` : lot terminé, vérifié et répondant à tous ses critères de sortie.
+
+Lorsqu'un lot est livré, remplacer son statut dans le tableau ci-dessous, cocher ses critères de
+sortie et ajouter un bloc **Implémentation du \<date\>** sous le lot. Un lot n'est pas livré sur la
+seule base du commit : la vérification sur le banc **et** le `pod update` côté DateLimite doivent
+être faits.
+
+| Lot | Objet | Taille | Statut |
+|---:|---|:---:|:---:|
+| 0 | Remise en route du banc de validation | S | ⬜ À faire |
+| 1 | Correctifs sûrs, sans rupture d'API | M | ⬜ À faire |
+| 2 | Cycle de rétention du `delegate` | S | ⬜ À faire |
+| 3 | Unification de la sélection | M/L | ⬜ À faire |
+| 4 | Nettoyage et surface d'API | M | ⬜ À faire |
+| 5 | Accessibilité et Dynamic Type | L | ⬜ À faire |
+| 6 | Mesure iPad — forçage de la classe de taille | S | ⬜ À faire |
+
+### Couverture des constats de l'audit
+
+Aucun constat ne doit disparaître en silence.
+
+| Constat | Lot | Constat | Lot | Constat | Lot |
+|---|:---:|---|:---:|---|:---:|
+| E1 | 2 | M3 | 6 | F5 | 0 + 4 |
+| E2 | 1 | M4 | 1 | F6 | 4 |
+| E3 | 3 | M5 | 3 | F7 | 5 |
+| E4 | 1 | M6 | 1 | F8 | 5 |
+| M1 | 3 | M7 | 4 | F9 | 4 |
+| M2 | 4 | F1 à F4 | 4 | F10 | *hors périmètre* |
+| | | F11, F12 | 4 | F13 | 0 |
+| | | F14 | 0 + 4 | F15 | 4 |
+
+---
+
+### Lot 0 — Remise en route du banc de validation
+
+**Constats : F13, F14 (partie exemple), F5 (badge de démo).**
+
+Sans banc, tout le reste se teste dans DateLimite. C'est le premier lot, même s'il ne touche pas une
+ligne du pod.
+
+- ajouter un `post_install` à `Example/Podfile` qui supprime `IPHONEOS_DEPLOYMENT_TARGET` des cibles
+  Pods — c'est ce que fait déjà DateLimite (`Podfile:72`) et c'est ce qui débloque `BadgeHub`,
+  figé à iOS 10 et refusé par Xcode 27 ;
+- adopter le cycle de vie `UIScene` dans l'exemple : manifeste `UIApplicationSceneManifest` dans
+  `Example/PTCardTabBar/Info.plist` + un `SceneDelegate` ; sans quoi iOS 27 tue l'app au lancement
+  (`_UIApplicationEvaluateRuntimeIssueForNoSceneLifecycleAdoption`, `EXC_BREAKPOINT`) ;
+- nettoyer `UIRequiredDeviceCapabilities = armv7` du même plist ;
+- corriger la démo de badge : `PTTabBarViewController` poste `["index": 0]` **sans la clé `"value"`**,
+  que `setBadge` exige — le badge de démo ne s'est donc jamais affiché.
+
+> Le correctif de ce lot a déjà été écrit et éprouvé pendant l'audit (build + lancement OK sur
+> iPhone 17 / iOS 27), mais **il n'a pas été conservé** : l'arbre de travail a été restauré à la fin
+> de l'audit. Il est à réécrire, ce qui reste une dizaine de lignes.
+
+Critères de sortie :
+
+- [ ] `xcodebuild -workspace Example/PTCardTabBar.xcworkspace -scheme PTCardTabBar-Example` passe
+      **sans override** de `IPHONEOS_DEPLOYMENT_TARGET` en ligne de commande ;
+- [ ] l'exemple démarre sur iPhone 17 / iOS 27 et les trois onglets répondent ;
+- [ ] le badge de démo s'affiche après les 5 s de la temporisation ;
+- [ ] le contrat du `userInfo` de `PTCardTabBarBadgeNotification` (`index`, `value`) est écrit dans
+      le README du pod.
+
+---
+
+### Lot 1 — Correctifs sûrs, sans rupture d'API
+
+**Constats : E4, E2, M4, M6.** Aucune signature publique ne change ; c'est le lot à faible risque et
+fort rendement.
+
+- **E4 — course `hideTabBar` / `showTabBar`.** La completion ignore le flag `finished` et masque une
+  barre qu'on vient de réafficher (mesuré : `isHidden = true` avec `alpha = 1.00`). Correctif d'une
+  ligne, **déjà validé par la mesure** pendant l'audit :
+  ```swift
+  }, completion: { finished in
+      if finished { self.customTabBar.isHidden = true }
+  })
+  ```
+- **E2 — bouton désactivé actionnable.** `touchesEnded` filtre `isHidden` mais pas `isEnabled` :
+  ajouter `&& $0.isEnabled` au filtre, et faire connaître l'état désactivé à
+  `PTBarButton.reloadApperance()`, qui ne regarde aujourd'hui que `isSelected`.
+- **M6 — `redrawCustomTabBar`.** Supprimer les **quatre** lignes `updateConstraints()` /
+  `updateConstraintsIfNeeded()` (sans effet : `PTCardTabBar` ne surcharge pas `updateConstraints`) ;
+  solder le layout en attente **avant** d'ouvrir le bloc d'animation ; ajouter une garde sur les
+  contraintes IUO, nulles tant que la vue n'est pas chargée.
+- **M4 — dépendance circulaire de contrainte.** Ancrer sur `customTabBar.leadingAnchor` /
+  `.trailingAnchor` plutôt que sur le `safeAreaLayoutGuide` **de la barre elle-même**. Résultat
+  géométrique identique, sans la boucle de layout.
+
+Critères de sortie :
+
+- [ ] sur le banc : `hideTabBar()` puis `showTabBar()` à 100 ms laisse `isHidden = false` ;
+- [ ] sur le banc : un tap sur un bouton `isEnabled = false` ne change pas d'onglet et ne notifie pas
+      le delegate ;
+- [ ] `redrawCustomTabBar` ne plante pas s'il est appelé avant chargement de la vue ;
+- [ ] DateLimite après `pod update` : barre de `ProductsController` correcte en rotation et au
+      retour de recherche ; cloche grisée de la fiche produit **non actionnable**.
+
+---
+
+### Lot 2 — Cycle de rétention du `delegate`
+
+**Constat : E1.** Le plus grave, et le plus simple à corriger.
+
+```swift
+public protocol CardTabBarDelegate: AnyObject { … }
+public weak var delegate: CardTabBarDelegate?
+```
+
+Rupture d'API **théorique** : un delegate `struct` deviendrait impossible. Les deux conformeurs
+connus sont des classes — `PTCardTabBarController` lui-même, et `ProductTabBarManager` côté app, qui
+**contourne déjà** le problème avec un `private weak var host` et documente la contrainte subie dans
+son en-tête. Le correctif rend ce contournement inutile, sans l'obliger à changer.
+
+Critères de sortie :
+
+- [ ] sur le banc : `deinit` du contrôleur observé après `dismiss` (A/B déjà fait pendant l'audit —
+      sans correctif aucun `deinit`, avec correctif il part) ;
+- [ ] DateLimite compile après `pod update`, sans adaptation de `ProductTabBarManager` ;
+- [ ] sur iPad, ouvrir puis fermer une seconde fenêtre principale ne laisse pas de
+      `PTCardTabBarController` vivant (à vérifier au graphe de rétention Xcode).
+
+---
+
+### Lot 3 — Unification de la sélection
+
+**Constats : E3, M1, M5.** Le lot le plus délicat : il touche le chemin nominal de sélection d'onglet.
+
+Aujourd'hui `PTCardTabBar` expose **deux** `select(at:)` aux sémantiques opposées — l'une pose
+`isSelected` et notifie toujours, l'autre pose `tintColor` directement et ne touche pas à
+`isSelected`. La résolution de surcharge a été établie au compilateur : **toute sélection
+programmatique passe par celle qui ne met pas `isSelected` à jour**, d'où le surlignage qui saute
+sur le mauvais onglet au premier rafraîchissement de teinte.
+
+- fusionner en une seule méthode qui pose `isSelected`, déplace l'indicateur et notifie selon le
+  paramètre ; les appels internes passent `notifyDelegate` explicitement ;
+- **M1** — `reloadViews()` ne doit plus notifier le delegate. Aujourd'hui il le fait, ce qui provoque
+  deux notifications dans `viewDidLoad` (mesuré : deux écritures de `selectedIndex`), écrase un
+  `selectedIndex` préréglé et déclenche un `popToRootViewController(animated: true)` involontaire ;
+- rendre le bouton **optionnel** dans la signature du delegate, ou sortir tôt si aucun bouton ne
+  correspond : aujourd'hui un `PTBarButton!` nul est passé à un paramètre non optionnel, donc trap ;
+- **M5** — remettre `indicatorViewXConstraint` à `nil` dans `reloadViews()` (il retient un bouton
+  retiré de la hiérarchie), et réutiliser les boutons existants quand le nombre d'items ne change pas.
+
+> ⚠️ **Mine à désamorcer au passage.** Côté DateLimite, ce qui empêche aujourd'hui
+> `DetailProductHelper.configure()` de crasher — ou pire, de déclencher le tag `0` de la barre
+> gauche, c'est-à-dire `dismiss()`, à l'ouverture d'une fiche — est **uniquement l'ordre des
+> lignes** : `indicatorIsHidden = true` (`:99-100`) avant l'affectation d'`items`. Après ce lot,
+> l'ordre ne doit plus rien changer. C'est un critère de sortie.
+
+Critères de sortie :
+
+- [ ] une seule notification du delegate pendant `viewDidLoad`, et aucun `popToRootViewController`
+      involontaire ;
+- [ ] après un `selectedIndex` programmatique, `isSelected` est cohérent et un
+      `reloadApperance()` ne déplace plus le surlignage ;
+- [ ] inverser l'ordre `indicatorIsHidden` / `items` dans `DetailProductHelper.configure()` reste
+      sans effet (test à faire en local, **à ne pas commiter côté app**) ;
+- [ ] DateLimite : ouverture d'un push recette puis rotation → le bon onglet reste surligné ;
+- [ ] DateLimite : fiche produit, barres gauche et droite, tous les boutons routent vers la bonne
+      action.
+
+---
+
+### Lot 4 — Nettoyage et surface d'API
+
+**Constats : M2, M7, F1 à F6, F9, F11, F12, F14 (`.travis.yml`), F15.** Rupture d'API **assumée** :
+à faire passer côté DateLimite dans la foulée.
+
+- **Code mort** (zéro appelant, vérifié sur pod + exemple + app) : `ReplaceMe.swift` (fichier vide),
+  `add(item:)` et `remove(item:)` — morts **et faux**, `PTClearCardTabBar`, `UIColor.by(r:g:b:a:)`,
+  `pinToSafeArea` / `pinToSuperView` / `centerInSuperView` / `constraint(height:)`,
+  `PTBarButton.init(forItem:)`, le `deinit` de `PTCardTabBar` ;
+- **M2** — renommer `setTabBarHidden(_:animated:)` en `setCardTabBarHidden(_:animated:)`, ou le
+  supprimer : c'est un **override de l'API UIKit iOS 18** (vérifié dans l'en-tête du SDK 27), sans
+  appel à `super`, qui détourne `isTabBarHidden` ;
+- **M7** — supprimer `tabBarBackgroundColor` (mort et concurrent de `mainColor`) ; promouvoir
+  `glassMode`, `mainColor` et `border` en `public` sur `PTCardTabBar`, qu'une barre utilisée seule —
+  le cas de la fiche produit — puisse enfin être configurée ; ré-résoudre les `cgColor` au changement
+  de trait, sans quoi une couleur de bordure dynamique ne suit pas le mode sombre ;
+- **F11** — rendre la conformité `CardTabBarDelegate` surchargeable : déclarée en extension, elle
+  interdit aujourd'hui toute interception de la sélection par une sous-classe ;
+- **F6** — sortir `badgeLayout(self)` de `layoutSubviews` : il instancie un `BadgeHub` par bouton même
+  sans badge, et réapplique frame, échelle et police à chaque passe ;
+- **F9** — poser `shadowPath` dans `layoutSubviews`, où le `cornerRadius` est déjà recalculé ;
+- **F12** — podspec : pointer `homepage` et `source` sur le fork `link60` ;
+- **F15** — `reloadApperance` → `reloadAppearance` (symbole interne, renommage sans coût) ;
+- **F14** — supprimer `.travis.yml` (CI morte).
+
+Critères de sortie :
+
+- [ ] aucun symbole mort restant (re-passer le relevé d'appelants de l'audit) ;
+- [ ] DateLimite compile après `pod update`, renommages répercutés ;
+- [ ] la fiche produit peut fixer l'apparence de ses deux barres sur iOS 26+ ;
+- [ ] une couleur de bordure dynamique suit la bascule clair/sombre.
+
+---
+
+### Lot 5 — Accessibilité et Dynamic Type
+
+**Constats : F7, F8.** Le plus gros lot fonctionnel, et le seul qui apporte quelque chose à
+l'utilisateur final au-delà de la correction de défauts.
+
+`addButton(with:tag:)` ne retient de l'`UITabBarItem` que **`image` et `tag`** : `title`,
+`accessibilityLabel`, `accessibilityIdentifier` et `badgeValue` sont jetés. Les boutons n'ont donc ni
+nom, ni trait `.tab`, ni reflet de l'état sélectionné, et la barre n'est pas exposée comme `.tabBar`.
+S'y ajoute le fait que la sélection est pilotée par `touchesEnded` sur le conteneur plutôt que par
+l'action des boutons.
+
+- reprendre `title` / `accessibilityLabel` / `accessibilityIdentifier` de l'item sur le bouton ;
+- poser `accessibilityTraits = [.button, .tab]`, `.tabBar` sur le conteneur, et refléter la sélection
+  via le trait `.selected` ;
+- faire porter l'activation par les boutons eux-mêmes, `touchesEnded` ne restant qu'un élargissement
+  de la zone tactile ;
+- **F8** — faire suivre `tabBarHeight` et la police du badge aux tailles de texte ; miroiter le
+  décalage du badge en RTL (aujourd'hui en dur à droite du centre).
+
+> **Gain collatéral côté app :** les tests UI de DateLimite notent que la barre « n'est pas tappable
+> de manière fiable depuis XCUI » et contournent par un launch argument `-SnapshotInitialTab`. Ce lot
+> devrait permettre de le retirer — XCUI et VoiceOver lisent le même arbre.
+
+Critères de sortie :
+
+- [ ] VoiceOver annonce chaque onglet par son nom et son état sélectionné ;
+- [ ] la barre est annoncée comme barre d'onglets, pas comme une pile de boutons anonymes ;
+- [ ] à la plus grande taille de texte, la barre reste lisible et les badges ne débordent pas ;
+- [ ] en RTL, le badge est du bon côté ;
+- [ ] un test XCUI tape un onglet **sans** `-SnapshotInitialTab` (validation faite côté DateLimite).
+
+---
+
+### Lot 6 — Mesure iPad : forçage de la classe de taille
+
+**Constat : M3 — le seul point de l'audit resté au stade de l'hypothèse.**
+
+`traitOverrides.horizontalSizeClass = .compact` s'applique à **toute la hiérarchie enfant** sur iPad :
+chaque contrôleur d'onglet croit tourner sur iPhone. Effets attendus — popovers rendus en sheets,
+`UISplitViewController` imbriqués qui se collapsent, layouts adaptatifs qui basculent. DateLimite
+place ce contrôleur dans le `secondary` d'un `PrimarySplitViewController`, donc en plein dedans.
+
+Ce lot est une **mesure, pas un correctif** : comparer les écrans enfants avec et sans la ligne, sur
+`3A1905DA…` (iOS 27) avec `0D6B9095…` (26.5) en témoin, puis arbitrer entre garder le forçage et
+passer par `isTabBarHidden` — disponible depuis iOS 18 et aujourd'hui masqué par l'override traité
+au Lot 4.
+
+Critères de sortie :
+
+- [ ] verdict écrit dans cette carte, captures à l'appui ;
+- [ ] décision prise : forçage conservé, remplacé, ou nouveau lot ouvert.
+
+---
+
+### Jalons
+
+| Jalon | Contenu | Statut |
+|---|---|:---:|
+| **J1 — le pod redevient testable** | Lot 0 | ⬜ |
+| **J2 — plus de défaut fonctionnel connu** | Lots 1, 2, 3 | ⬜ |
+| **J3 — API saine** | Lot 4 | ⬜ |
+| **J4 — accessible** | Lot 5 | ⬜ |
+| **J5 — dernière zone d'ombre levée** | Lot 6 | ⬜ |
+
+---
+
+## 7. Journal
+
+> Une entrée par session de travail : ce qui a été fait, ce qui a surpris, ce qui reste ouvert.
+> Les entrées les plus récentes en haut.
+
+### 2026-09-18 — ouverture de la carte
+
+Audit global du pod mené sur `HEAD = de21149`, avec vérification sur pièces (simulateur iPhone 17 /
+iOS 27, sonde `@available` au compilateur, en-têtes du SDK iOS 27). Quatre défauts mesurés, sept
+points moyens, quinze points d'hygiène — cf. [`PTCARDTABBAR_AUDIT.md`](../../reference/PTCARDTABBAR_AUDIT.md).
+
+Deux correctifs ont été **écrits et éprouvés pendant l'audit puis défaits** avec la restauration de
+l'arbre de travail : la remise en route du banc (Lot 0) et le `if finished` de **E4** (Lot 1). Ils
+sont à réécrire, mais leur validité est établie.
+
+**Rien n'est commité ni poussé.** La branche `badge` est intacte sur `de21149`.
