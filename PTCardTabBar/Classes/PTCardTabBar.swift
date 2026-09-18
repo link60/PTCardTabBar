@@ -15,20 +15,13 @@ public protocol CardTabBarDelegate: AnyObject {
     func cardTabBar(_ sender: PTCardTabBar, didSelectItemAt index: Int, button: PTBarButton)
 }
 
-public class PTClearCardTabBar: PTCardTabBar {
-    override var glassMode: Int {
-        get { 1 }
-        set { super.glassMode = 1 }
-    }
-}
-
 public class PTCardTabBar: UIView {
     
     public weak var delegate: CardTabBarDelegate?
     
     var effectView: UIVisualEffectView? = nil
     
-    var glassMode: Int = 0 {
+    public var glassMode: Int = 0 {
         didSet {
             if #available(iOS 26.0, *) {
                 self.effectView?.effect = UIGlassEffect(style: UIGlassEffect.Style(rawValue: self.glassMode) ?? .regular)
@@ -36,7 +29,7 @@ public class PTCardTabBar: UIView {
         }
     }
     
-    var mainColor: UIColor = .tertiarySystemBackground {
+    public var mainColor: UIColor = .tertiarySystemBackground {
         didSet {
             if #available(iOS 26.0, *) {} else {
                 self.backgroundColor = self.mainColor
@@ -44,25 +37,51 @@ public class PTCardTabBar: UIView {
         }
     }
     
-    var border: (UIColor, Int) = (.clear, 0) {
+    public var border: (UIColor, Int) = (.clear, 0) {
         didSet {
-            self.layer.borderColor = self.border.0.cgColor
-            self.layer.borderWidth = CGFloat(self.border.1)
+            applyBorder()
         }
     }
     
+    /// Un `UIColor` dynamique se fige au moment où on en tire un `cgColor` : sans ré-résolution à
+    /// chaque changement de trait, une bordure définie en couleur sémantique ne suivrait pas la
+    /// bascule clair/sombre.
+    private func applyBorder() {
+        layer.borderColor = border.0.resolvedColor(with: traitCollection).cgColor
+        layer.borderWidth = CGFloat(border.1)
+    }
+    
+    /// Les onglets de la barre.
+    ///
+    /// ⚠️ **Toute mutation reconstruit l'intégralité des boutons** — y compris un `append`, un
+    /// `insert` ou un `remove`, qui passent par ce `didSet`. Ce qui a été posé sur un bouton
+    /// existant (`badgeLayout`, `isEnabled`, une image personnalisée via `setImage`) est perdu.
+    /// Posez donc vos personnalisations **après** la dernière mutation d'`items`.
+    ///
+    /// La réutilisation des boutons a été écartée sciemment : elle demanderait une identité d'item
+    /// stable, or `tag` vaut 0 par défaut et rien n'oblige un appelant à le renseigner — deux items
+    /// distincts seraient alors confondus.
     open var items: [UITabBarItem] = [] {
         didSet {
             reloadViews()
         }
     }
     
-    override open func tintColorDidChange() {
-        super.tintColorDidChange()
-        reloadApperance()
+    @available(iOS, deprecated: 17.0, message: "Remplacé par registerForTraitChanges au-delà d'iOS 17")
+    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if #available(iOS 17.0, *) { return }   // déjà couvert par registerForTraitChanges
+        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+            applyBorder()
+        }
     }
     
-    func reloadApperance() {
+    override open func tintColorDidChange() {
+        super.tintColorDidChange()
+        reloadAppearance()
+    }
+    
+    func reloadAppearance() {
         
         buttons().forEach { button in
             button.selectedColor = tintColor
@@ -169,14 +188,6 @@ public class PTCardTabBar: UIView {
         setup()
     }
     
-    deinit {
-        stackView.arrangedSubviews.forEach {
-            if let button = $0 as? UIControl {
-                button.removeTarget(self, action: #selector(buttonTapped(sender:)), for: .touchUpInside)
-            }
-        }
-    }
-    
     private func setup(){
         translatesAutoresizingMaskIntoConstraints = false
         
@@ -200,20 +211,13 @@ public class PTCardTabBar: UIView {
         self.layer.shadowRadius = 6
         self.layer.shadowOpacity = 0.15
         
-        tintColorDidChange()
-    }
-    
-    func add(item: UITabBarItem){
-        self.items.append(item)
-        self.addButton(with: item.image!, tag: item.tag)
-    }
-    
-    func remove(item: UITabBarItem){
-        if let index = self.items.firstIndex(of: item) {
-            self.items.remove(at: index)
-            let view = self.stackView.arrangedSubviews[index]
-            self.stackView.removeArrangedSubview(view)
+        if #available(iOS 17.0, *) {
+            registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (barre: PTCardTabBar, _) in
+                barre.applyBorder()
+            }
         }
+        
+        tintColorDidChange()
     }
     
     private func addButton(with image: UIImage, tag: Int = 0){
@@ -275,7 +279,7 @@ public class PTCardTabBar: UIView {
     /// Il existait deux `select(at:)` aux sémantiques opposées — l'une posait `isSelected` et
     /// notifiait toujours, l'autre écrivait `tintColor` en direct sans toucher à `isSelected`. La
     /// résolution de surcharge envoyait toute sélection **programmatique** vers la seconde, si
-    /// bien que `isSelected` restait périmé et que le premier `reloadApperance()` venu repeignait
+    /// bien que `isSelected` restait périmé et que le premier `reloadAppearance()` venu repeignait
     /// le surlignage sur le mauvais onglet. Une seule méthode désormais.
     ///
     /// En `.actions`, rien n'est sélectionné : seul le delegate est notifié.
@@ -357,6 +361,8 @@ public class PTCardTabBar: UIView {
         effectView?.frame = bounds
         layer.cornerRadius = bounds.height / 2
         effectView?.layer.cornerRadius = layer.cornerRadius
+        // Sans shadowPath, Core Animation redessine l'ombre hors écran à chaque changement de taille.
+        layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: layer.cornerRadius).cgPath
     }
 }
 

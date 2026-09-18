@@ -10,8 +10,7 @@
 > `F*` utilisés ici y renvoient et sont stables. Ne pas réécrire l'audit au fil des corrections :
 > c'est **cette carte** qui porte l'avancement.
 >
-> **Taille :** `L` — sept lots indépendants. **Lots 0, 1 et 2 livrés ; Lot 3 en recette, en
-> attente du correctif côté app et de sa vérification.**
+> **Taille :** `L` — sept lots indépendants. **Lots 0, 1 et 2 livrés ; Lots 3 et 4 en recette.**
 
 ---
 
@@ -103,7 +102,7 @@ seule base du commit : la vérification sur le banc **et** le `pod update` côt�
 | 1 | Correctifs sûrs, sans rupture d'API | M | ✅ Livré — 2026-09-18 |
 | 2 | Cycle de rétention du `delegate` | S | ✅ Livré — 2026-09-18 |
 | 3 | Unification de la sélection | M/L | 🟡 En recette — 2026-09-18 |
-| 4 | Nettoyage et surface d'API | M | ⬜ À faire |
+| 4 | Nettoyage et surface d'API | M | 🟡 En recette — 2026-09-18 |
 | 5 | Accessibilité et Dynamic Type | L | ⬜ À faire |
 | 6 | Mesure iPad — forçage de la classe de taille | S | ⬜ À faire |
 
@@ -120,6 +119,7 @@ Aucun constat ne doit disparaître en silence.
 | E4 | 1 | M6 | 1 | F8 | 5 |
 | M1 | 3 | M7 | 4 | F9 | 4 |
 | M2 | 4 | F1 à F4 | 4 | F10 | *hors périmètre* |
+| M5 | 3 + 4 | | | | |
 | | | F11, F12 | 4 | F13 | 0 |
 | | | F14 | 0 + 4 | F15 | 4 |
 
@@ -397,10 +397,11 @@ Critères de sortie :
 - [~] **DateLimite, régression E3** : le **mécanisme** est vérifié — sélection programmatique pure
       (`-SnapshotInitialTab settings`, zéro tap) puis deux `reloadApperance()` provoqués par une
       bascule clair/sombre, plus une passe de layout par aller-retour arrière-plan : l'onglet reste
-      surligné à chaque fois. **La rotation elle-même n'a pas pu être jouée** : `Simulator.app`
-      n'est pas installé sur ce poste, les simulateurs tournent en headless et `simctl ui` ne gère
-      pas l'orientation. Reste à confirmer sur appareil, ou par un UITest
-      `XCUIDevice.shared.orientation` ;
+      surligné à chaque fois. **La rotation elle-même ne peut pas être jouée en ligne de
+      commande** : `Simulator.app` a disparu avec Xcode 27, et `simctl ui` ne gère que
+      l'apparence et le contraste, pas l'orientation. Ce n'est pas une install cassée sur ce poste,
+      c'est l'outil qui n'existe plus. Il faut donc un UITest `XCUIDevice.shared.orientation` ou
+      un appareil ;
 - [ ] **re-recette après le correctif de régression ci-dessous** — un nouveau `pod update` est
       nécessaire, la recette précédente portait sur `9462516`.
 
@@ -493,10 +494,64 @@ l'onglet 0. Il reste maintenant sur l'onglet 2.
 
 Critères de sortie :
 
-- [ ] aucun symbole mort restant (re-passer le relevé d'appelants de l'audit) ;
-- [ ] DateLimite compile après `pod update`, renommages répercutés ;
-- [ ] la fiche produit peut fixer l'apparence de ses deux barres sur iOS 26+ ;
-- [ ] une couleur de bordure dynamique suit la bascule clair/sombre.
+- [x] aucun symbole mort restant ;
+- [x] relevé d'appelants côté app repassé sur les onze symboles supprimés ou renommés : **zéro
+      usage**, et aucune sous-classe de `PTCardTabBarController` — les ruptures d'API ne mordent
+      donc nulle part ;
+- [x] la fiche produit peut fixer l'apparence de ses deux barres sur iOS 26+ (`glassMode`,
+      `mainColor` et `border` sont désormais `public` sur `PTCardTabBar`) ;
+- [x] une couleur de bordure dynamique suit la bascule clair/sombre ;
+- [ ] **DateLimite compile après `pod update`** — vérification de bout en bout à refaire, la
+      précédente portait sur `9462516`.
+
+**Implémentation du 2026-09-18 :**
+
+*Suppressions* — `ReplaceMe.swift` (fichier vide), `.travis.yml` (CI morte), `PTClearCardTabBar`,
+`add(item:)` / `remove(item:)` (morts **et** faux), `UIColor.by(r:g:b:a:)`, quatre helpers
+d'`UIView+AutoLayout` sans appelant, `PTBarButton.init(forItem:)`, le `deinit` de `PTCardTabBar`
+(retirer des targets qu'`UIControl` ne retient pas, en réveillant au passage un `lazy var`), et
+`tabBarBackgroundColor` (mort, et concurrent de `mainColor`).
+
+*Surface d'API* —
+
+- **M2** : `setTabBarHidden(_:animated:)` devient `setCardTabBarHidden(_:animated:)`. L'ancien nom
+  **surchargeait** la méthode UIKit d'`UITabBarController` (iOS 18+) sans appeler `super` : régler
+  `isTabBarHidden` passait par le pod et ne masquait pas la barre native ;
+- **M7** : `glassMode`, `mainColor` et `border` passent en `public`. Une barre utilisée seule — les
+  deux de la fiche produit, instanciées depuis un storyboard — n'avait jusqu'ici **aucun** moyen de
+  choisir son apparence, ces réglages n'étant exposés que sur le contrôleur ;
+- **F11** : la conformité `CardTabBarDelegate` quitte l'extension pour le corps de la classe, en
+  `open`. Une conformité portée par une extension ne peut pas être surchargée, ce qui privait les
+  sous-classes de tout point d'entrée pour intercepter la sélection ;
+- **F15** : `reloadApperance` → `reloadAppearance` (symbole interne, sans coût pour les appelants).
+
+*Corrections* —
+
+- **M7** : la bordure ré-résout son `UIColor` à chaque changement de trait
+  (`registerForTraitChanges` sur iOS 17+, `traitCollectionDidChange` en deçà). Un `cgColor` fige la
+  couleur au moment de l'affectation : une bordure sémantique ne suivait pas le mode sombre ;
+- **F6** : `badgeLayout` n'est plus appelé à chaque passe de `layoutSubviews`. Comme `badge` est un
+  `lazy var`, cet appel instanciait un `BadgeHub` pour **chaque** bouton, badge ou pas. Une garde
+  `hasBadge` le réserve aux boutons qui en portent un ;
+- **F9** : `shadowPath` posé dans `layoutSubviews`, à côté du `cornerRadius` déjà recalculé là.
+  Sans lui, Core Animation redessine l'ombre hors écran à chaque changement de taille ;
+- **F12** : `homepage` et `source` du podspec pointent sur le fork `link60`, avec une note disant
+  que la consommation se fait par branche et que c'est le SHA du `Podfile.lock` qui fait foi.
+
+> **M5 — réutilisation des boutons : écartée, avec preuve.** Reportée du Lot 3, elle demande une
+> identité d'item stable pour savoir quel bouton réutiliser. Le seul candidat est `tag`, qui vaut
+> **0 par défaut** : vérification faite dans `Main-Common.storyboard`, aucun des items de la barre
+> principale de DateLimite n'en déclare un, ils sont donc tous à 0 et indiscernables. Pire,
+> `showRecipesController` modifie l'**image d'un item en place** — réutiliser sans resynchroniser
+> l'image ferait disparaître le changement d'icône, et resynchroniser écraserait les images
+> personnalisées de `updateNotificationIcon`. Le contrat est donc **documenté** sur `items` à la
+> place : toute mutation reconstruit les boutons, les personnalisations se posent après. L'autre
+> moitié de M5 — la contrainte d'indicateur qui retenait une vue morte — a bien été corrigée au
+> Lot 3.
+
+**Recette du 2026-09-18** : `pod install` accepte le podspec modifié, `BUILD SUCCEEDED` sur
+l'exemple, et l'app tourne — barre rendue, point indicateur sous l'onglet courant, badge affiché,
+onglets non sélectionnés en gris. Aucun symbole supprimé n'est utilisé côté DateLimite.
 
 ---
 
@@ -570,6 +625,24 @@ Critères de sortie :
 
 > Une entrée par session de travail : ce qui a été fait, ce qui a surpris, ce qui reste ouvert.
 > Les entrées les plus récentes en haut.
+
+### 2026-09-18 — Lot 4 en recette
+
+Gros lot en volume, faible en risque : l'essentiel est du retrait. Onze symboles supprimés ou
+renommés, zéro usage côté app — les ruptures d'API annoncées ne mordent nulle part.
+
+Deux choses méritent d'être retenues :
+
+- **`setTabBarHidden` n'était pas du code mort inoffensif.** C'était un override d'une méthode
+  UIKit d'`UITabBarController`, sans `super`. Tant que personne ne l'appelait, rien ne se voyait ;
+  le jour où quelqu'un aurait réglé `isTabBarHidden` pour masquer la barre native d'iPadOS 18, il
+  aurait obtenu un fondu d'opacité sur la barre custom et rien d'autre ;
+- **la réutilisation des boutons a été écartée pour la deuxième fois, cette fois avec une preuve.**
+  Le storyboard de DateLimite ne pose aucun `tag` sur les items de la barre principale : ils valent
+  tous 0, donc aucune identité d'item exploitable. La documenter valait mieux que la simuler.
+
+**Prochain : Lot 5**, accessibilité et Dynamic Type — le seul lot qui apporte quelque chose à
+l'utilisateur final au-delà de la correction de défauts.
 
 ### 2026-09-18 — Lot 3, correctif de régression
 

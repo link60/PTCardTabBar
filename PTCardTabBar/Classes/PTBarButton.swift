@@ -23,13 +23,13 @@ public class PTBarButton: UIButton {
     
     var selectedColor: UIColor! = .black {
         didSet {
-            reloadApperance()
+            reloadAppearance()
         }
     }
     
     var unselectedColor: UIColor! = UIColor(rgb: 0x9b9b9b) {
         didSet {
-            reloadApperance()
+            reloadAppearance()
         }
     }
     
@@ -37,21 +37,13 @@ public class PTBarButton: UIButton {
     /// d'un bouton actif — voire celle d'un bouton sélectionné.
     var disabledColor: UIColor! = UIColor(rgb: 0xc7c7c7) {
         didSet {
-            reloadApperance()
+            reloadAppearance()
         }
     }
     
     override public var isEnabled: Bool {
         didSet {
-            reloadApperance()
-        }
-    }
-    
-    init(forItem item: UITabBarItem) {
-        super.init(frame: .zero)
-        setImage(item.image, for: .normal)
-        if #available(iOS 14.0, *) {
-            showsMenuAsPrimaryAction = true
+            reloadAppearance()
         }
     }
     
@@ -70,11 +62,11 @@ public class PTBarButton: UIButton {
     
     override public var isSelected: Bool {
         didSet {
-            reloadApperance()
+            reloadAppearance()
         }
     }
     
-    func reloadApperance(){
+    func reloadAppearance(){
         guard isEnabled else {
             self.tintColor = disabledColor
             return
@@ -82,12 +74,20 @@ public class PTBarButton: UIButton {
         self.tintColor = isSelected ? selectedColor : unselectedColor
     }
     
+    /// Vrai dès qu'un badge a été posé. `badge` est un `lazy var` : appeler `badgeLayout` sans
+    /// cette garde instanciait un `BadgeHub` pour **chaque** bouton, badge ou pas, et réappliquait
+    /// cadre, échelle et police à chaque passe de layout.
+    private var hasBadge = false
+    
     func setBadge(value: Int) {
+        hasBadge = true
         badge.setCount(value)
+        badgeLayout(self)
     }
     
     override public func layoutSubviews() {
         super.layoutSubviews()
+        guard hasBadge else { return }
         badgeLayout(self)
     }
 }

@@ -11,11 +11,6 @@ import UIKit
 
 
 extension UIColor {
-    static func by(r: Int, g: Int, b: Int, a: CGFloat = 1) -> UIColor {
-        let d = CGFloat(255)
-        return UIColor(red: CGFloat(r) / d, green: CGFloat(g) / d, blue: CGFloat(b) / d, alpha: a)
-    }
-    
     convenience init(red: Int, green: Int, blue: Int) {
         assert(red >= 0 && red <= 255, "Invalid red component")
         assert(green >= 0 && green <= 255, "Invalid green component")

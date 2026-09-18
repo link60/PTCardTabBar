@@ -8,19 +8,12 @@
 
 import UIKit
 
-open class PTCardTabBarController: UITabBarController {
+open class PTCardTabBarController: UITabBarController, CardTabBarDelegate {
     
     @IBInspectable public var tintColor: UIColor? {
         didSet {
             customTabBar.tintColor = tintColor
-            customTabBar.reloadApperance()
-        }
-    }
-    
-    @IBInspectable public var tabBarBackgroundColor: UIColor? {
-        didSet {
-            customTabBar.backgroundColor = tabBarBackgroundColor
-            customTabBar.reloadApperance()
+            customTabBar.reloadAppearance()
         }
     }
     
@@ -118,7 +111,14 @@ open class PTCardTabBarController: UITabBarController {
         customTabBar.select(at: selectedIndex, notifyDelegate: false)
     }
     
-    public override func setTabBarHidden(_ isHidden: Bool, animated: Bool){
+    /// Masque ou réaffiche la barre en ajustant aussi `additionalSafeAreaInsets`, donc en
+    /// redimensionnant les vues enfants — contrairement à `hideTabBar()` / `showTabBar()`, qui ne
+    /// jouent que sur l'opacité.
+    ///
+    /// Anciennement `setTabBarHidden(_:animated:)`, ce qui **surchargeait** la méthode UIKit du
+    /// même nom (`UITabBarController`, iOS 18+) sans appeler `super` : régler `isTabBarHidden`
+    /// passait par ici et ne masquait donc pas la barre native.
+    open func setCardTabBarHidden(_ isHidden: Bool, animated: Bool) {
         let block = {
             self.customTabBar.alpha = isHidden ? 0 : 1
             self.additionalSafeAreaInsets = isHidden ? .zero : UIEdgeInsets(top: 0, left: 0, bottom: self.tabBarHeight + self.bottomSpacing, right: 0)
@@ -205,16 +205,17 @@ open class PTCardTabBarController: UITabBarController {
             customTabBar.setBadge(value: value, at: index)
         }
     }
-}
-
-extension PTCardTabBarController: CardTabBarDelegate {
-    public func cardTabBar(_ sender: PTCardTabBar, didSelectItemAt index: Int, button: PTBarButton) {
-        if self.selectedIndex == index {
-            if selectedViewController != nil && selectedViewController!.isKind(of: UINavigationController.self) {
-                (selectedViewController as! UINavigationController).popToRootViewController(animated: true)
-            }
+    
+    /// Déclarée dans le corps de la classe, et non dans une extension : une conformité portée par
+    /// une extension ne peut pas être surchargée, ce qui privait les sous-classes de tout point
+    /// d'entrée pour intercepter la sélection — cas classique d'un onglet central qui doit
+    /// présenter une modale au lieu de changer d'onglet.
+    open func cardTabBar(_ sender: PTCardTabBar, didSelectItemAt index: Int, button: PTBarButton) {
+        if selectedIndex == index,
+           let navigation = selectedViewController as? UINavigationController {
+            navigation.popToRootViewController(animated: true)
         }
-        self.selectedIndex = index
+        selectedIndex = index
     }
 }
 

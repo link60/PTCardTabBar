@@ -23,11 +23,13 @@ Pod::Spec.new do |s|
 
                        DESC
 
-  s.homepage         = 'https://github.com/hussc/PTCardTabBar'
+  s.homepage         = 'https://github.com/link60/PTCardTabBar'
   s.screenshots     = 'https://www.dropbox.com/s/1ra32nq4rxurqun/Simulator%20Screen%20Shot%20-%20iPhone%20Xs%20-%202019-09-04%20at%2004.43.09.png', 'https://www.dropbox.com/s/zrbah6zbxvkvn36/Simulator%20Screen%20Shot%20-%20iPhone%20Xs%20-%202019-09-04%20at%2004.43.10.png'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Hussein AlRyalat' => 'hus.sc@aol.com' }
-  s.source           = { :git => 'https://github.com/hussc/PTCardTabBar.git', :tag => s.version.to_s }
+  # Fork maintenu par link60. La consommation se fait par branche (cf. Podfile de l'app), pas
+  # par tag : `s.version` ne bouge pas, c'est le SHA du Podfile.lock qui fait foi.
+  s.source           = { :git => 'https://github.com/link60/PTCardTabBar.git', :tag => s.version.to_s }
   s.social_media_url = 'https://www.facebook.com/hussc'
   s.swift_version  = '5.0'
   s.ios.deployment_target = '15.0'
