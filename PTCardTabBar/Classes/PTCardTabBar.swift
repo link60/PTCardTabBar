@@ -97,11 +97,48 @@ public class PTCardTabBar: UIView {
         return view
     }()
     
+    /// Ce que la barre représente. C'est ce réglage — et non `indicatorIsHidden` — qui dit s'il
+    /// existe une notion de sélection.
+    public enum SelectionStyle {
+        /// Barre d'onglets : un bouton à la fois est sélectionné, les autres sont grisés.
+        case tabs
+        /// Barre d'actions : aucun bouton n'est jamais sélectionné et tous gardent leur teinte
+        /// pleine. Un tap notifie le delegate sans rien sélectionner ni déplacer l'indicateur.
+        case actions
+    }
+    
+    /// `.tabs` par défaut. Une barre qui ne sert qu'à déclencher des actions — fermer, scanner,
+    /// enregistrer — doit passer en `.actions`, sinon ses boutons non tapés se grisent.
+    public var selectionStyle: SelectionStyle = .tabs {
+        didSet {
+            guard selectionStyle != oldValue else { return }
+            buttons().forEach { $0.unselectedColor = unselectedTint }
+            if selectionStyle == .actions {
+                buttons().forEach { $0.isSelected = false }
+            }
+            updateIndicatorVisibility()
+        }
+    }
+    
+    /// Teinte des boutons non sélectionnés. En barre d'actions, c'est la teinte normale : rien
+    /// n'étant sélectionné, griser reviendrait à tout griser.
+    private var unselectedTint: UIColor? {
+        selectionStyle == .actions ? tintColor : UIColor(rgb: 0x9b9b9b)
+    }
+    
+    /// Affiche ou masque le point sous l'onglet courant. Réglage d'**affichage** uniquement : il ne
+    /// dit plus rien de la sémantique de sélection, qui vit dans `selectionStyle`. Il ne reconstruit
+    /// donc plus les boutons.
     public var indicatorIsHidden = false {
         didSet {
-            indicatorView.isHidden = indicatorIsHidden
-            reloadViews()
+            updateIndicatorVisibility()
         }
+    }
+    
+    /// En `.actions`, l'indicateur n'a pas de cible : `select` ne pose jamais sa contrainte
+    /// d'abscisse. On le masque d'office pour qu'il ne puisse pas rester affiche n'importe ou.
+    private func updateIndicatorVisibility() {
+        indicatorView.isHidden = indicatorIsHidden || selectionStyle == .actions
     }
     
     
@@ -176,27 +213,9 @@ public class PTCardTabBar: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tag = tag
         button.selectedColor = tintColor
-        if indicatorIsHidden {
-            button.unselectedColor = tintColor
-        }
+        button.unselectedColor = unselectedTint
         button.addTarget(self, action: #selector(buttonTapped(sender:)), for: .touchUpInside)
         self.stackView.addArrangedSubview(button)
-    }
-    
-    open func select(at index: Int, notifyDelegate: Bool = true){
-        var btn: PTBarButton!
-        for (bIndex, view) in stackView.arrangedSubviews.enumerated() {
-            if let button = view as? PTBarButton {
-                button.tintColor = bIndex == index ? tintColor : UIColor(rgb: 0x9b9b9b)
-                if bIndex == index {
-                    btn = button
-                }
-            }
-        }
-        
-        if notifyDelegate {
-            self.delegate?.cardTabBar(self, didSelectItemAt: index, button: btn)
-        }
     }
     
     
@@ -204,6 +223,11 @@ public class PTCardTabBar: UIView {
         indicatorViewYConstraint?.isActive = false
         indicatorViewYConstraint = indicatorView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: -10.5)
         indicatorViewYConstraint.isActive = true
+        
+        // La contrainte d'abscisse vise un bouton qu'on s'apprête à retirer : la laisser en place
+        // reviendrait à retenir une vue morte jusqu'à la prochaine sélection.
+        indicatorViewXConstraint?.isActive = false
+        indicatorViewXConstraint = nil
         
         for button in (stackView.arrangedSubviews.compactMap { $0 as? PTBarButton }) {
             stackView.removeArrangedSubview(button)
@@ -218,8 +242,10 @@ public class PTCardTabBar: UIView {
                 addButton(with: UIImage(), tag: item.tag)
             }
         }
-        if !indicatorIsHidden {
-            select(at: 0)
+        // Sans `notifyDelegate: false`, reconstruire les boutons déclenchait l'action de l'onglet 0 :
+        // à l'ouverture d'une fiche produit, c'était « fermer ».
+        if selectionStyle == .tabs {
+            select(at: 0, notifyDelegate: false)
         }
     }
     
@@ -233,33 +259,44 @@ public class PTCardTabBar: UIView {
         buttons()[safe: index]
     }
     
-    open func select(at index: Int){
-        /* move the indicator view */
-        if indicatorViewXConstraint != nil {
-            indicatorViewXConstraint.isActive = false
+    /// Sélectionne l'onglet `index` : pose `isSelected`, déplace l'indicateur, et notifie le
+    /// delegate si demandé.
+    ///
+    /// Il existait deux `select(at:)` aux sémantiques opposées — l'une posait `isSelected` et
+    /// notifiait toujours, l'autre écrivait `tintColor` en direct sans toucher à `isSelected`. La
+    /// résolution de surcharge envoyait toute sélection **programmatique** vers la seconde, si
+    /// bien que `isSelected` restait périmé et que le premier `reloadApperance()` venu repeignait
+    /// le surlignage sur le mauvais onglet. Une seule méthode désormais.
+    ///
+    /// En `.actions`, rien n'est sélectionné : seul le delegate est notifié.
+    open func select(at index: Int, notifyDelegate: Bool = true) {
+        let boutons = buttons()
+        let cible = boutons[safe: index]
+        
+        if selectionStyle == .tabs {
+            indicatorViewXConstraint?.isActive = false
             indicatorViewXConstraint = nil
-        }
-        
-        var btn: PTBarButton!
-        for (bIndex, button) in buttons().enumerated() {
-            button.selectedColor = tintColor
-            button.isSelected = bIndex == index
             
-            if bIndex == index {
-                btn = button
-                indicatorViewXConstraint = indicatorView.centerXAnchor.constraint(equalTo: button.centerXAnchor)
-                indicatorViewXConstraint.isActive = true
+            for (bIndex, button) in boutons.enumerated() {
+                button.selectedColor = tintColor
+                button.unselectedColor = unselectedTint
+                button.isSelected = (bIndex == index)
             }
-        }
-        
-        UIView.animate(withDuration: 0.25) {
-            self.layoutIfNeeded()
+            
+            if let cible = cible {
+                indicatorViewXConstraint = indicatorView.centerXAnchor.constraint(equalTo: cible.centerXAnchor)
+                indicatorViewXConstraint?.isActive = true
+            }
+            
+            UIView.animate(withDuration: 0.25) {
+                self.layoutIfNeeded()
+            }
         }
         
         // Aucun bouton à cet index — barre encore vide, ou index hors bornes. Notifier ferait
         // passer un PTBarButton! nul à un paramètre non optionnel, donc trap à l'appel.
-        guard let btn = btn else { return }
-        self.delegate?.cardTabBar(self, didSelectItemAt: index, button: btn)
+        guard notifyDelegate, let cible = cible else { return }
+        delegate?.cardTabBar(self, didSelectItemAt: index, button: cible)
     }
     
     

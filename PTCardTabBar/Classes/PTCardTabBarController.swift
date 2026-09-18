@@ -113,7 +113,9 @@ open class PTCardTabBarController: UITabBarController {
         // l'appelant ait pu poser `viewControllers` : `tabBar.items` est alors nil, et le forçage
         // faisait planter tout PTCardTabBarController() construit par code.
         customTabBar.items = tabBar.items ?? []
-        customTabBar.select(at: selectedIndex)
+        // notifyDelegate: false — le contrôleur connaît déjà son index. Notifier ici relançait
+        // cardTabBar(_:didSelectItemAt:), donc un popToRootViewController animé en plein viewDidLoad.
+        customTabBar.select(at: selectedIndex, notifyDelegate: false)
     }
     
     public override func setTabBarHidden(_ isHidden: Bool, animated: Bool){

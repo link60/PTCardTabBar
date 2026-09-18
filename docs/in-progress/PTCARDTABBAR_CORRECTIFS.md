@@ -10,7 +10,8 @@
 > `F*` utilisés ici y renvoient et sont stables. Ne pas réécrire l'audit au fil des corrections :
 > c'est **cette carte** qui porte l'avancement.
 >
-> **Taille :** `L` — sept lots indépendants. **Lots 0, 1 et 2 livrés ; Lot 3 à démarrer.**
+> **Taille :** `L` — sept lots indépendants. **Lots 0, 1 et 2 livrés ; Lot 3 en recette, en
+> attente du correctif côté app et de sa vérification.**
 
 ---
 
@@ -101,7 +102,7 @@ seule base du commit : la vérification sur le banc **et** le `pod update` côt�
 | 0 | Remise en route du banc de validation | S | ✅ Livré — 2026-09-18 |
 | 1 | Correctifs sûrs, sans rupture d'API | M | ✅ Livré — 2026-09-18 |
 | 2 | Cycle de rétention du `delegate` | S | ✅ Livré — 2026-09-18 |
-| 3 | Unification de la sélection | M/L | ⬜ À faire |
+| 3 | Unification de la sélection | M/L | 🟡 En recette — 2026-09-18 |
 | 4 | Nettoyage et surface d'API | M | ⬜ À faire |
 | 5 | Accessibilité et Dynamic Type | L | ⬜ À faire |
 | 6 | Mesure iPad — forçage de la classe de taille | S | ⬜ À faire |
@@ -361,17 +362,70 @@ sur le mauvais onglet au premier rafraîchissement de teinte.
 > lignes** : `indicatorIsHidden = true` (`:99-100`) avant l'affectation d'`items`. Après ce lot,
 > l'ordre ne doit plus rien changer. C'est un critère de sortie.
 
+**Décision de conception prise avec Loïc le 2026-09-18.** Le pod n'avait aucun moyen de distinguer
+une **barre d'onglets** d'une **barre d'actions** : il se servait d'`indicatorIsHidden` comme
+approximation. D'où deux effets croisés dans DateLimite — les barres de la fiche produit obtenaient
+le bon rendu par accident, et la barre principale perdait son repère de sélection dès que le réglage
+« Recettes » posait `indicatorIsHidden = true` sur elle.
+
+Deux arbitrages :
+
+1. **Dans la barre principale, l'onglet courant garde son point ET son icône teintée**, les autres
+   en gris. Le `indicatorIsHidden = true` des deux `showXxxController` est un **effet de bord à
+   retirer côté app** — ces méthodes ne font que permuter deux onglets.
+2. **Le pod reçoit une notion explicite** : `selectionStyle: .tabs | .actions`. `indicatorIsHidden`
+   redevient un simple réglage d'affichage du point.
+
 Critères de sortie :
 
-- [ ] une seule notification du delegate pendant `viewDidLoad`, et aucun `popToRootViewController`
+- [x] une seule notification du delegate pendant `viewDidLoad`, et aucun `popToRootViewController`
       involontaire ;
-- [ ] après un `selectedIndex` programmatique, `isSelected` est cohérent et un
-      `reloadApperance()` ne déplace plus le surlignage ;
-- [ ] inverser l'ordre `indicatorIsHidden` / `items` dans `DetailProductHelper.configure()` reste
-      sans effet (test à faire en local, **à ne pas commiter côté app**) ;
-- [ ] DateLimite : ouverture d'un push recette puis rotation → le bon onglet reste surligné ;
-- [ ] DateLimite : fiche produit, barres gauche et droite, tous les boutons routent vers la bonne
-      action.
+- [x] après un `selectedIndex` programmatique, `isSelected` est cohérent et un `reloadApperance()`
+      ne déplace plus le surlignage ;
+- [x] inverser l'ordre `indicatorIsHidden` / `items` ne déclenche plus rien ;
+- [x] en `.actions`, aucun bouton ne se sélectionne et tous gardent leur teinte pleine ;
+- [ ] **correctif côté app appliqué** : `selectionStyle = .actions` sur les deux barres de la fiche
+      produit, et retrait du `indicatorIsHidden = true` des deux `showXxxController` ;
+- [ ] **DateLimite** : ouverture d'un push recette puis rotation → le bon onglet reste surligné ;
+- [ ] **DateLimite** : fiche produit, barres gauche et droite, tous les boutons routent vers la
+      bonne action.
+
+**Implémentation du 2026-09-18 :**
+
+- **E3** — les deux `select(at:)` fusionnent en une seule méthode, qui pose `isSelected`, déplace
+  l'indicateur et notifie selon `notifyDelegate`. La surcharge sans paramètre disparaît, mais
+  `select(at: 0)` continue de compiler et de notifier grâce à la valeur par défaut : aucun appelant
+  de l'app n'est touché (`Finder.swift:60`, `SideMenuViewController.swift:318`) ;
+- **M1** — `reloadViews()` sélectionne désormais avec `notifyDelegate: false`, et `viewDidLoad` fait
+  de même. Une seule écriture de `selectedIndex` au lieu de trois, et plus de
+  `popToRootViewController(animated: true)` involontaire au démarrage ;
+- **M1 (mine)** — `indicatorIsHidden` ne reconstruit plus les boutons : c'est un réglage
+  d'affichage. L'ordre des lignes de `DetailProductHelper.configure()` n'a plus d'importance ;
+- **M5 (partiel)** — `reloadViews()` désactive et relâche `indicatorViewXConstraint` avant de
+  retirer les boutons ; il retenait jusque-là une vue morte ;
+- **nouveau** — `selectionStyle`, et l'indicateur masqué d'office en `.actions` (il n'y a pas de
+  cible où le poser).
+
+> **Non fait, volontairement.** La réutilisation des boutons existants quand le nombre d'items ne
+> change pas — l'autre moitié de **M5** — n'est pas dans ce lot : réutiliser un bouton lui ferait
+> garder le `badgeLayout`, l'`isEnabled` et l'image d'un item qui n'est plus le même. C'est une
+> optimisation à concevoir, pas une correction, et ce lot touche déjà le chemin nominal. **Reportée
+> au Lot 4.**
+
+**Recette du 2026-09-18**, iPhone 17 / iOS 27 :
+
+```
+T0 apres viewDidLoad (.tabs)    | 0:sel=true/#0088FF  1:sel=false/#9B9B9B  2:sel=false/#9B9B9B
+selectedIndex ecrit = 0                                     ← une seule fois (trois auparavant)
+T1 apres selectedIndex=2        | 0:sel=false/#9B9B9B  1:sel=false/#9B9B9B  2:sel=true/#0088FF
+T2 apres rafraichissement teinte| 0:sel=false/#9B9B9B  1:sel=false/#9B9B9B  2:sel=true/#FF383C
+T3 en .actions                  | 0:sel=false/#FF383C  1:sel=false/#FF383C  2:sel=false/#FF383C
+T4 select(at:1) en .actions     | inchangé — le delegate est notifié, rien n'est sélectionné
+mine M1 desamorcee — delegate pose AVANT items, aucun crash, aucune action declenchee
+```
+
+**T2 est le cœur du lot** : avant, le rafraîchissement de teinte repeignait le surlignage sur
+l'onglet 0. Il reste maintenant sur l'onglet 2.
 
 ---
 
@@ -479,6 +533,25 @@ Critères de sortie :
 
 > Une entrée par session de travail : ce qui a été fait, ce qui a surpris, ce qui reste ouvert.
 > Les entrées les plus récentes en haut.
+
+### 2026-09-18 — Lot 3 en recette
+
+Le lot a démarré sur une question de conception plutôt que sur du code. En préparant la fusion des
+deux `select`, il est apparu que le pod **ne sait pas** distinguer une barre d'onglets d'une barre
+d'actions : il déduit la sémantique du masquage de l'indicateur. Les deux barres de la fiche produit
+obtenaient donc le bon rendu par accident, et la barre principale perdait son repère de sélection
+dès qu'un réglage sans rapport lui posait `indicatorIsHidden = true`.
+
+Fusionner sans trancher cette ambiguïté aurait figé le défaut dans une seule méthode au lieu de
+deux. Arbitrage pris avec Loïc : notion explicite `selectionStyle`, et le point indicateur reste le
+repère de la barre principale.
+
+Conséquence : **le pod seul ne suffit pas**. Deux endroits de l'app doivent suivre, sinon les barres
+de la fiche produit griseront leurs boutons non tapés. Le correctif app est prêt mais n'est pas
+appliqué — il appartient à l'autre repo.
+
+**Prochain : Lot 4**, nettoyage et surface d'API — qui reprendra aussi la réutilisation des boutons,
+sortie du périmètre de ce lot.
 
 ### 2026-09-18 — Lot 2 livré
 
