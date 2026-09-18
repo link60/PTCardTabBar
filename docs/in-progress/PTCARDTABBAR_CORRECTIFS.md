@@ -10,7 +10,8 @@
 > `F*` utilisés ici y renvoient et sont stables. Ne pas réécrire l'audit au fil des corrections :
 > c'est **cette carte** qui porte l'avancement.
 >
-> **Taille :** `L` — sept lots indépendants. **Lots 0 et 1 livrés, Lot 2 en cours.**
+> **Taille :** `L` — sept lots indépendants. **Lots 0 et 1 livrés ; Lot 2 en recette, en attente
+> de la vérification côté DateLimite.**
 
 ---
 
@@ -100,7 +101,7 @@ seule base du commit : la vérification sur le banc **et** le `pod update` côt�
 |---:|---|:---:|:---:|
 | 0 | Remise en route du banc de validation | S | ✅ Livré — 2026-09-18 |
 | 1 | Correctifs sûrs, sans rupture d'API | M | ✅ Livré — 2026-09-18 |
-| 2 | Cycle de rétention du `delegate` | S | 🚧 En cours |
+| 2 | Cycle de rétention du `delegate` | S | 🟡 En recette — 2026-09-18 |
 | 3 | Unification de la sélection | M/L | ⬜ À faire |
 | 4 | Nettoyage et surface d'API | M | ⬜ À faire |
 | 5 | Accessibilité et Dynamic Type | L | ⬜ À faire |
@@ -272,11 +273,41 @@ son en-tête. Le correctif rend ce contournement inutile, sans l'obliger à chan
 
 Critères de sortie :
 
-- [ ] sur le banc : `deinit` du contrôleur observé après `dismiss` (A/B déjà fait pendant l'audit —
-      sans correctif aucun `deinit`, avec correctif il part) ;
-- [ ] DateLimite compile après `pod update`, sans adaptation de `ProductTabBarManager` ;
-- [ ] sur iPad, ouvrir puis fermer une seconde fenêtre principale ne laisse pas de
-      `PTCardTabBarController` vivant (à vérifier au graphe de rétention Xcode).
+- [x] sur le banc : `deinit` du contrôleur observé après `dismiss` ;
+- [ ] **DateLimite compile après `pod update`**, sans adaptation de `ProductTabBarManager` ;
+- [ ] **sur iPad**, ouvrir puis fermer une seconde fenêtre principale ne laisse pas de
+      `PTCardTabBarController` vivant (graphe de rétention Xcode).
+
+**Implémentation du 2026-09-18 :**
+
+```swift
+public protocol CardTabBarDelegate: AnyObject { … }
+public weak var delegate: CardTabBarDelegate?
+```
+
+**Vérification préalable du côté app**, avant d'appliquer : passer le `delegate` en `weak` déplace
+la charge de rétention sur l'appelant, donc il fallait s'assurer que les deux conformeurs sont
+retenus ailleurs.
+
+- `PTCardTabBarController` est delegate de sa propre barre : il est retenu par sa hiérarchie de
+  vues et par son parent, donc rien à faire ;
+- `ProductTabBarManager` est retenu par `DetailProductController` via
+  `lazy var tabBarManager = ProductTabBarManager(host: self)`
+  (`DetailProductController.swift:56`), indépendamment du delegate. Aucune adaptation nécessaire —
+  et son contournement `private weak var host` devient superflu, sans qu'il soit urgent de le
+  retirer.
+
+Aucun autre conformeur de `CardTabBarDelegate` dans le pod, l'exemple ou l'app.
+
+**Recette du 2026-09-18**, iPhone 17 / iOS 27 :
+
+```
+AUDIT >>> presente, delegate de la barre = Optional(<PTTabBarViewController: 0x101d6cc00>)
+AUDIT >>> deinit PTTabBarViewController              ← jamais observé avant ce correctif
+```
+
+Le delegate reste bien branché pendant la présentation — changement d'onglet, déplacement de
+l'indicateur et badge inchangés — et le contrôleur se désalloue au `dismiss`.
 
 ---
 
@@ -424,6 +455,21 @@ Critères de sortie :
 
 > Une entrée par session de travail : ce qui a été fait, ce qui a surpris, ce qui reste ouvert.
 > Les entrées les plus récentes en haut.
+
+### 2026-09-18 — Lot 2 en recette
+
+Deux lignes de correctif, mais une vérification en amont qui valait le détour : rendre un `delegate`
+faible déplace la charge de rétention sur l'appelant, et si personne ne retient le delegate il meurt
+aussitôt. Les deux conformeurs sont couverts — le contrôleur par sa hiérarchie de vues, le manager
+de la fiche produit par le `lazy var` de son contrôleur. Rien à adapter côté app.
+
+Le `deinit` part désormais au `dismiss`, ce qu'aucun run n'avait jamais montré. Reste la
+confirmation côté DateLimite, et surtout le cas qui motivait le lot : **sur iPad, ouvrir puis fermer
+une seconde fenêtre principale**. C'est là que la fuite se voyait, une scène étant un
+`PTCardTabBarController` complet.
+
+**Prochain : Lot 3**, l'unification de la sélection — le lot délicat, dont la recette est
+entièrement côté app.
 
 ### 2026-09-18 — Lot 1 en recette
 

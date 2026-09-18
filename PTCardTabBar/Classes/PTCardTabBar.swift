@@ -8,7 +8,10 @@
 
 import UIKit
 
-public protocol CardTabBarDelegate {
+/// Contraint aux classes (`AnyObject`) pour que `PTCardTabBar.delegate` puisse être `weak` :
+/// sans ça, la barre retenait fortement son delegate. Un `PTCardTabBarController` se déclarant
+/// lui-même delegate de sa propre barre ne pouvait alors jamais être désalloué.
+public protocol CardTabBarDelegate: AnyObject {
     func cardTabBar(_ sender: PTCardTabBar, didSelectItemAt index: Int, button: PTBarButton)
 }
 
@@ -21,7 +24,7 @@ public class PTClearCardTabBar: PTCardTabBar {
 
 public class PTCardTabBar: UIView {
     
-    public var delegate: CardTabBarDelegate?
+    public weak var delegate: CardTabBarDelegate?
     
     var effectView: UIVisualEffectView? = nil
     
