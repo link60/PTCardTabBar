@@ -10,8 +10,8 @@
 > `F*` utilisés ici y renvoient et sont stables. Ne pas réécrire l'audit au fil des corrections :
 > c'est **cette carte** qui porte l'avancement.
 >
-> **Taille :** `L` — sept lots indépendants. **Lots 0, 1, 2 et 4 livrés ; Lots 3 et 5 en
-> recette côté app. Reste le Lot 6.**
+> **Taille :** `L` — sept lots indépendants. **Lots 0, 1, 2, 4 et 6 livrés ; Lots 3 et 5 en
+> recette côté app. Tous les lots sont traités.**
 
 ---
 
@@ -105,7 +105,7 @@ seule base du commit : la vérification sur le banc **et** le `pod update` côt�
 | 3 | Unification de la sélection | M/L | 🟡 En recette — 2026-09-18 |
 | 4 | Nettoyage et surface d'API | M | ✅ Livré — 2026-09-18 |
 | 5 | Accessibilité et Dynamic Type | L | 🟡 En recette — 2026-09-18 |
-| 6 | Mesure iPad — forçage de la classe de taille | S | ⬜ À faire |
+| 6 | Mesure iPad — forçage de la classe de taille | S | ✅ Livré — 2026-09-18 |
 
 ### Couverture des constats de l'audit
 
@@ -669,8 +669,38 @@ au Lot 4.
 
 Critères de sortie :
 
-- [ ] verdict écrit dans cette carte, captures à l'appui ;
-- [ ] décision prise : forçage conservé, remplacé, ou nouveau lot ouvert.
+- [x] verdict écrit dans cette carte, captures à l'appui ;
+- [x] décision prise : **forçage remplacé** par `isTabBarHidden = true`.
+
+**Mesure du 2026-09-18**, DateLimite sur iPad Air 13" / iOS 27 (`3A1905DA…`), trois variantes
+obtenues en modifiant le pod **installé** dans `Pods/` — sans toucher au `Podfile` ni au code de
+l'app, fichier remis à l'identique et droits restaurés ensuite.
+
+| Variante | Sélecteur d'onglets natif | Barre de recherche | Classe de taille des enfants |
+|---|---|---|---|
+| **A** — forçage (code d'origine) | absent | déployée | **compacte, imposée** |
+| **B** — rien | **pilule centrée « Mes Produits ›»** | repliée en loupe | régulière |
+| **C** — `isTabBarHidden = true` | absent | déployée | régulière |
+
+**Le forçage faisait bien ce pour quoi il avait été ajouté** : sans lui, iPadOS 18 affiche son
+sélecteur d'onglets natif dans la barre de navigation, en doublon de la barre « carte » du pod. Le
+commit d'origine (`5e3c61a`, « Disable iOS 18 new top tabbar ») était donc justifié.
+
+**Mais l'hypothèse de l'audit sur son coût est infirmée.** Je m'attendais à voir les écrans enfants
+basculer en disposition compacte. Vérifié sur deux écrans, dont un SwiftUI :
+
+- liste des produits : identique entre A et C ;
+- suggestions de recettes : **identique au pixel** entre A et C — « En stock » et « À prévoir »
+  restent côte à côte. Cette disposition est pilotée par la **largeur**, pas par la classe de taille.
+
+**Décision : remplacer quand même.** Pas parce que le forçage nuit aujourd'hui — la mesure dit qu'il
+ne nuit pas — mais parce qu'il obtient par un effet de bord global ce qu'une API dédiée obtient
+précisément. Tout écran enfant futur qui s'appuierait sur `horizontalSizeClass` hériterait d'un
+mensonge posé par la barre d'onglets, sans rapport avec son propre besoin.
+
+> `isTabBarHidden` n'était **pas atteignable** avant ce chantier : le pod surchargeait
+> `setTabBarHidden(_:animated:)` sans appeler `super`, et le régler passait par le pod au lieu
+> d'UIKit. Le Lot 4 a levé cet obstacle sans le savoir ; le Lot 6 en récolte le bénéfice.
 
 ---
 
@@ -682,7 +712,7 @@ Critères de sortie :
 | **J2 — plus de défaut fonctionnel connu** | Lots 1, 2, 3 | ⬜ |
 | **J3 — API saine** | Lot 4 | ✅ 2026-09-18 |
 | **J4 — accessible** | Lot 5 | ⬜ |
-| **J5 — dernière zone d'ombre levée** | Lot 6 | ⬜ |
+| **J5 — dernière zone d'ombre levée** | Lot 6 | ✅ 2026-09-18 |
 
 ---
 
@@ -690,6 +720,28 @@ Critères de sortie :
 
 > Une entrée par session de travail : ce qui a été fait, ce qui a surpris, ce qui reste ouvert.
 > Les entrées les plus récentes en haut.
+
+### 2026-09-18 — Lot 6 livré, chantier complet
+
+Le seul lot dont le livrable était un **verdict**, pas un correctif. Et le verdict contredit
+l'hypothèse de départ : le forçage de classe de taille ne dégrade rien de visible dans DateLimite.
+Les deux écrans testés, dont un SwiftUI, sont identiques avec et sans. La disposition que je croyais
+pilotée par la classe de taille l'est en fait par la largeur.
+
+Ce que la mesure a établi en revanche, c'est que le forçage **servait vraiment à quelque chose** :
+sans lui, iPadOS 18 affiche son sélecteur d'onglets natif en doublon de la barre « carte ». Le
+commit d'origine était justifié, il n'avait simplement pas d'autre outil à l'époque.
+
+Remplacé par `isTabBarHidden`, non pas pour réparer un dégât mais pour cesser d'obtenir par effet de
+bord global ce qu'une API obtient précisément. Le premier écran enfant qui s'appuiera un jour sur
+`horizontalSizeClass` n'héritera pas d'un mensonge posé par la barre d'onglets.
+
+Détail qui vaut d'être noté : cette API n'était **pas atteignable** avant ce chantier. Le pod
+surchargeait `setTabBarHidden(_:animated:)` sans appeler `super`. Le Lot 4 a levé l'obstacle en
+croyant seulement nettoyer un nom.
+
+**Les sept lots sont traités.** Restent deux recettes côté app — la vérification visuelle du Lot 3
+et les deux points d'accessibilité du Lot 5 — plus un `pod update`.
 
 ### 2026-09-18 — Lot 5 en recette
 

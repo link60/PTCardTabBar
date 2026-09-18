@@ -112,8 +112,18 @@ open class PTCardTabBarController: UITabBarController, CardTabBarDelegate {
             self.additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: tabBarHeight + bottomSpacing, right: 0)
         }
         
-        if #available(iOS 18.0, *), UIDevice.current.userInterfaceIdiom == .pad {
-            traitOverrides.horizontalSizeClass = .compact
+        // iPadOS 18 a introduit un sélecteur d'onglets natif — une pilule centrée dans la barre de
+        // navigation — qui double la barre « carte » de ce pod. On le masque par l'API dédiée.
+        //
+        // La version précédente forçait `traitOverrides.horizontalSizeClass = .compact` sur iPad,
+        // ce qui obtenait le même effet de bord mais imposait la classe compacte à **toute** la
+        // hiérarchie enfant. Mesuré en A/B sur DateLimite (iPad Air 13" / iOS 27) : rendu identique
+        // avec l'une ou l'autre, donc le forçage ne payait rien de plus qu'il ne coûtait.
+        //
+        // `isTabBarHidden` n'était atteignable qu'une fois cessée la surcharge de
+        // `setTabBarHidden(_:animated:)`, qui le détournait vers l'opacité de la barre custom.
+        if #available(iOS 18.0, *) {
+            isTabBarHidden = true
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(setBadge), name: .PTCardTabBarBadgeNotification, object: nil)

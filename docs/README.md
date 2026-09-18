@@ -41,8 +41,8 @@ départ.
   désactivé actionnable, surlignage d'onglet désynchronisé, course `hide`/`show`), puis nettoyage
   d'API et accessibilité. **Lots 0, 1, 2 et 4 livrés** le 2026-09-18 — banc de validation remis en
   route, course `hide`/`show`, bouton désactivé actionnable, `redraw`, cycle de rétention (A/B
-  mesuré dans DateLimite sur iPad) et nettoyage d'API. **Lot 3 en recette visuelle**, **Lot 5**
-  (accessibilité) et **Lot 6** (mesure iPad) à démarrer. Travaux sur la branche `correctifs-audit`.
+  mesuré dans DateLimite sur iPad) et nettoyage d'API. **Lots 3 et 5 en recette côté app**, **Lot 6** livré
+  (le forçage de classe de taille iPad est remplacé par l API dediee). Travaux sur la branche `correctifs-audit`.
 
 ### `done/` — livré
 
