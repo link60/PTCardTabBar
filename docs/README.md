@@ -60,7 +60,9 @@ départ.
 
 ## Déploiement — à ne pas oublier
 
-`Pods/` est gitignoré côté DateLimite : un correctif ne prend effet qu'une fois **poussé sur la
-branche `badge`** de ce fork, puis récupéré par `pod update PTCardTabBar`. Le `Podfile.lock` de
-l'app épingle un SHA, et comme `s.version` du podspec ne bouge jamais, c'est bien ce SHA qui fait
-foi — pas le numéro de version.
+Le chantier en cours vit sur la branche **`correctifs-audit`** (partie de `badge` au commit
+`de21149`), sur laquelle DateLimite pointe le temps des travaux.
+
+`Pods/` est gitignoré côté app : un correctif ne prend effet qu'une fois **poussé**, puis récupéré
+par `pod update PTCardTabBar`. Le `Podfile.lock` épingle un SHA, et comme `s.version` du podspec ne
+bouge jamais, c'est bien ce SHA qui fait foi — pas le numéro de version.

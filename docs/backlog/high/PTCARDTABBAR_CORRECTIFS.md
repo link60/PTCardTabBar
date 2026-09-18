@@ -50,10 +50,18 @@ publique côté app restent ce qu'ils sont ; on corrige ce qui est faux et on ne
 
 ## 4. Contrainte de livraison
 
-`Pods/` est gitignoré côté DateLimite. Un lot n'existe pour l'app qu'une fois **poussé sur la
-branche `badge`** puis récupéré par `pod update PTCardTabBar`. Le `Podfile.lock` épingle un SHA
-(`de21149…` à l'ouverture de cette carte) et `s.version` du podspec ne bouge jamais : **c'est le SHA
-qui fait foi**, pas le numéro de version.
+Le chantier vit sur la branche **`correctifs-audit`**, partie de `badge` au commit `de21149`.
+DateLimite pointe dessus le temps du chantier :
+
+```ruby
+pod 'PTCardTabBar', git: 'https://github.com/link60/PTCardTabBar.git', branch: 'correctifs-audit'
+```
+
+`Pods/` est gitignoré côté app : un lot n'existe pour DateLimite qu'une fois **poussé** puis
+récupéré par `pod update PTCardTabBar`. Le `Podfile.lock` épingle un SHA et `s.version` du podspec
+ne bouge jamais — **c'est le SHA qui fait foi**, pas le numéro de version.
+
+En fin de chantier, `correctifs-audit` a vocation à remplacer `badge` (merge ou bascule du Podfile).
 
 Conséquence pratique : chaque lot se termine par un `pod update` côté app et une vérification que
 DateLimite **compile et se comporte** comme avant. Un lot n'est pas livré tant que ce dernier point
@@ -360,4 +368,7 @@ Deux correctifs ont été **écrits et éprouvés pendant l'audit puis défaits*
 l'arbre de travail : la remise en route du banc (Lot 0) et le `if finished` de **E4** (Lot 1). Ils
 sont à réécrire, mais leur validité est établie.
 
-**Rien n'est commité ni poussé.** La branche `badge` est intacte sur `de21149`.
+Branche **`correctifs-audit`** créée depuis `badge` (`de21149`) et poussée avec ces docs
+(`625acb5`). `badge` reste intacte. Au passage, l'identité git locale du repo a été corrigée :
+elle héritait du global `lsence@fidme.com` alors que ce fork est perso — 6 des 34 commits du fork
+portaient déjà la mauvaise adresse.
