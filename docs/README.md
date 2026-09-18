@@ -39,8 +39,9 @@ départ.
   2026-09-18** (ex-`backlog/high`), chantier **lotti en 7 lots**. Remise en état du pod à partir de
   l'audit du même jour : quatre défauts mesurés sur simulateur iOS 27 (cycle de rétention, bouton
   désactivé actionnable, surlignage d'onglet désynchronisé, course `hide`/`show`), puis nettoyage
-  d'API et accessibilité. **Lot 0 en cours** — remise en route du banc de validation, sans lequel
-  tout se testerait dans DateLimite. Travaux sur la branche `correctifs-audit`.
+  d'API et accessibilité. **Lots 0 et 1 livrés** le 2026-09-18 — le banc de validation retourne, et
+  la course `hide`/`show`, le bouton désactivé actionnable et le `redraw` sont corrigés. **Lot 2 en
+  cours.** Travaux sur la branche `correctifs-audit`.
 
 ### `done/` — livré
 

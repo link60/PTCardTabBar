@@ -10,8 +10,7 @@
 > `F*` utilisés ici y renvoient et sont stables. Ne pas réécrire l'audit au fil des corrections :
 > c'est **cette carte** qui porte l'avancement.
 >
-> **Taille :** `L` — sept lots indépendants. **Lot 0 livré ; Lot 1 en recette, en attente de la
-> vérification côté DateLimite.**
+> **Taille :** `L` — sept lots indépendants. **Lots 0 et 1 livrés, Lot 2 en cours.**
 
 ---
 
@@ -100,8 +99,8 @@ seule base du commit : la vérification sur le banc **et** le `pod update` côt�
 | Lot | Objet | Taille | Statut |
 |---:|---|:---:|:---:|
 | 0 | Remise en route du banc de validation | S | ✅ Livré — 2026-09-18 |
-| 1 | Correctifs sûrs, sans rupture d'API | M | 🟡 En recette — 2026-09-18 |
-| 2 | Cycle de rétention du `delegate` | S | ⬜ À faire |
+| 1 | Correctifs sûrs, sans rupture d'API | M | ✅ Livré — 2026-09-18 |
+| 2 | Cycle de rétention du `delegate` | S | 🚧 En cours |
 | 3 | Unification de la sélection | M/L | ⬜ À faire |
 | 4 | Nettoyage et surface d'API | M | ⬜ À faire |
 | 5 | Accessibilité et Dynamic Type | L | ⬜ À faire |
@@ -209,9 +208,9 @@ Critères de sortie :
 - [x] sur le banc : un tap sur un bouton `isEnabled = false` ne change pas d'onglet et ne notifie pas
       le delegate ;
 - [x] `redrawCustomTabBar` ne plante pas s'il est appelé avant chargement de la vue ;
-- [ ] **DateLimite après `pod update`** : barre de `ProductsController` correcte en rotation et au
-      retour de recherche ; cloche grisée de la fiche produit **non actionnable**. ← *reste à faire,
-      c'est ce qui bloque le passage en ✅*
+- [x] **DateLimite après `pod update`** : barre de `ProductsController` correcte en rotation et au
+      retour de recherche ; cloche grisée de la fiche produit **non actionnable**. *Validé par Loïc
+      le 2026-09-18.*
 
 **Implémentation du 2026-09-18 :**
 
