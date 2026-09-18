@@ -115,6 +115,9 @@ public class PTCardTabBar: UIView {
             buttons().forEach { $0.unselectedColor = unselectedTint }
             if selectionStyle == .actions {
                 buttons().forEach { $0.isSelected = false }
+            } else if !items.isEmpty {
+                // Retour en barre d'onglets : plus rien n'était sélectionné, on rétablit.
+                select(at: min(selectedButtonIndex, items.count - 1), notifyDelegate: false)
             }
             updateIndicatorVisibility()
         }
@@ -144,6 +147,11 @@ public class PTCardTabBar: UIView {
     
     private var indicatorViewYConstraint: NSLayoutConstraint!
     private var indicatorViewXConstraint: NSLayoutConstraint!
+    
+    /// Onglet actuellement sélectionné, mémorisé par la barre elle-même. Sert à retrouver la
+    /// sélection après une reconstruction des boutons : sans lui, toute mutation d'`items`
+    /// ramènerait le surlignage sur l'onglet 0 alors que le contrôleur, lui, ne bougerait pas.
+    private var selectedButtonIndex = 0
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -242,10 +250,12 @@ public class PTCardTabBar: UIView {
                 addButton(with: UIImage(), tag: item.tag)
             }
         }
-        // Sans `notifyDelegate: false`, reconstruire les boutons déclenchait l'action de l'onglet 0 :
-        // à l'ouverture d'une fiche produit, c'était « fermer ».
-        if selectionStyle == .tabs {
-            select(at: 0, notifyDelegate: false)
+        // On restaure la sélection courante plutôt que de la forcer à 0 : une mutation d'`items`
+        // — permuter deux onglets, par exemple — ne doit pas déplacer le surlignage sous
+        // l'utilisateur. Et sans `notifyDelegate: false`, reconstruire les boutons déclencherait
+        // l'action de l'onglet visé : à l'ouverture d'une fiche produit, c'était « fermer ».
+        if selectionStyle == .tabs, !items.isEmpty {
+            select(at: min(selectedButtonIndex, items.count - 1), notifyDelegate: false)
         }
     }
     
@@ -284,6 +294,7 @@ public class PTCardTabBar: UIView {
             }
             
             if let cible = cible {
+                selectedButtonIndex = index
                 indicatorViewXConstraint = indicatorView.centerXAnchor.constraint(equalTo: cible.centerXAnchor)
                 indicatorViewXConstraint?.isActive = true
             }

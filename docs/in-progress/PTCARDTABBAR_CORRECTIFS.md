@@ -384,11 +384,48 @@ Critères de sortie :
       ne déplace plus le surlignage ;
 - [x] inverser l'ordre `indicatorIsHidden` / `items` ne déclenche plus rien ;
 - [x] en `.actions`, aucun bouton ne se sélectionne et tous gardent leur teinte pleine ;
-- [ ] **correctif côté app appliqué** : `selectionStyle = .actions` sur les deux barres de la fiche
-      produit, et retrait du `indicatorIsHidden = true` des deux `showXxxController` ;
-- [ ] **DateLimite** : ouverture d'un push recette puis rotation → le bon onglet reste surligné ;
-- [ ] **DateLimite** : fiche produit, barres gauche et droite, tous les boutons routent vers la
-      bonne action.
+- [x] **correctif côté app appliqué** — commit `77d73257` sur `master` de `date-limite-ios` :
+      `selectionStyle = .actions` sur les deux barres de la fiche produit, retrait du
+      `indicatorIsHidden = true` des deux `showXxxController`. Recensement fait au passage : le
+      projet n'a que **trois** instances de la barre, les deux de `Products.storyboard` et le
+      `PTCardTabBarController` de `Main-Common.storyboard` ;
+- [x] **DateLimite** : fiche produit, les cinq icônes restent à `#000000` (et `#45B526` pour le ✓)
+      en mode création comme en édition, avant tap, après tap et au retour d'un écran poussé.
+      Routage par `tag` vérifié sur `.addItem`, `.historic`, `.save`, `.notify`, `.dismiss` ;
+- [x] **DateLimite** : barre principale, onglet courant à `#000000` + point indicateur, les autres
+      exactement `#9B9B9B`, y compris après bascule du réglage « Recettes » **dans les deux sens** ;
+- [~] **DateLimite, régression E3** : le **mécanisme** est vérifié — sélection programmatique pure
+      (`-SnapshotInitialTab settings`, zéro tap) puis deux `reloadApperance()` provoqués par une
+      bascule clair/sombre, plus une passe de layout par aller-retour arrière-plan : l'onglet reste
+      surligné à chaque fois. **La rotation elle-même n'a pas pu être jouée** : `Simulator.app`
+      n'est pas installé sur ce poste, les simulateurs tournent en headless et `simctl ui` ne gère
+      pas l'orientation. Reste à confirmer sur appareil, ou par un UITest
+      `XCUIDevice.shared.orientation` ;
+- [ ] **re-recette après le correctif de régression ci-dessous** — un nouveau `pod update` est
+      nécessaire, la recette précédente portait sur `9462516`.
+
+**Correctif de régression du 2026-09-18** *(défaut introduit par ce lot, remonté par la session de
+recette app)*
+
+`reloadViews()` forçait le surlignage sur l'onglet 0 **sans notifier**. Avant ce lot, le même appel
+notifiait : le contrôleur suivait, l'utilisateur était ramené à l'onglet 0 mais barre et contenu
+restaient d'accord. En coupant la notification pour désamorcer la mine `configure()`, j'avais
+transformé « on saute à l'onglet 0 » en « la barre ment » — elle affichait l'onglet 0 pendant que le
+contenu restait sur l'onglet courant. Visible dans l'app quand le réglage « Recettes » permute les
+onglets alors qu'on est sur Réglages.
+
+La barre mémorise désormais son propre index sélectionné et le restaure après reconstruction, borné
+au nombre d'items. Revenir de `.actions` à `.tabs` rétablit aussi la sélection, qui n'existait plus.
+
+```
+T1 on est sur l onglet 2        | selectedIndex=2 | barre 2:sel=true
+T2 apres reconstruction         | selectedIndex=2 | barre 2:sel=true   ← avant : barre 0:sel=true
+T3 apres reduction a 2 items    | selectedIndex=2 | barre 1:sel=true   ← bornage
+```
+
+> T3 est un cas artificiel : je n'ai raccourci que `customTabBar.items`, pas `viewControllers`. En
+> usage réel les deux suivent, et UIKit borne `selectedIndex` de son côté. Le bornage de la barre
+> est le seul comportement sain quand l'index visé n'existe plus.
 
 **Implémentation du 2026-09-18 :**
 
@@ -533,6 +570,23 @@ Critères de sortie :
 
 > Une entrée par session de travail : ce qui a été fait, ce qui a surpris, ce qui reste ouvert.
 > Les entrées les plus récentes en haut.
+
+### 2026-09-18 — Lot 3, correctif de régression
+
+La recette côté DateLimite a validé trois critères sur quatre et **trouvé un défaut que j'avais
+introduit** : en coupant la notification de `reloadViews()` pour désamorcer la mine de
+`configure()`, j'avais désynchronisé la barre et le contenu. Le symptôme est plus discret que celui
+d'avant — la barre ne saute plus, elle affiche simplement le mauvais onglet — donc plus facile à
+laisser passer. Corrigé en mémorisant la sélection dans la barre.
+
+Leçon pour les lots suivants : couper une notification n'est pas neutre quand quelqu'un d'autre
+s'en servait pour se resynchroniser. Il fallait remplacer la synchronisation, pas seulement la
+supprimer.
+
+La rotation n'a pas pu être jouée : `Simulator.app` n'est pas installé sur ce poste. La session de
+recette a attaqué le mécanisme par ses autres déclencheurs — bascule clair/sombre, qui provoque le
+même `tintColorDidChange` → `reloadApperance()` — et l'a vérifié. La case reste entrouverte pour la
+rotation elle-même.
 
 ### 2026-09-18 — Lot 3 en recette
 
