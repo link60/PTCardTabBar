@@ -10,8 +10,8 @@
 > `F*` utilisés ici y renvoient et sont stables. Ne pas réécrire l'audit au fil des corrections :
 > c'est **cette carte** qui porte l'avancement.
 >
-> **Taille :** `L` — sept lots indépendants. **Les sept lots sont livrés.** Reste le bump de build
-> et l'upload TestFlight, en attente du go de Loïc.
+> **Taille :** `L` — sept lots indépendants. **Les sept lots sont livrés.** Le bump de build et
+> l'upload TestFlight sont **en pause à la demande de Loïc** (2026-09-19).
 
 ---
 
@@ -645,7 +645,9 @@ Critères de sortie :
 - [x] la barre est annoncée comme barre d'onglets, pas comme une pile de boutons anonymes ;
 - [x] à la plus grande taille de texte, la barre reste lisible et les badges ne débordent pas ;
 - [x] la zone tactile atteint 44 pt sans changer le rendu ;
-- [x] **en RTL, le badge est du bon côté** — **le premier jet était faux**, cf. ci-dessous ;
+- [~] **en RTL, le badge est du bon côté** — **le premier jet était faux**, cf. ci-dessous.
+      Correctif `7dca54f` **vérifié sur le banc uniquement** : il n'a pas encore été repassé dans
+      DateLimite, la recette app s'étant arrêtée à `76b36bb` ;
 - [x] **un test XCUI tape un onglet sans `-SnapshotInitialTab`** — validé côté DateLimite le
       2026-09-19 : `visé.isHittable = true`, et après le tap `b3.selected=false b5.selected=true`.
       **Le contournement peut être retiré du test de captures.**
@@ -799,6 +801,23 @@ mensonge posé par la barre d'onglets, sans rapport avec son propre besoin.
 
 > Une entrée par session de travail : ce qui a été fait, ce qui a surpris, ce qui reste ouvert.
 > Les entrées les plus récentes en haut.
+
+### 2026-09-19 — Build en pause, chantier en attente de clôture
+
+Loïc a mis le bump et l'upload TestFlight en pause. L'arbre de DateLimite reste sur `76b36bb`,
+`Podfile.lock` non commité ; la décision a été prise au vu d'une recette qui s'arrêtait à ce commit,
+donc **avant** le correctif du badge RTL.
+
+**Ce qui reste à faire quand le sujet rouvre**, dans cet ordre : `pod update` vers `7dca54f`, build,
+coup d'œil au badge de la cloche en LTR sur la fiche produit puis en RTL forcé, et bump seulement
+ensuite. Le commit ne touche que `badgeLayout` dans `PTBarButton`, une re-recette complète n'est pas
+nécessaire.
+
+**Précision de crédit** : `7dca54f` est vérifié **sur le banc**, pas dans l'application. La recette
+app ne l'a pas repassé et ne le revendique pas.
+
+La carte reste en `in-progress/` : elle passera en `done/` quand la build sera montée et le chantier
+déclaré clos.
 
 ### 2026-09-19 — Les sept lots sont livrés
 
